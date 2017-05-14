@@ -1,24 +1,23 @@
-package org.nvl.core.responder;
+package src.org.nvl.core.responder;
 
-import org.nvl.core.input.substituter.VariableSubstituter;
-import org.nvl.core.input.type.InputType;
-import org.nvl.core.input.type.InputTypeDeterminer;
-import org.nvl.core.input.validator.InputValidator;
-import org.nvl.core.input.white_space.InputSpaceFixer;
-import org.nvl.core.responder.processor.RequestProcessor;
-import org.nvl.core.rpn.verifier.ArrayRpnVerifier;
-import org.nvl.core.rpn.verifier.BooleanRpnVerifier;
-import org.nvl.core.rpn.verifier.NumberRpnVerifier;
-import org.nvl.core.rpn.verifier.StringRpnVerifier;
-import org.nvl.core.statement.RpnStatementVerifier;
-import org.nvl.core.statement.type.InputTypeMatcher;
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.input.substituter.VariableSubstituter;
+import src.org.nvl.core.input.type.InputType;
+import src.org.nvl.core.input.type.InputTypeDeterminer;
+import src.org.nvl.core.input.validator.InputValidator;
+import src.org.nvl.core.input.white_space.InputSpaceFixer;
+import src.org.nvl.core.responder.processor.RequestProcessor;
+import src.org.nvl.core.rpn.verifier.ArrayRpnVerifier;
+import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
+import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
+import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
+import src.org.nvl.core.statement.RpnStatementVerifier;
+import src.org.nvl.core.statement.type.InputTypeMatcher;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.MessageConstants;
 
 import java.util.Set;
-
-import static org.nvl.MessageConstants.*;
 
 public class ResponderImpl implements Responder {
     private InputTypeDeterminer typeDeterminer;
@@ -50,14 +49,14 @@ public class ResponderImpl implements Responder {
         if (inputType == InputType.NEW_VARIABLE) {
             computeRightSide(substitutedInput);
             requestProcessor.addVariable(substitutedInput.toString());
-            response = NEW_VARIABLE_MESSAGE;
+            response = MessageConstants.NEW_VARIABLE_MESSAGE;
         } else if (inputType == InputType.EXISTING_VARIABLE) {
             computeRightSide(substitutedInput);
             requestProcessor.updateVariable(substitutedInput.toString());
-            response = EXISTING_VARIABLE_MESSAGE;
+            response = MessageConstants.EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
             boolean validStatement = requestProcessor.verifyStatement(substitutedInput.toString());
-            response = String.format(STATEMENT_FORMAT, dividedInput, Boolean.toString(validStatement).toUpperCase());
+            response = String.format(MessageConstants.STATEMENT_FORMAT, dividedInput, Boolean.toString(validStatement).toUpperCase());
         }
 
         return response;
@@ -72,10 +71,10 @@ public class ResponderImpl implements Responder {
             substitutedInput = variableSubstituter.substitute(dividedInput);
             validateInput(substitutedInput);
         } catch (Exception e) {
-            if (e.getMessage().contains(INVALID_INPUT_FORMAT.substring(0, 10))) {
+            if (e.getMessage().contains(MessageConstants.INVALID_INPUT_FORMAT.substring(0, 10))) {
                 throw e;
             } else {
-                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, userInput, "Try again"));
+                throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, userInput, "Try again"));
             }
         }
 
@@ -112,22 +111,22 @@ public class ResponderImpl implements Responder {
             boolean validTypes = new InputTypeMatcher(variableManager).sidesTypeMatches(input.getLeftSide(), input.getRightSide());
 
             if (!validTypes) {
-                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Incompatible value types"));
+                throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Incompatible value types"));
             }
         } else {
             boolean isExisting = variableManager.containsVariable(input.getLeftSide());
             EvaluatedVariable variable = variableManager.getVariable(input.getLeftSide());
             if (isExisting && !sameTypes(variable.getType(), input.getRightSide())) {
-                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Variable type change is not permitted"));
+                throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Variable type change is not permitted"));
             } else {
                 if (!input.getLeftSide().matches("\\w+")) {
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Only letters, digits and underscores are permitted in variable names"));
+                    throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Only letters, digits and underscores are permitted in variable names"));
                 }
             }
         }
 
         if (!validLeftSide || !validRightSide) {
-            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Try again"));
+            throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Try again"));
         }
     }
 

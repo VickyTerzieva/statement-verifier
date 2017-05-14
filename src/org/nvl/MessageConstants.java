@@ -1,4 +1,4 @@
-package org.nvl;
+package src.org.nvl;
 
 public class MessageConstants {
     public static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";

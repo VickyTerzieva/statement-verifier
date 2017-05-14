@@ -1,9 +1,9 @@
-package org.nvl.core.input.substituter;
+package src.org.nvl.core.input.substituter;
 
-import org.nvl.core.input.split.SplitString;
-import org.nvl.core.responder.DividedInput;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.responder.DividedInput;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.manager.VariableManager;
 
 public class VariableSubstituter {
     private VariableManager variableManager;

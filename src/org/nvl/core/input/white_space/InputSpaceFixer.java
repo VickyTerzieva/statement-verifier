@@ -1,4 +1,4 @@
-package org.nvl.core.input.white_space;
+package src.org.nvl.core.input.white_space;
 
 public class InputSpaceFixer {
     private static final String ISOLATION_FORMAT = " %s ";

@@ -1,4 +1,4 @@
-package org.nvl.ui;
+package src.org.nvl.ui;
 
 /**
  * A graphical UI for the AssertionVerifier

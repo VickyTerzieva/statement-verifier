@@ -1,4 +1,4 @@
-package org.nvl.core.statement;
+package src.org.nvl.core.statement;
 
 /**
  * Verifies if a statement is correct

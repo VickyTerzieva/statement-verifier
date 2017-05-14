@@ -1,4 +1,4 @@
-package org.nvl.core.input.validator;
+package src.org.nvl.core.input.validator;
 
 /**
  * Validates the input

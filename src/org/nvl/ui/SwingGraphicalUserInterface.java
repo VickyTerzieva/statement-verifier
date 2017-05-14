@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.nvl.ui;
+package src.org.nvl.ui;
 
-import org.nvl.core.responder.Responder;
-import org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.responder.Responder;
+import src.org.nvl.core.variable.EvaluatedVariable;
 
 import java.util.TreeSet;
 

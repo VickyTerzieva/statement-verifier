@@ -4,5 +4,6 @@ public enum VariableType {
     STRING,
     NUMBER,
     BOOLEAN,
-    ARRAY
+    ARRAY,
+    BRACKET_EXPRESSION
 }

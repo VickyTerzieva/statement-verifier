@@ -1,8 +1,8 @@
-package org.nvl.core.input.validator;
+package src.org.nvl.core.input.validator;
 
-import org.nvl.core.input.split.SplitString;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.manager.VariableManager;
 
 /**
  * Validates mathematical statements using a context-free grammar. It requires all operators and constants to be separated by spaces.

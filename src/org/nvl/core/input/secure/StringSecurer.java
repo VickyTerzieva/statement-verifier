@@ -1,4 +1,4 @@
-package org.nvl.core.input.secure;
+package src.org.nvl.core.input.secure;
 
 public class StringSecurer {
     private final static String UNSAFE_DELIMITER = " ";

@@ -1,11 +1,11 @@
-package org.nvl.core.responder.processor;
+package src.org.nvl.core.responder.processor;
 
-import org.nvl.core.statement.StatementVerifier;
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.UnevaluatedVariable;
-import org.nvl.core.variable.definition.VariableDefinitionParser;
-import org.nvl.core.variable.manager.VariableManager;
-import org.nvl.core.variable.type.VariableTypeParser;
+import src.org.nvl.core.statement.StatementVerifier;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.UnevaluatedVariable;
+import src.org.nvl.core.variable.definition.VariableDefinitionParser;
+import src.org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.variable.type.VariableTypeParser;
 
 import java.util.Set;
 

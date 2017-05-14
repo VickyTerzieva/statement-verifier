@@ -1,13 +1,12 @@
-package org.nvl.core.statement;
+package src.org.nvl.core.statement;
 
-import org.nvl.core.rpn.RpnVerifier;
-import org.nvl.core.rpn.verifier.ArrayRpnVerifier;
-import org.nvl.core.rpn.verifier.BooleanRpnVerifier;
-import org.nvl.core.rpn.verifier.NumberRpnVerifier;
-import org.nvl.core.rpn.verifier.StringRpnVerifier;
-import org.nvl.core.variable.manager.VariableManager;
-
-import static org.nvl.MessageConstants.INVALID_INPUT_FORMAT;
+import src.org.nvl.core.rpn.RpnVerifier;
+import src.org.nvl.core.rpn.verifier.ArrayRpnVerifier;
+import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
+import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
+import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
+import src.org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.MessageConstants;
 
 public class RpnStatementVerifier implements StatementVerifier {
 
@@ -100,7 +99,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                     }
                 }
                 if (!variableManager.containsVariable(variable)) {                      //if the variable is not declared
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
+                    throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, statement, "Verification error"));
                 }
                 valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
                 valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value

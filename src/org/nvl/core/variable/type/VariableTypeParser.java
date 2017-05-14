@@ -1,7 +1,7 @@
-package org.nvl.core.variable.type;
+package src.org.nvl.core.variable.type;
 
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.UnevaluatedVariable;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.UnevaluatedVariable;
 
 /**
  * Parses the variable value to find its type

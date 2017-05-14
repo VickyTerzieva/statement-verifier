@@ -1,6 +1,6 @@
-package org.nvl.core.responder;
+package src.org.nvl.core.responder;
 
-import static org.nvl.MessageConstants.INVALID_INPUT_FORMAT;
+import src.org.nvl.MessageConstants;
 
 public class Divider {
     public DividedInput divide(String input) {
@@ -30,7 +30,7 @@ public class Divider {
         for (String delimiter : delimiters) {
             if (input.contains(delimiter)) {
                 if (foundDivider) {
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Multiple comparison operators"));
+                    throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Multiple comparison operators"));
                 }
 
                 actualDelimiter = delimiter;
@@ -40,7 +40,7 @@ public class Divider {
         }
 
         if (!foundDivider || result.length != 2) {
-            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Try again "));
+            throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, input, "Try again "));
         }
 
         return new String[] {result[0], actualDelimiter, result[1]};

@@ -1,4 +1,4 @@
-package org.nvl.core.responder;
+package src.org.nvl.core.responder;
 
 public class DividedInput {
     private String leftSide;

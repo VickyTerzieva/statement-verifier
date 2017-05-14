@@ -1,6 +1,6 @@
-package org.nvl.core.variable.manager;
+package src.org.nvl.core.variable.manager;
 
-import org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.EvaluatedVariable;
 
 import java.util.HashMap;
 import java.util.HashSet;

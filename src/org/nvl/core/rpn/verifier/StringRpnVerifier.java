@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.nvl.core.rpn.verifier;
+package src.org.nvl.core.rpn.verifier;
 
-import org.nvl.core.input.split.SplitString;
-import org.nvl.core.rpn.AbstractStringNumberRpnVerifier;
-import org.nvl.core.variable.type.VariableTypeParserImpl;
+import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.rpn.AbstractStringNumberRpnVerifier;
+import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
 

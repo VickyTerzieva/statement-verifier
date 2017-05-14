@@ -1,6 +1,6 @@
-package org.nvl.core.input.type;
+package src.org.nvl.core.input.type;
 
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.variable.manager.VariableManager;
 
 public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
     private VariableManager variableManager;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.nvl.core.rpn.verifier;
+package src.org.nvl.core.rpn.verifier;
 
-import org.nvl.core.rpn.AbstractRpnVerifier;
+import src.org.nvl.core.rpn.AbstractRpnVerifier;
 
 import java.util.Stack;
 import java.util.StringTokenizer;

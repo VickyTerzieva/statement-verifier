@@ -1,6 +1,6 @@
-package org.nvl.core.variable.definition;
+package src.org.nvl.core.variable.definition;
 
-import org.nvl.core.variable.UnevaluatedVariable;
+import src.org.nvl.core.variable.UnevaluatedVariable;
 
 public class VariableDefinitionParserImpl implements VariableDefinitionParser {
     @Override

@@ -1,6 +1,6 @@
-package org.nvl.core.statement.type;
+package src.org.nvl.core.statement.type;
 
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.variable.manager.VariableManager;
 
 public class InputTypeMatcher {
     private VariableManager variableManager;

@@ -1,4 +1,4 @@
-package org.nvl.core.input.split;
+package src.org.nvl.core.input.split;
 
 import java.util.ArrayList;
 

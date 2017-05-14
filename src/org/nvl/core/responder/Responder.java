@@ -1,6 +1,6 @@
-package org.nvl.core.responder;
+package src.org.nvl.core.responder;
 
-import org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.EvaluatedVariable;
 
 import java.util.Set;
 

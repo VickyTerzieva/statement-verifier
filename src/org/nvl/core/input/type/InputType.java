@@ -1,4 +1,4 @@
-package org.nvl.core.input.type;
+package src.org.nvl.core.input.type;
 
 public enum InputType {
     STATEMENT,

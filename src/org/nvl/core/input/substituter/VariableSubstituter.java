@@ -1,7 +1,6 @@
 package src.org.nvl.core.input.substituter;
 
 import src.org.nvl.core.input.split.SplitString;
-import src.org.nvl.core.responder.DividedInput;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.manager.VariableManager;
 
@@ -11,20 +10,17 @@ public class VariableSubstituter {
     public VariableSubstituter(VariableManager variableManager) {
         this.variableManager = variableManager;
     }
+    public String[] substitute(String[] input) {
+        String[] result = new String[input.length];
 
-    public DividedInput substitute(DividedInput input) {
-        DividedInput result = new DividedInput(input.getLeftSide(), null, input.getOperation());
-
-        result.setRightSide(substituteVariables(input.getRightSide()));
-        if (!input.getOperation().equals("=")) {
-            result.setLeftSide(substituteVariables(input.getLeftSide()));
+        for(int i = 0; i < input.length; i++) {
+            result[i] = substituteVariables(input[i]);
         }
-
         return result;
     }
 
-    private String substituteVariables(String side) {
-        SplitString splitString = new SplitString(side);
+    private String substituteVariables(String input) {
+        SplitString splitString = new SplitString(input);
 
         while (!splitString.isEmpty()) {
             String element = splitString.getCurrentElement();

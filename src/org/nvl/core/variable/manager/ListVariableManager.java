@@ -5,7 +5,7 @@ import src.org.nvl.core.variable.EvaluatedVariable;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
+//TODO - remove
 public class ListVariableManager implements VariableManager {
     private final String INVALID_INPUT_MESSAGE = "You found a bug! Invalid input. ";
     private List<EvaluatedVariable> variables;
@@ -55,5 +55,10 @@ public class ListVariableManager implements VariableManager {
     @Override
     public Set<EvaluatedVariable> variables() {
         return new TreeSet<>(variables);
+    }
+
+    @Override
+    public String freeNameOfVariable(Set<String> variablesInInput) {
+        return null;
     }
 }

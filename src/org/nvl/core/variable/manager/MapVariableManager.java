@@ -2,10 +2,7 @@ package src.org.nvl.core.variable.manager;
 
 import src.org.nvl.core.variable.EvaluatedVariable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MapVariableManager implements VariableManager {
     private final String INVALID_INPUT_MESSAGE = "You found a bug! Invalid input. ";
@@ -46,5 +43,20 @@ public class MapVariableManager implements VariableManager {
     @Override
     public Set<EvaluatedVariable> variables() {
         return new HashSet<>(allVariables.values());
+    }
+
+    //TODO - try to think of better names
+    @Override
+    public String freeNameOfVariable(Set<String> variablesInInput) {
+        String lettersArray = "abcdefghijklmnopqrstuvwxyz";
+        Random rand = new Random();
+        int index = rand.nextInt(26);
+        StringBuilder name = new StringBuilder();
+        name.append(lettersArray.charAt(index));
+        while((allVariables != null && allVariables.containsKey(name.toString())) ||
+                (variablesInInput != null && variablesInInput.contains(name.toString()))) {
+            name.append(name);
+        }
+        return name.toString();
     }
 }

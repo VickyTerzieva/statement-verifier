@@ -2,6 +2,8 @@ package src.org.nvl.core.variable.definition;
 
 import src.org.nvl.core.variable.UnevaluatedVariable;
 
+//TODO: fix for more than one =
+
 public class VariableDefinitionParserImpl implements VariableDefinitionParser {
     @Override
     public UnevaluatedVariable parse(String definition) {

@@ -1,4 +1,4 @@
-package org.nvl.core.variable;
+package src.org.nvl.core.variable;
 
 public class EvaluatedVariable implements Comparable<EvaluatedVariable> {
     public EvaluatedVariable(String name, String value, VariableType type) {

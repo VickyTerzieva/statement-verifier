@@ -1,24 +1,26 @@
-package org.nvl.core.responder;
+package src.org.nvl.core.responder;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nvl.MessageConstants;
-import org.nvl.core.input.type.InputTypeDeterminer;
-import org.nvl.core.input.type.SimpleInputTypeDeterminer;
-import org.nvl.core.input.validator.GrammarInputValidator;
-import org.nvl.core.input.validator.InputValidator;
-import org.nvl.core.responder.processor.RequestProcessor;
-import org.nvl.core.responder.processor.RequestProcessorImpl;
-import org.nvl.core.statement.RpnStatementVerifier;
-import org.nvl.core.statement.StatementVerifier;
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.definition.VariableDefinitionParser;
-import org.nvl.core.variable.definition.VariableDefinitionParserImpl;
-import org.nvl.core.variable.manager.ListVariableManager;
-import org.nvl.core.variable.manager.VariableManager;
-import org.nvl.core.variable.type.VariableTypeParser;
-import org.nvl.core.variable.type.VariableTypeParserImpl;
+import src.org.nvl.MessageConstants;
+import src.org.nvl.core.input.type.InputTypeDeterminer;
+import src.org.nvl.core.input.type.SimpleInputTypeDeterminer;
+import src.org.nvl.core.input.validator.GrammarInputValidator;
+import src.org.nvl.core.input.validator.InputValidator;
+import src.org.nvl.core.responder.Responder;
+import src.org.nvl.core.responder.ResponderImpl;
+import src.org.nvl.core.responder.processor.RequestProcessor;
+import src.org.nvl.core.responder.processor.RequestProcessorImpl;
+import src.org.nvl.core.statement.RpnStatementVerifier;
+import src.org.nvl.core.statement.StatementVerifier;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.definition.VariableDefinitionParser;
+import src.org.nvl.core.variable.definition.VariableDefinitionParserImpl;
+import src.org.nvl.core.variable.manager.ListVariableManager;
+import src.org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.variable.type.VariableTypeParser;
+import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.ArrayList;
 

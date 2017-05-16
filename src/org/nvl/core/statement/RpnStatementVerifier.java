@@ -6,13 +6,17 @@ import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
 import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
 import src.org.nvl.core.variable.manager.VariableManager;
-import src.org.nvl.MessageConstants;
+
+import static src.org.nvl.MessageConstants.INVALID_INPUT_FORMAT;
 
 public class RpnStatementVerifier implements StatementVerifier {
 
     private VariableManager variableManager;
     private boolean isBooleanOperation;
     private boolean isStringOperation;
+
+    private boolean isArrayOperation;
+    private StringBuilder valueStatement;
 
     public boolean isBooleanOperation() {
         return isBooleanOperation;
@@ -25,9 +29,6 @@ public class RpnStatementVerifier implements StatementVerifier {
     public boolean isArrayOperation() {
         return isArrayOperation;
     }
-
-    private boolean isArrayOperation;
-    private StringBuilder valueStatement;
 
     public RpnStatementVerifier(VariableManager variableManager) {
         this.variableManager = variableManager;
@@ -99,7 +100,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                     }
                 }
                 if (!variableManager.containsVariable(variable)) {                      //if the variable is not declared
-                    throw new RuntimeException(String.format(MessageConstants.INVALID_INPUT_FORMAT, statement, "Verification error"));
+                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
                 }
                 valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
                 valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value

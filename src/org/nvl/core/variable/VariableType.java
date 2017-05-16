@@ -1,4 +1,4 @@
-package org.nvl.core.variable;
+package src.org.nvl.core.variable;
 
 public enum VariableType {
     STRING,

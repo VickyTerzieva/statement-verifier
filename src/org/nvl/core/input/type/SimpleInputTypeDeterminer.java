@@ -1,7 +1,6 @@
 package src.org.nvl.core.input.type;
 
 import src.org.nvl.core.variable.manager.VariableManager;
-
 public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
     private VariableManager variableManager;
 
@@ -34,6 +33,6 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
         {
             i++;
         }
-        return !(charInput[i] == '>' || charInput[i] == '<' || charInput[i + 1] == '=');
+        return !(charInput[i] == '>' || charInput[i] == '<' || charInput[i + 1] == '='); //TODO why? (only '=' ?)
     }
 }

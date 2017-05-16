@@ -19,4 +19,6 @@ public interface VariableManager {
     EvaluatedVariable getVariable(String name);
 
     Set<EvaluatedVariable> variables();
+
+    String freeNameOfVariable(Set<String> variableInInput);
 }

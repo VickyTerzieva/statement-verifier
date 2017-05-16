@@ -1,14 +1,16 @@
-package org.nvl.core.input.validator;
+package src.org.nvl.core.input.validator;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.manager.MapVariableManager;
-import org.nvl.core.variable.manager.VariableManager;
+import src.org.nvl.core.input.validator.GrammarInputValidator;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.manager.MapVariableManager;
+import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.HashMap;
 
+import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

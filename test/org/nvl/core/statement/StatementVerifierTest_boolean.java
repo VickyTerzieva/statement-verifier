@@ -1,10 +1,12 @@
-package org.nvl.core.statement;
+package src.org.nvl.core.statement;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nvl.core.variable.EvaluatedVariable;
-import org.nvl.core.variable.VariableType;
-import org.nvl.core.variable.manager.MapVariableManager;
+import src.org.nvl.core.statement.RpnStatementVerifier;
+import src.org.nvl.core.statement.StatementVerifier;
+import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.manager.MapVariableManager;
 
 import java.util.HashMap;
 

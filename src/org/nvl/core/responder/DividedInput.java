@@ -1,46 +1,25 @@
 package src.org.nvl.core.responder;
 
-public class DividedInput {
-    private String leftSide;
-    private String rightSide;
-    private String operation;
 
-    public DividedInput(String leftSide, String rightSide, String operation) {
-        this.leftSide = leftSide;
-        this.rightSide = rightSide;
-        this.operation = operation;
+/*//v100 - more than one operation supported (e.g a < 5 == 7 > 3 == 3 < 9) - main operation - first position
+public class String[] {
+    private String[] subexpressions;
+
+    public String[]() {
+        subexpressions = null;
     }
 
-    public DividedInput() {
-        leftSide = rightSide = operation = null;
-    }
-
-    public String getLeftSide() {
-        return leftSide;
-    }
-
-    public void setLeftSide(String leftSide) {
-        this.leftSide = leftSide;
-    }
-
-    public String getRightSide() {
-        return rightSide;
-    }
-
-    public void setRightSide(String rightSide) {
-        this.rightSide = rightSide;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public String getNthElement(int position) {
+        return subexpressions[position];
     }
 
     @Override
     public String toString() {
-        return leftSide + " " + operation + " " + rightSide;
+        StringBuilder sb = new StringBuilder();   //create the resulted string
+        for (int i = 0; i < subexpressions.length; i++) {
+            sb.append(subexpressions[i]);
+        }
+
+        return String.valueOf(sb);
     }
-}
+}*/

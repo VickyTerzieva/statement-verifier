@@ -4,6 +4,7 @@ import src.org.nvl.core.input.substituter.VariableSubstituter;
 import src.org.nvl.core.input.tree.InputTree;
 import src.org.nvl.core.input.type.InputType;
 import src.org.nvl.core.input.type.InputTypeDeterminer;
+import src.org.nvl.core.input.type.SideType;
 import src.org.nvl.core.input.validator.InputValidator;
 import src.org.nvl.core.input.white_space.InputSpaceFixer;
 import src.org.nvl.core.responder.processor.RequestProcessor;
@@ -20,6 +21,8 @@ import src.org.nvl.core.variable.manager.VariableManager;
 import java.util.Set;
 
 import static src.org.nvl.MessageConstants.*;
+import static src.org.nvl.core.input.invalid_operator_usage.InvalidOperatorUsage.endsWithOperator;
+import static src.org.nvl.core.input.invalid_operator_usage.InvalidOperatorUsage.startsWithOperator;
 
 public class ResponderImpl implements Responder {
     private InputTypeDeterminer typeDeterminer;
@@ -46,16 +49,16 @@ public class ResponderImpl implements Responder {
     public String process(String userInput) {
         String response = "";
 
-        //TODO remove - only testing
+        userInput = InputSpaceFixer.fix(userInput);
+        checkInput(userInput);
         InputTree inputTree = new InputTree();
-        inputTree.createTree(userInput);
-        //String replacedInput = InputTree.replaceBracketExpressions(userInput);
-        //TODO remove
+        inputTree = inputTree.createTree(userInput);
+        verifyInput(inputTree);
 
-        String[] dividedInput = checkInput(userInput);
-        InputType inputType = typeDeterminer.determineType(substitutedInput.toString());
 
-        if (inputType == InputType.NEW_VARIABLE) {
+        //InputType inputType = typeDeterminer.determineType(substitutedInput.toString());
+
+        /*if (inputType == InputType.NEW_VARIABLE) {
             computeRightSide(substitutedInput);
             requestProcessor.addVariable(substitutedInput.toString());
             response = NEW_VARIABLE_MESSAGE;
@@ -66,28 +69,45 @@ public class ResponderImpl implements Responder {
         } else if (inputType == InputType.STATEMENT) {
             boolean validStatement = requestProcessor.verifyStatement(substitutedInput.toString());
             response = String.format(STATEMENT_FORMAT, dividedInput, Boolean.toString(validStatement).toUpperCase());
-        }
+        }*/
 
         return response;
     }
 
-    private String[] checkInput(String userInput) {
-        String[] dividedInput;
-
-        try {
-            String spaceFixedInput = InputSpaceFixer.fix(userInput);
-            dividedInput = divider.splitInputByMainDivider(spaceFixedInput);
-            substitutedInput = variableSubstituter.substitute(dividedInput);
-            validateInput(substitutedInput);
-        } catch (Exception e) {
-            if (e.getMessage().contains(INVALID_INPUT_FORMAT.substring(0, 10))) {
-                throw e;
-            } else {
-                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, userInput, "Try again"));
+    //TODO
+    private boolean verifyInput(InputTree inputTree) {
+        String data = inputTree.getValue();
+        InputTree left = inputTree.getLeftSide();
+        InputTree right = inputTree.getRightSide();
+        SideType typeLeft = getType(left);
+        SideType typeRight = getType(right);
+        if(typeLeft != typeRight) {
+            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, inputTree, "Incompatible value types"));
+        }
+        if(!inputTree.isLeaf()) {
+            if(!verifyInput(inputTree.getLeftSide())) {
+                return false;
+            }
+            if(!verifyInput(inputTree.getRightSide())) {
+                return false;
             }
         }
+        //TODO check if sides have equal values
+        return true;
+    }
 
-        return dividedInput;
+    private SideType getType(InputTree inputTree) {
+        if(inputTree.isLeaf()) {  // value of inputTree data is an operator
+            return SideType.BOOLEAN;
+        }
+        //TODO find type
+        return SideType.INTEGER;
+    }
+
+    private void checkInput(String userInput) {
+        if (startsWithOperator(userInput) || endsWithOperator(userInput)) {
+            throw new RuntimeException(String.format(INVALID_OPERATOR_FORMAT, userInput));
+        }
     }
 
     private void computeRightSide(String[] dividedInput) {

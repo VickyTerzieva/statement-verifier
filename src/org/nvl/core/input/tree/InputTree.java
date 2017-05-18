@@ -1,13 +1,14 @@
 package src.org.nvl.core.input.tree;
 
+import src.org.nvl.core.input.invalid_operator_usage.InvalidOperatorUsage;
 import src.org.nvl.core.input.split.SplitString;
-import src.org.nvl.core.input.white_space.InputSpaceFixer;
 import src.org.nvl.core.variable.EvaluatedVariable;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.manager.MapVariableManager;
 import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.*;
+import static src.org.nvl.MessageConstants.INVALID_OPERATOR_FORMAT;
 
 /**
  * Created by Vicky on 13.5.2017 г..
@@ -25,19 +26,23 @@ public class InputTree {
     }
 
     public InputTree getRightSide() {
-        return rightSide;
+        InputTree rightSideCopy;
+        rightSideCopy = copyTree(rightSide);
+        return rightSideCopy;
     }
 
     public void setRightSide(InputTree rightSide) {
-        this.rightSide = rightSide;
+        this.rightSide = copyTree(rightSide);
     }
 
     public InputTree getLeftSide() {
-        return leftSide;
+        InputTree leftSideCopy;
+        leftSideCopy = copyTree(leftSide);
+        return leftSideCopy;
     }
 
     public void setLeftSide(InputTree leftSide) {
-        this.leftSide = leftSide;
+        this.leftSide = copyTree(leftSide);
     }
 
     public String getValue() {
@@ -54,10 +59,20 @@ public class InputTree {
 
     public InputTree createTree(String input) {
         InputTree inputTree;
-        String spaceFixedInput = InputSpaceFixer.fix(input);
-        spaceFixedInput = replaceBracketExpressions(spaceFixedInput);
-        inputTree = splitInput(spaceFixedInput);
+        input = replaceBracketExpressions(input);
+        inputTree = splitInput(input);
         return inputTree;
+    }
+
+    private InputTree copyTree(InputTree inputTree) {
+        InputTree copyOfTree = null;
+        if(inputTree != null) {
+            copyOfTree = new InputTree();
+            copyOfTree.setValue(inputTree.getValue());
+            copyOfTree.leftSide = copyTree(inputTree.leftSide);
+            copyOfTree.rightSide = copyTree(inputTree.rightSide);
+        }
+        return copyOfTree;
     }
 
     private InputTree splitInput(String spaceFixedInput) {
@@ -71,6 +86,10 @@ public class InputTree {
                 String[] parts = spaceFixedInput.split(operator, 2);
                 String left = parts[0];
                 String right = parts[1];
+                if(InvalidOperatorUsage.startsWithOperator(left) || InvalidOperatorUsage.endsWithOperator(left) ||
+                        InvalidOperatorUsage.startsWithOperator(right) || InvalidOperatorUsage.endsWithOperator(right)) {
+                    throw new RuntimeException(String.format(INVALID_OPERATOR_FORMAT, operatorsByPriority[opNum]));
+                }
                 inputTree.setValue(operatorsByPriority[opNum]);
                 inputTree.setLeftSide(splitInput(left));
                 inputTree.setRightSide(splitInput(right));
@@ -155,5 +174,19 @@ public class InputTree {
         boolean isBooleanReservedWord = input.equalsIgnoreCase("FALSE") || input.equalsIgnoreCase("TRUE");
         boolean isWord = Character.isLetter(input.charAt(0));
         return isWord && !isBooleanReservedWord;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if(this.isLeaf()) {
+            return this.getValue();
+        }
+        sb.append(this.getLeftSide().toString());
+        sb.append(" ");
+        sb.append(this.getValue());
+        sb.append(" ");
+        sb.append(this.getRightSide().toString());
+        return String.valueOf(sb);
     }
 }

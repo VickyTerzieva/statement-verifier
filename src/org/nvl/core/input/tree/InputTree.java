@@ -8,6 +8,7 @@ import src.org.nvl.core.variable.manager.MapVariableManager;
 import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.*;
+
 import static src.org.nvl.MessageConstants.INVALID_OPERATOR_FORMAT;
 
 /**
@@ -18,11 +19,10 @@ public class InputTree {
     private InputTree leftSide = null;
     private InputTree rightSide = null;
     private String data;
-    private static VariableManager bracketVariables;
+    private static VariableManager bracketVariables = new MapVariableManager(new HashMap<>());
 
     public InputTree() {
         this.data = "";
-        bracketVariables = new MapVariableManager(new HashMap<>());
     }
 
     public InputTree getRightSide() {
@@ -57,13 +57,6 @@ public class InputTree {
         return leftSide == null && rightSide == null;
     }
 
-    public InputTree createTree(String input) {
-        InputTree inputTree;
-        input = replaceBracketExpressions(input);
-        inputTree = splitInput(input);
-        return inputTree;
-    }
-
     private InputTree copyTree(InputTree inputTree) {
         InputTree copyOfTree = null;
         if(inputTree != null) {
@@ -73,6 +66,13 @@ public class InputTree {
             copyOfTree.rightSide = copyTree(inputTree.rightSide);
         }
         return copyOfTree;
+    }
+
+    public InputTree createTree(String input) {
+        InputTree inputTree;
+        input = replaceBracketExpressions(input);
+        inputTree = splitInput(input);
+        return inputTree;
     }
 
     private InputTree splitInput(String spaceFixedInput) {
@@ -99,9 +99,44 @@ public class InputTree {
             }
         }
         if (inputTree.isLeaf()) {
+            if(containsBracketExpression(spaceFixedInput)) {
+                spaceFixedInput = replaceBracketVariables(spaceFixedInput);
+            }
             inputTree.setValue(spaceFixedInput);
         }
         return inputTree;
+    }
+
+    private String replaceBracketVariables(String spaceFixedInput) {
+        SplitString splitString = new SplitString(spaceFixedInput);
+        while(!splitString.isEmpty()) {
+            if(bracketVariables.containsVariable(splitString.getCurrentElement())) {
+                String[] operators = {"&&", "||", "!", "=", "<", ">", ">=", "<="};
+                String bracketExpression = bracketVariables.getVariable(splitString.getCurrentElement()).getValue();
+                if(Arrays.stream(operators).parallel().anyMatch(bracketExpression::contains)) {
+                    String[] splitStr = splitString.getSplitInput();
+                    if(splitStr.length != 1) { // contains another operator which is not boolean or contains expressions without boolean operator between them
+                        throw new RuntimeException("Invalid combination of operators! ");
+                    }
+                }
+                String var = splitString.getCurrentElement();
+                spaceFixedInput = spaceFixedInput.replaceAll(var, bracketExpression);
+            }
+            splitString.nextPosition();
+        }
+        return spaceFixedInput;
+    }
+
+    private boolean containsBracketExpression(String spaceFixedInput) {
+        SplitString splitString = new SplitString(spaceFixedInput);
+        while(!splitString.isEmpty()) {
+            String a = splitString.getCurrentElement();
+            if(bracketVariables.containsVariable(a)) {
+                return true;
+            }
+            splitString.nextPosition();
+        }
+        return false;
     }
 
     // (a == b) != (c == d)  ->  y != z
@@ -144,9 +179,11 @@ public class InputTree {
                 if(stackInput.isEmpty()) { //no more bracket expressions
                     isPartOfBracketsExpression = false;
                 }
-                bracketVarValue = bracketVarValue.replace("(", "\\(");
-                bracketVarValue = bracketVarValue.replace(")", "\\)");
+                bracketVarValue = replaceForRegex(bracketVarValue);
                 input = input.replaceAll(bracketVarValue, name);
+                for(int k = 0; k < j; k++) {
+                    newVariable[k] = '\0';
+                }
             }
             else if(isPartOfBracketsExpression)
             {
@@ -154,6 +191,15 @@ public class InputTree {
             }
         }
         return input;
+    }
+
+    private String replaceForRegex(String bracketVarValue) {
+        bracketVarValue = bracketVarValue.replace("(", "\\(");
+        bracketVarValue = bracketVarValue.replace(")", "\\)");
+        bracketVarValue = bracketVarValue.replace("+", "\\+");
+        bracketVarValue = bracketVarValue.replace("*", "\\*");
+        bracketVarValue = bracketVarValue.replace("|", "\\|");
+        return bracketVarValue;
     }
 
     private Set<String> getVariablesInInput(String input) {

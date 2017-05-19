@@ -100,7 +100,7 @@ public class ResponderImpl implements Responder {
         if(inputTree.isLeaf()) {  // value of inputTree data is an operator
             return SideType.BOOLEAN;
         }
-        //TODO find type
+        //TODO
         return SideType.INTEGER;
     }
 

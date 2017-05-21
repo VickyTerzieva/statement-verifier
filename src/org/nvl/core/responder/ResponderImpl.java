@@ -1,5 +1,6 @@
 package src.org.nvl.core.responder;
 
+import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.substituter.VariableSubstituter;
 import src.org.nvl.core.input.tree.InputTree;
 import src.org.nvl.core.input.type.InputType;
@@ -76,15 +77,15 @@ public class ResponderImpl implements Responder {
 
     //TODO
     private boolean verifyInput(InputTree inputTree) {
-        String data = inputTree.getValue();
-        InputTree left = inputTree.getLeftSide();
-        InputTree right = inputTree.getRightSide();
-        SideType typeLeft = getType(left);
-        SideType typeRight = getType(right);
-        if(typeLeft != typeRight) {
-            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, inputTree, "Incompatible value types"));
-        }
         if(!inputTree.isLeaf()) {
+            String data = inputTree.getValue();
+            InputTree left = inputTree.getLeftSide();
+            InputTree right = inputTree.getRightSide();
+            SideType typeLeft = getType(left);
+            SideType typeRight = getType(right);
+            if(typeLeft != typeRight) {
+                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, inputTree, "Incompatible value types"));
+            }
             if(!verifyInput(inputTree.getLeftSide())) {
                 return false;
             }
@@ -97,11 +98,23 @@ public class ResponderImpl implements Responder {
     }
 
     private SideType getType(InputTree inputTree) {
-        if(inputTree.isLeaf()) {  // value of inputTree data is an operator
+        if(!inputTree.isLeaf()) {  // value of inputTree data is an operator
             return SideType.BOOLEAN;
         }
-        //TODO
-        return SideType.INTEGER;
+        String expression = inputTree.getValue();
+        RpnStatementVerifier rpnStatementVerifier = new RpnStatementVerifier(variableManager);
+        rpnStatementVerifier.checkType(expression);
+        if(rpnStatementVerifier.isBooleanOperation()) {
+            return SideType.BOOLEAN;
+        }
+        if(rpnStatementVerifier.isStringOperation()) {
+            return SideType.STRING;
+        }
+        if(rpnStatementVerifier.isArrayOperation()) {
+            return SideType.INTEGER;
+        }
+            //case isArray(expression) : return SideType.ARRAY;
+        throw new RuntimeException("You found a bug. Invalid input.");
     }
 
     private void checkInput(String userInput) {
@@ -129,41 +142,6 @@ public class ResponderImpl implements Responder {
                 String rpn = rpnVerifier.createRPN(dividedInput[i]);
                 dividedInput[i] = rpnVerifier.calculateRPN(rpn).toString();
             }
-        }
-    }
-
-    private void validateInput(String[] input) {
-        boolean validSides = true;
-        boolean validTypes;
-
-        //multiple sides possible
-        if (!input[OPERATION].equals("=")) {
-            for(int side = 0; side < input.length; side++) {
-                validSides = inputValidator.isValid(input[side]);
-                if(!validSides) {
-                    break;
-                }
-                validTypes = new InputTypeMatcher(variableManager).sidesTypeMatches(input[LEFT_SIDE], input[side]);
-                if (!validTypes) {
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Incompatible value types"));
-                }
-            }
-        }
-        //only two sides allowed if operation equals "="
-        else {
-            boolean isExisting = variableManager.containsVariable(input[LEFT_SIDE]);
-            EvaluatedVariable variable = variableManager.getVariable(input[LEFT_SIDE]);
-            if (isExisting && !sameTypes(variable.getType(), input[RIGHT_SIDE])) {
-                throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Variable type change is not permitted"));
-            } else {
-                if (!input[LEFT_SIDE].matches("\\w+")) {
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Only letters, digits and underscores are permitted in variable names"));
-                }
-            }
-        }
-
-        if (!validSides) {
-            throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, input, "Try again"));
         }
     }
 

@@ -80,6 +80,7 @@ public class InputTree {
         String[] operatorsByPriority = {"=", "\\|\\|", "&&", "!=", "==", "<=", "<", ">=", ">"};
         int count = 9;
         int opNum = 0;
+        boolean containsBracketExpression = false;
         while(opNum < count) {
             String operator = " " + operatorsByPriority[opNum] + " ";
             if(spaceFixedInput.contains(operator)) {
@@ -99,12 +100,25 @@ public class InputTree {
             }
         }
         if (inputTree.isLeaf()) {
-            if(containsBracketExpression(spaceFixedInput)) {
+            while(containsBracketExpression(spaceFixedInput)) {
                 spaceFixedInput = replaceBracketVariables(spaceFixedInput);
+                containsBracketExpression = true;
             }
-            inputTree.setValue(spaceFixedInput);
+            if(containsBracketExpression) {
+                spaceFixedInput = removeOuterBrackets(spaceFixedInput);
+                inputTree = splitInput(spaceFixedInput);
+            } else {
+                inputTree.setValue(spaceFixedInput);
+            }
         }
         return inputTree;
+    }
+
+    private String removeOuterBrackets(String spaceFixedInput) {
+        if(spaceFixedInput.charAt(0) == '(' && spaceFixedInput.charAt(spaceFixedInput.length() - 1) == ')') {
+            spaceFixedInput = spaceFixedInput.substring(2,spaceFixedInput.length() - 2);
+        }
+        return spaceFixedInput;
     }
 
     private String replaceBracketVariables(String spaceFixedInput) {
@@ -142,35 +156,33 @@ public class InputTree {
     // (a == b) != (c == d)  ->  y != z
     private String replaceBracketExpressions(String input) {
         char[] charInput = input.toCharArray();
-        char[] newVariable = new char[input.length()];
-        Stack<Character> stackInput = new Stack<>();
+        StringBuilder newVariable = new StringBuilder();
+        Stack<String> stackInput = new Stack<>();
         boolean isPartOfBracketsExpression = false;
         for(int i = 0; i < charInput.length; i++)
         {
             if(charInput[i] == '(')
             {
                 isPartOfBracketsExpression = true;
-                stackInput.push(charInput[i]);
+                stackInput.push(charInput[i]+"");
             }
             else if(charInput[i] == ')')
             {
                 if(stackInput.isEmpty()) {
                     throw new RuntimeException("Invalid input! ");
                 }
-                int j = 1;
-                newVariable[0] = ')';
-                while((newVariable[j] = stackInput.pop()) != '(')
+                newVariable.append(")");
+                String next = stackInput.pop();
+                while(!next.equals("("))
                 {
+                    newVariable.append(next);
                     if(stackInput.isEmpty()) { // no '(' in stack
                         throw new RuntimeException("Invalid input! ");
                     }
-                    j++;
+                    next = stackInput.pop();
                 }
-                if(j + 1 < input.length()) {
-                    newVariable[++j] = '\0';
-                }
-                String newVarString = new String(newVariable, 0, j);
-                String bracketVarValue = new StringBuilder(newVarString).reverse().toString();
+                newVariable.append("(");
+                String bracketVarValue = newVariable.reverse().toString();
                 String name;
                 Set<String> variablesInInput = getVariablesInInput(input);
                 name = bracketVariables.freeNameOfVariable(variablesInInput);
@@ -181,13 +193,12 @@ public class InputTree {
                 }
                 bracketVarValue = replaceForRegex(bracketVarValue);
                 input = input.replaceAll(bracketVarValue, name);
-                for(int k = 0; k < j; k++) {
-                    newVariable[k] = '\0';
-                }
+                stackInput.push(name);
+                newVariable.setLength(0);
             }
             else if(isPartOfBracketsExpression)
             {
-                stackInput.push(charInput[i]);
+                 stackInput.push(charInput[i]+"");
             }
         }
         return input;

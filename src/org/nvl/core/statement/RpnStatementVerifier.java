@@ -14,7 +14,7 @@ public class RpnStatementVerifier implements StatementVerifier {
     private VariableManager variableManager;
     private boolean isBooleanOperation;
     private boolean isStringOperation;
-
+    private boolean isIntegerOperation;
     private boolean isArrayOperation;
     private StringBuilder valueStatement;
 
@@ -25,6 +25,8 @@ public class RpnStatementVerifier implements StatementVerifier {
     public boolean isStringOperation() {
         return isStringOperation;
     }
+
+    public boolean isIntegerOperation() { return  isIntegerOperation; }
 
     public boolean isArrayOperation() {
         return isArrayOperation;
@@ -52,8 +54,11 @@ public class RpnStatementVerifier implements StatementVerifier {
             verify = new BooleanRpnVerifier();
             return verify.correct(valueStatement);
         }
-        verify = new NumberRpnVerifier();           //we have number operations
-        return verify.correct(valueStatement);
+        if(isIntegerOperation) {
+            verify = new NumberRpnVerifier();           //we have number operations
+            return verify.correct(valueStatement);
+        }
+        throw new RuntimeException("Invalid input!");
     }
 
     public void checkType(String statement) {
@@ -61,6 +66,7 @@ public class RpnStatementVerifier implements StatementVerifier {
         isBooleanOperation = false;
         isStringOperation = false;
         isArrayOperation = false;
+        isIntegerOperation = false;
         for (int i = 0; i < valueStatement.length(); ++i) {
 
             char character = valueStatement.charAt(i);
@@ -70,7 +76,10 @@ public class RpnStatementVerifier implements StatementVerifier {
                 do {
                     i++;
                     character = valueStatement.charAt(i);
-                } while (character != '}');       //so we iterate while we reach the closing bracket
+                } while (i < valueStatement.length() && character != '}');       //so we iterate while we reach the closing bracket
+                if(i == valueStatement.length()){
+                    throw new RuntimeException("Invalid array! No closing bracket!");
+                }
                 continue;
             }
 
@@ -79,8 +88,15 @@ public class RpnStatementVerifier implements StatementVerifier {
                 do {
                     i++;
                     character = valueStatement.charAt(i);
-                } while (character != '\'');        //iterate through the input until we get past the string
+                } while (i < valueStatement.length() && character != '\'');        //iterate through the input until we get past the string
+                if(i == valueStatement.length()){
+                    throw new RuntimeException("Invalid string! No closing quotation mark!");
+                }
                 continue;
+            }
+
+            if(character >= '0' && character <= '9') {
+                isIntegerOperation = true;
             }
 
             if (character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z') {   //change variable with its value
@@ -100,10 +116,13 @@ public class RpnStatementVerifier implements StatementVerifier {
                     }
                 }
                 if (!variableManager.containsVariable(variable)) {                      //if the variable is not declared
-                    throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
+                    //throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
+                    //TODO
                 }
-                valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
-                valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value
+                else {
+                    valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
+                    valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value
+                }
                 i--;                                                                    //return one index to check the value
             }
         }

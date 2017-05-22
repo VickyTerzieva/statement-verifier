@@ -5,7 +5,8 @@ package src.org.nvl.core.input.type;
  */
 public enum SideType {
     BOOLEAN,
-    INTEGER,
+    NUMBER,
     STRING,
-    ARRAY
+    ARRAY,
+    UNEVALUATED
 }

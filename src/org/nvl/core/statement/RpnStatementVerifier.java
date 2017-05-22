@@ -1,13 +1,13 @@
 package src.org.nvl.core.statement;
 
-import src.org.nvl.core.rpn.RpnVerifier;
+import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.rpn.verifier.ArrayRpnVerifier;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
 import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
+import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.manager.VariableManager;
-
-import static src.org.nvl.MessageConstants.INVALID_INPUT_FORMAT;
 
 public class RpnStatementVerifier implements StatementVerifier {
 
@@ -16,7 +16,9 @@ public class RpnStatementVerifier implements StatementVerifier {
     private boolean isStringOperation;
     private boolean isIntegerOperation;
     private boolean isArrayOperation;
+    private boolean containsUnevaluatedVariable = false;
     private StringBuilder valueStatement;
+    private int numberOfOperations = 0;
 
     public boolean isBooleanOperation() {
         return isBooleanOperation;
@@ -26,11 +28,15 @@ public class RpnStatementVerifier implements StatementVerifier {
         return isStringOperation;
     }
 
-    public boolean isIntegerOperation() { return  isIntegerOperation; }
+    public boolean isIntegerOperation() { return isIntegerOperation; }
 
     public boolean isArrayOperation() {
         return isArrayOperation;
     }
+
+    public int getNumberOfOperations() { return numberOfOperations; }
+
+    public boolean containsUnevaluatedVariable() { return containsUnevaluatedVariable; }
 
     public RpnStatementVerifier(VariableManager variableManager) {
         this.variableManager = variableManager;
@@ -40,7 +46,7 @@ public class RpnStatementVerifier implements StatementVerifier {
     public boolean verifyStatement(String statement) {
         checkType(statement);
 
-        RpnVerifier verify;
+        AbstractRpnVerifier verify;
 
         if (isStringOperation) {        //we have string operations
             verify = new StringRpnVerifier();       //we verify the statement
@@ -67,64 +73,43 @@ public class RpnStatementVerifier implements StatementVerifier {
         isStringOperation = false;
         isArrayOperation = false;
         isIntegerOperation = false;
-        for (int i = 0; i < valueStatement.length(); ++i) {
 
-            char character = valueStatement.charAt(i);
+        SplitString splitString = new SplitString(statement);
+        while(!splitString.isEmpty()) {
+            String currentElement = splitString.getCurrentElement();
 
-            if (character == '{') {           //if we have opening bracket for array
-                isArrayOperation = true;        //we leave the input like that
-                do {
-                    i++;
-                    character = valueStatement.charAt(i);
-                } while (i < valueStatement.length() && character != '}');       //so we iterate while we reach the closing bracket
-                if(i == valueStatement.length()){
-                    throw new RuntimeException("Invalid array! No closing bracket!");
+            if(currentElement.matches("'[\\w\\s]+'") || isVariableOfType(currentElement, VariableType.STRING)) {
+                if(!isStringOperation) {
+                    numberOfOperations++;
                 }
-                continue;
-            }
-
-            if (character == '\'') {            //if we have quotes in the statement than we have strings and string operations, so we leave it like that
                 isStringOperation = true;
-                do {
-                    i++;
-                    character = valueStatement.charAt(i);
-                } while (i < valueStatement.length() && character != '\'');        //iterate through the input until we get past the string
-                if(i == valueStatement.length()){
-                    throw new RuntimeException("Invalid string! No closing quotation mark!");
+            } else if(currentElement.matches("\\{\\d+(,\\d+)*\\}") || isVariableOfType(currentElement, VariableType.ARRAY)) {
+                if(!isArrayOperation) {
+                    numberOfOperations++;
                 }
-                continue;
-            }
-
-            if(character >= '0' && character <= '9') {
+                isArrayOperation = true;
+            } else if (currentElement.equalsIgnoreCase("FALSE") || currentElement.equalsIgnoreCase("TRUE") ||
+                    isVariableOfType(currentElement, VariableType.BOOLEAN)) {
+                if(!isBooleanOperation) {
+                    numberOfOperations++;
+                }
+                isBooleanOperation = true;
+            } else if (currentElement.matches("\\d+") || isVariableOfType(currentElement, VariableType.NUMBER)) {
+                if(!isIntegerOperation) {
+                    numberOfOperations++;
+                }
                 isIntegerOperation = true;
+            } else if (!currentElement.matches("\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|>=|<=|\\(|\\)")) { //already checked for matching brackets, see InputTree
+                throw new RuntimeException("Invalid input!");
             }
 
-            if (character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z') {   //change variable with its value
-                String variable = String.valueOf(character);
-                if (variable.startsWith("t") || variable.startsWith("T")) {             //if we find t or T
-                    if (valueStatement.substring(i, i + 4).equalsIgnoreCase("true")) {      //if its the keyword TRUE, we leave it like that
-                        i = i + 3;                                                          //so we increment i
-                        isBooleanOperation = true;                                           //and we have boolean operations
-                        continue;
-                    }
-                }
-                if (variable.startsWith("f") || variable.startsWith("F")) {                   //if we find f or F
-                    if (valueStatement.substring(i, i + 5).equalsIgnoreCase("false")) {     //and it is from the keyword FALSE, we leave it like that
-                        i = i + 4;                                                          //so we increment i
-                        isBooleanOperation = true;                                          //and we have boolean operations
-                        continue;
-                    }
-                }
-                if (!variableManager.containsVariable(variable)) {                      //if the variable is not declared
-                    //throw new RuntimeException(String.format(INVALID_INPUT_FORMAT, statement, "Verification error"));
-                    //TODO
-                }
-                else {
-                    valueStatement.deleteCharAt(i);                                             //remove the variable from the resulted string
-                    valueStatement.insert(i, variableManager.getVariable(variable).getValue());     //and add its value
-                }
-                i--;                                                                    //return one index to check the value
-            }
+            splitString.nextPosition();
         }
+    }
+
+    //TODO if a and b unevaluated and exp = a + b => exp not bool
+    private boolean isVariableOfType(String currentElement, VariableType neededType) {
+        boolean isVariable = variableManager.containsVariable(currentElement);
+        return isVariable && variableManager.getVariable(currentElement).getType() == neededType;
     }
 }

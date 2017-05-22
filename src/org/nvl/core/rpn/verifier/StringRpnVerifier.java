@@ -6,7 +6,7 @@
 package src.org.nvl.core.rpn.verifier;
 
 import src.org.nvl.core.input.split.SplitString;
-import src.org.nvl.core.rpn.AbstractStringNumberRpnVerifier;
+import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
@@ -14,27 +14,53 @@ import java.util.Stack;
 /**
  * @author niki
  */
-public class StringRpnVerifier extends AbstractStringNumberRpnVerifier {
+public class StringRpnVerifier extends AbstractRpnVerifier {
 
-    //only for strings
-    public boolean correct(StringBuilder builder) {
-        String input = builder.toString();
-        String operation = parseOperation(input);   //determine the operation (==, <=, >, !=)
+    @Override
+    public String createRpn(String input) {  //creates the Reverse Polish Notation
+        StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
+        boolean isInString = false;
+        Stack<Character> operationStack = new Stack<>();  //sttack for the operation
+        char[] charInput = input.toCharArray();  //char array for the input
+        int i = 0;
+        while (i < charInput.length) {   //iterrate through the input
+            if(charInput[i] == '\'')
+                isInString = !isInString;
+            switch (charInput[i]) {
+                case '+':
+                    while (!operationStack.empty() && (operationStack.peek() == '*')) {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                case '(':
+                    operationStack.push(charInput[i]);
+                    break;
+                case ' ':
+                    if(isInString)
+                        result.append(charInput[i]);
+                    break;
+                case ')':
+                    while (!operationStack.empty() && operationStack.peek() != '(') {   // pop everything from stack to the result until we get to the '('
+                        result.append(' ').append(operationStack.pop());
+                    }
+                    if (!operationStack.empty()) {    //remove the '('
+                        operationStack.pop();
+                    }
+                    break;
+                default:
+                    result.append(charInput[i]);    // we have a char or ' or *
+                    break;
+            }  //end of switch
+            i++;
+        }  //end of while
+        while (!operationStack.isEmpty()) {  //pop every operation from the stack to the result
+            result.append(' ').append(operationStack.pop());
+        }  //end of while
+        return result.toString();  //return resulted RPN
+    }  //end of create RPN
 
-        String[] split = input.split(operation);   //split by the operation
-        String leftExpression = split[0].trim();            //left expression
-        String rightExpression = split[1].trim();           //right expression
-
-        String leftRPN = createRPN(leftExpression);           //RPN for the left expression
-        String rightRPN = createRPN(rightExpression);        //RPN for the right expression
-
-        String left = calculateRpnForString(leftRPN);       //left string result
-        String right = calculateRpnForString(rightRPN);     //right string result
-        return compare(left, right, operation);             //compare them with the operation
-    }  //end of correct
-
+    @Override
     //calculate the reverse polish notation for strings
-    public String calculateRpnForString(String input) {
+    public String calculateRpn(String input) {
         SplitString tokens = new SplitString(input);
         Stack<String> stack = new Stack<>();  //stack for the numbers
         while (!tokens.isEmpty()) {   //while we have more tokens

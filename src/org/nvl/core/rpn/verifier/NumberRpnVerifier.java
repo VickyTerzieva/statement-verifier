@@ -5,7 +5,7 @@
  */
 package src.org.nvl.core.rpn.verifier;
 
-import src.org.nvl.core.rpn.AbstractStringNumberRpnVerifier;
+import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
@@ -14,23 +14,61 @@ import java.util.StringTokenizer;
 /**
  * @author niki
  */
-public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
-    /*this works only for numbers*/
-    public boolean correct(StringBuilder builder) {
-        String input = builder.toString();   //convert builder to string
-        String operation = parseOperation(input);   //determine the operation (==, >=, <, !=)
-        String[] split = input.split(operation);   // split the input by the operation
-        String leftString = split[0].trim();        //take left side of the statement
-        String rightString = split[1].trim();     //take right side of the statement
-        String leftRPN = createRPN(leftString);    //create Reverse Polish Notation for the left argument
-        String rightRPN = createRPN(rightString);  //create Reverse Polish Notation for the right argument
-        Double left = calculateRPN(leftRPN);    //calculate the values
-        Double right = calculateRPN(rightRPN);
-        return compare(left, right, operation);
-    }   //end of correctForNumbers
+public class NumberRpnVerifier extends AbstractRpnVerifier {
 
-    //calculates the value of the expression by RPN
-    public Double calculateRPN(String input) {
+    @Override
+    //creates the Reverse Polish Notation
+    public String createRpn(String input) {
+        StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
+        Stack<Character> operationStack = new Stack<>();  //sttack for the operation
+        char[] charInput = input.toCharArray();  //char array for the input
+        int i = 0;
+        if (charInput[i] == '-' || charInput[i] == '+') {    //if the expresion begins with - or + (e.g. -52+3..)
+            result.append(charInput[i]);
+            i++;
+        } //end of if
+        while (i < charInput.length) {   //iterrate through the input
+            switch (charInput[i]) {
+                case '+':
+                case '-':
+                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/' ||
+                            operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                case '*':
+                case '/':
+                    while (!operationStack.empty() && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                case '^':
+                    result.append(' ');
+                case '(':
+                    operationStack.push(charInput[i]);
+                    break;
+                case ' ':
+                    break;
+                case ')':
+                    while (!operationStack.empty() && operationStack.peek() != '(') {   // pop everything from stack to the result until we get to the '('
+                        result.append(' ').append(operationStack.pop());
+                    }
+                    if (!operationStack.empty()) {    //remove the '('
+                        operationStack.pop();
+                    }
+                    break;
+                default:
+                    result.append(charInput[i]);    // we have a digit
+                    break;
+            }  //end of switch
+            i++;
+        }  //end of while
+        while (!operationStack.isEmpty()) {  //pop every operation from the stack to the result
+            result.append(' ').append(operationStack.pop());
+        }  //end of while
+        return result.toString();  //return resulted RPN
+    }  //end of create RPN
+
+    @Override
+    public String calculateRpn(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<Double> stack = new Stack<>();  //stack for the numbers
         while (tokens.hasMoreTokens()) {   //while we have more tokens
@@ -56,6 +94,6 @@ public class NumberRpnVerifier extends AbstractStringNumberRpnVerifier {
                 } //end of switch
             }  // end of if/else
         }     //end of while
-        return stack.pop();   //the result is in the stack(last element)
+        return String.valueOf(stack.pop().intValue());   //the result is in the stack(last element)
     }   //end of calculate RPN
 }

@@ -24,8 +24,12 @@ public class SplitString {
             if (input.charAt(i) == STRING_SURROUNDER) {
                 ++i;
 
-                while (input.charAt(i) != STRING_SURROUNDER) {
+                while (i < input.length() && input.charAt(i) != STRING_SURROUNDER) {
                     ++i;
+                }
+
+                if(i == input.length()) {
+                    throw new RuntimeException("Invalid input! No closing bracket!");
                 }
             }
 

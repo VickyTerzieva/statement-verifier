@@ -2,8 +2,6 @@ package src.org.nvl;
 
 import src.org.nvl.core.input.type.InputTypeDeterminer;
 import src.org.nvl.core.input.type.SimpleInputTypeDeterminer;
-import src.org.nvl.core.input.validator.GrammarInputValidator;
-import src.org.nvl.core.input.validator.InputValidator;
 import src.org.nvl.core.responder.Responder;
 import src.org.nvl.core.responder.ResponderImpl;
 import src.org.nvl.core.responder.processor.RequestProcessor;
@@ -33,10 +31,9 @@ public class GuiStatementVerifier {
         StatementVerifier statementVerifier = new RpnStatementVerifier(variableManager);
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
         RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, typeParser, variableDefinitionParser, variableManager);
-        InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
-        Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator, variableManager);
+        Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, variableManager);
 
         graphicalUserInterface = new SwingGraphicalUserInterface(responder);
     }

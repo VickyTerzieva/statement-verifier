@@ -15,23 +15,8 @@ import java.util.StringTokenizer;
  */
 public class BooleanRpnVerifier extends AbstractRpnVerifier {
 
-    public boolean correct(StringBuilder builder) {
-        String input = builder.toString();
-        String operation = parseOperation(input);   //determine the operation (==, <=, >, !=)
-
-        String[] split = input.split(operation);   //split by the operation
-        String leftExpression = split[0].trim();            //left expression
-        String rightExpression = split[1].trim();           //right expression
-
-        String leftRPN = createRPN(leftExpression);           //RPN for the left expression
-        String rightRPN = createRPN(rightExpression);        //RPN for the right expression
-
-        Boolean left = calculateRPN(leftRPN);       //left string result
-        Boolean right = calculateRPN(rightRPN);     //right string result
-        return compare(left, right, operation);             //compare them with the operation
-    }  //end of correct
-
-    public String createRPN(String input) {
+    @Override
+    public String createRpn(String input) {
         StringBuilder result = new StringBuilder();   //builder for the final result (RPN)
         Stack<String> operationStack = new Stack<>();  //stack for the operation
         char[] charInput = input.toCharArray();  //char array for the input
@@ -82,7 +67,8 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         return result.toString();  //return resulted RPN
     }  //end of create RPN
 
-    public Boolean calculateRPN(String input) {
+    @Override
+    public String calculateRpn(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<Boolean> stack = new Stack<>();  //stack for the booleans
         while (tokens.hasMoreTokens()) {   //while we have more tokens
@@ -115,6 +101,6 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 } //end of switch
             }  // end of if/else
         }     //end of while
-        return stack.pop();   //the result is in the stack(last element)
+        return stack.pop().toString();   //the result is in the stack(last element)
     }   //end of calculate RPN
 }

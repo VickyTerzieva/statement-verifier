@@ -1,5 +1,7 @@
 package src.org.nvl.core.input.type;
 
+import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.input.tree.InputTree;
 import src.org.nvl.core.variable.manager.VariableManager;
 public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
     private VariableManager variableManager;
@@ -9,13 +11,56 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
     }
 
     @Override
-    public InputType determineType(String input) {
+    public InputType determineType(InputTree input) {
         if (isDefinition(input)) {
-            String variableName = input.substring(0, input.indexOf('=')).trim();
-            return determineVariableDefinition(variableName);
+            InputType[] variablesLeft = checkForVariable(input.getLeftSide().toString());
+            InputType[] variablesRight = checkForVariable(input.getRightSide().toString());
+            int numberOfUnevaluatedVariablesLeft = 0;
+            int numberOfEvaluatedVariablesLeft = 0;
+            for (int i = 0; i < variablesLeft.length; i++) {
+                if (variablesRight[i] == InputType.NEW_VARIABLE) {
+                    numberOfUnevaluatedVariablesLeft++;
+                } else {
+                    numberOfEvaluatedVariablesLeft++;
+                }
+            }
+            if (numberOfUnevaluatedVariablesLeft > 1) {
+                throw new RuntimeException("Cannot define more than one variables at once!");
+            }
+            if(numberOfUnevaluatedVariablesLeft == 0 && numberOfEvaluatedVariablesLeft > 1) {
+                throw new RuntimeException("Cannot redefine more than one variables at once!");
+            }
+            if(numberOfUnevaluatedVariablesLeft == 0 && numberOfEvaluatedVariablesLeft == 0) {
+                throw new RuntimeException("Invalid operation!");
+            }
+            for (int i = 0; i < variablesRight.length; i++) {
+                if (variablesRight[i] == InputType.NEW_VARIABLE) {
+                    throw new RuntimeException("Right side of definition should not contain unevaluated variables!");
+                }
+            }
+            if(numberOfUnevaluatedVariablesLeft == 1) {
+                return InputType.NEW_VARIABLE;
+            }
+            return InputType.EXISTING_VARIABLE;
         } else {
             return InputType.STATEMENT;
         }
+    }
+
+    private InputType[] checkForVariable(String input) {
+        SplitString splitString = new SplitString(input);
+        InputType[] inputTypes = new InputType[splitString.getSplitInput().length];
+
+        int i = 0;
+        while (!splitString.isEmpty()) {
+            String element = splitString.getCurrentElement();
+
+            inputTypes[i] = determineVariableDefinition(element);
+            i++;
+
+            splitString.nextPosition();
+        }
+        return inputTypes;
     }
 
     private InputType determineVariableDefinition(String variableName) {
@@ -26,13 +71,7 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
         }
     }
 
-    private boolean isDefinition(String input) {
-        char[] charInput = input.toCharArray();
-        int i = 0;
-        while (charInput[i] != '=' && charInput[i] != '>' && charInput[i] != '<' && (charInput[i] != '!' || charInput[i + 1] != '='))  //input must contain at least =, >, <
-        {
-            i++;
-        }
-        return !(charInput[i] == '>' || charInput[i] == '<' || charInput[i + 1] == '='); //TODO why? (only '=' ?)
+    private boolean isDefinition(InputTree inputTree) {
+       return inputTree.getValue().equals("=");
     }
 }

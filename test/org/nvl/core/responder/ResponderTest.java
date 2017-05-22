@@ -5,10 +5,6 @@ import org.junit.Test;
 import src.org.nvl.MessageConstants;
 import src.org.nvl.core.input.type.InputTypeDeterminer;
 import src.org.nvl.core.input.type.SimpleInputTypeDeterminer;
-import src.org.nvl.core.input.validator.GrammarInputValidator;
-import src.org.nvl.core.input.validator.InputValidator;
-import src.org.nvl.core.responder.Responder;
-import src.org.nvl.core.responder.ResponderImpl;
 import src.org.nvl.core.responder.processor.RequestProcessor;
 import src.org.nvl.core.responder.processor.RequestProcessorImpl;
 import src.org.nvl.core.statement.RpnStatementVerifier;
@@ -17,12 +13,12 @@ import src.org.nvl.core.variable.EvaluatedVariable;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.definition.VariableDefinitionParser;
 import src.org.nvl.core.variable.definition.VariableDefinitionParserImpl;
-import src.org.nvl.core.variable.manager.ListVariableManager;
+import src.org.nvl.core.variable.manager.MapVariableManager;
 import src.org.nvl.core.variable.manager.VariableManager;
 import src.org.nvl.core.variable.type.VariableTypeParser;
 import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,16 +28,15 @@ public class ResponderTest {
 
     @Before
     public void setUp() {
-        variableManager = new ListVariableManager(new ArrayList<>());//new MapVariableManager(new HashMap<>());
+        variableManager = new MapVariableManager(new HashMap<>());
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
         StatementVerifier statementVerifier = new RpnStatementVerifier(variableManager);
         VariableTypeParser variableTypeParser = new VariableTypeParserImpl();
         VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
         RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, variableTypeParser, variableDefinitionParser, variableManager);
-        InputValidator inputValidator = new GrammarInputValidator(variableManager);
 
-        responder = new ResponderImpl(typeDeterminer, requestProcessor, inputValidator, variableManager);
+        responder = new ResponderImpl(typeDeterminer, requestProcessor, variableManager);
     }
 
     @Test(expected = RuntimeException.class)

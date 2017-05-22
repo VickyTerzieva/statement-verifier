@@ -17,7 +17,7 @@ public class InputSpaceFixer {
     }
 
     private static String isolate(String input) {
-        String[] specialElements = {"\\(", "\\)", "\\+", "\\*", "&&", "\\|\\|", "!", "=", "<", ">"};
+        String[] specialElements = {"\\(", "\\)", "\\+", "\\*", "-", "/", "&&", "\\|\\|", "!", "=", "<", ">"};
 
         input = singleIsolate(input, specialElements, ISOLATION_FORMAT);
 

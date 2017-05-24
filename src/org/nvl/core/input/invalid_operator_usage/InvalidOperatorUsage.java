@@ -9,6 +9,6 @@ public class InvalidOperatorUsage {
     }
 
     public static boolean startsWithOperator(String userInput) {
-        return userInput.matches("(\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>).*");
+        return userInput.matches("(\\*|/|&&|\\|\\||!=|=|<|>).*");
     }
 }

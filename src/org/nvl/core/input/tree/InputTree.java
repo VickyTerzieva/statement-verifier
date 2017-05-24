@@ -72,6 +72,9 @@ public class InputTree {
         InputTree inputTree;
         input = replaceBracketExpressions(input);
         inputTree = splitInput(input);
+        if(inputTree.isLeaf()) {
+            throw new RuntimeException("Expression cannot be evaluated to true or false!");
+        }
         return inputTree;
     }
 

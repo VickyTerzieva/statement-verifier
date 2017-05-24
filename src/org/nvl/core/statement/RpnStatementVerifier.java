@@ -67,6 +67,7 @@ public class RpnStatementVerifier implements StatementVerifier {
         throw new RuntimeException("Invalid input!");
     }
 
+    //must be called on substituted statement
     public void checkType(String statement) {
         valueStatement = new StringBuilder(statement);
         isBooleanOperation = false;
@@ -99,6 +100,8 @@ public class RpnStatementVerifier implements StatementVerifier {
                     numberOfOperations++;
                 }
                 isIntegerOperation = true;
+            } else if(currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
+                containsUnevaluatedVariable = true;
             } else if (!currentElement.matches("\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|>=|<=|\\(|\\)")) { //already checked for matching brackets, see InputTree
                 throw new RuntimeException("Invalid input!");
             }

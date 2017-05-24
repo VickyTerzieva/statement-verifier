@@ -29,19 +29,22 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
         } //end of if
         while (i < charInput.length) {   //iterrate through the input
             switch (charInput[i]) {
-                case '+':
                 case '-':
-                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/' ||
-                            operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
+                case '+':
+                    while (!operationStack.empty() && operationStack.peek() != '(' && operationStack.peek() != ')') {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
+                    result.append(' ');
+                    operationStack.push(charInput[i]);
+                    break;
                 case '*':
                 case '/':
-                    while (!operationStack.empty() && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && (operationStack.peek() == '(' && operationStack.peek() != ')')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
-                case '^':
                     result.append(' ');
+                    operationStack.push(charInput[i]);
+                    break;
                 case '(':
                     operationStack.push(charInput[i]);
                     break;

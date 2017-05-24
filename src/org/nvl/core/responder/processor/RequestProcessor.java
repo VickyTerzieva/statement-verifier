@@ -8,9 +8,9 @@ import java.util.Set;
  * Processes the given requests
  */
 public interface RequestProcessor {
-    void addVariable(String variableDefinition);
+    void addVariable(EvaluatedVariable evaluatedVariable);
 
-    void updateVariable(String variableDefinition);
+    void updateVariable(EvaluatedVariable variableDefinition);
 
     boolean verifyStatement(String statement);
 

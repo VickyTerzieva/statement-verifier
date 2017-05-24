@@ -29,7 +29,7 @@ public class SplitString {
                 }
 
                 if(i == input.length()) {
-                    throw new RuntimeException("Invalid input! No closing bracket!");
+                    throw new RuntimeException("Invalid input! No closing quotation mark!");
                 }
             }
 

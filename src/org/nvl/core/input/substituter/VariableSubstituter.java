@@ -21,11 +21,14 @@ public class VariableSubstituter {
 
                 if (variableManager.containsVariable(element)) {
                     String value = variableManager.getVariable(element).getValue();
-                    splitString.setCurrentElement(value);
+                    input.setValue(input.getValue().replaceAll(element, value));
                 }
 
                 splitString.nextPosition();
             }
+        } else {
+            input.setRightSide(substituteVariables(input.getRightSide()));
+            input.setLeftSide(substituteVariables(input.getLeftSide()));
         }
         return input;
     }

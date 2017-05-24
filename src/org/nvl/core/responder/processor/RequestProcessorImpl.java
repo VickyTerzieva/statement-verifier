@@ -23,15 +23,11 @@ public class RequestProcessorImpl implements RequestProcessor {
         this.variableManager = variableManager;
     }
 
-    public void addVariable(String variableDefinition) {
-        UnevaluatedVariable unevaluatedVariable = variableDefinitionParser.parse(variableDefinition);
-        EvaluatedVariable evaluatedVariable = variableTypeParser.parse(unevaluatedVariable);
+    public void addVariable(EvaluatedVariable evaluatedVariable) {
         variableManager.addVariable(evaluatedVariable);
     }
 
-    public void updateVariable(String variableDefinition) {
-        UnevaluatedVariable unevaluatedVariable = variableDefinitionParser.parse(variableDefinition);
-        EvaluatedVariable evaluatedVariable = variableTypeParser.parse(unevaluatedVariable);
+    public void updateVariable(EvaluatedVariable evaluatedVariable) {
         variableManager.updateVariable(evaluatedVariable);
     }
 

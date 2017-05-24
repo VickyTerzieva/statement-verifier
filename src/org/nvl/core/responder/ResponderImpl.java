@@ -9,12 +9,15 @@ import src.org.nvl.core.input.type.SideType;
 import src.org.nvl.core.input.white_space.InputSpaceFixer;
 import src.org.nvl.core.responder.processor.RequestProcessor;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
+import src.org.nvl.core.rpn.Rpn;
 import src.org.nvl.core.rpn.verifier.ArrayRpnVerifier;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
 import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
 import src.org.nvl.core.statement.RpnStatementVerifier;
 import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.VariableType;
+import src.org.nvl.core.variable.definition.NewVariable;
 import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.Set;
@@ -44,21 +47,30 @@ public class ResponderImpl implements Responder {
         checkInput(userInput);
         InputTree inputTree = new InputTree();
         inputTree = inputTree.createTree(userInput);
-        response = verifyInput(inputTree);
-
         InputType inputType = typeDeterminer.determineType(inputTree);
 
-        /*if (inputType == InputType.NEW_VARIABLE) {
+        if (inputType == InputType.NEW_VARIABLE || inputType == InputType.EXISTING_VARIABLE) {
             InputTree rightSide = inputTree.getRightSide();
-            rightSide.setRightSide(variableSubstituter.substituteVariables(rightSide));
-            SideType type = getType(rightSide);
-            getSideValue(rightSide, type);
-            //requestProcessor.addVariable(substitutedInput.toString());
-            response = NEW_VARIABLE_MESSAGE;
-        } else if (inputType == InputType.EXISTING_VARIABLE) {
-            //computeRightSide(substitutedInput);
-            //requestProcessor.updateVariable(substitutedInput.toString());
-            response = EXISTING_VARIABLE_MESSAGE;
+            InputTree leftSide = inputTree.getLeftSide();
+            String left = leftSide.toString();
+            if(left.contains("/")) {
+                throw new RuntimeException("Invalid input!");
+            }
+            if(!leftSide.isLeaf()) { //the variable is part of comparison expression
+                throw new RuntimeException("Impossible to initialize the variable!");
+            }
+            rightSide = variableSubstituter.substituteVariables(rightSide);
+            if(inputType == InputType.NEW_VARIABLE) {
+                leftSide = variableSubstituter.substituteVariables(leftSide);
+            }
+            SideType typeRight = getType(rightSide);
+            SideType typeLeft = getType(leftSide);
+            if(typeRight != typeLeft && typeLeft != SideType.UNEVALUATED) {
+                throw new RuntimeException("Impossible to initialize the variable!");
+            }
+            String rightSideValue = getSideValue(rightSide, typeRight);
+            addUpdateVar(typeRight, rightSideValue, leftSide.toString(), inputType);
+            response = (inputType == InputType.NEW_VARIABLE) ?  NEW_VARIABLE_MESSAGE : EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
             inputTree = variableSubstituter.substituteVariables(inputTree);
             String verifiedInput = verifyInput(inputTree);
@@ -67,9 +79,51 @@ public class ResponderImpl implements Responder {
             } else {
                 response = String.format(STATEMENT_FORMAT, inputTree.toString(), verifiedInput);
             }
-        }*/
+        }
 
         return response;
+    }
+
+    private void addUpdateVar(SideType typeRight, String rightSideValue, String leftSide, InputType inputType) {
+        VariableType type;
+        AbstractRpnVerifier rpn = Rpn.makeRpn(typeRight);
+        String rightSide;
+        String name = getVariable(leftSide);
+        if(typeRight == SideType.ARRAY) {
+            rightSide = NewVariable.replaceRightSideArray(rightSideValue, leftSide, name);
+            type = VariableType.ARRAY;
+        } else if(typeRight == SideType.BOOLEAN) {
+            rightSide = NewVariable.replaceRightSideBoolean(rightSideValue, leftSide, name);
+            type = VariableType.BOOLEAN;
+        } else if(typeRight == SideType.NUMBER) {
+            rightSide = NewVariable.replaceRightSideNumber(rightSideValue, leftSide, name);
+            type = VariableType.NUMBER;
+        } else {
+            rightSide = NewVariable.replaceRightSideString(rightSideValue, leftSide, name);
+            type = VariableType.STRING;
+        }
+        String rpnRightSide = rpn.createRpn(rightSide);
+        String value = rpn.calculateRpn(rpnRightSide);
+        EvaluatedVariable newVar = new EvaluatedVariable(name, value, type);
+        if(inputType == InputType.NEW_VARIABLE) {
+            requestProcessor.addVariable(newVar);
+        } else {
+            requestProcessor.updateVariable(newVar);
+        }
+    }
+
+    private String getVariable(String leftSide) {
+        String var = "";
+        for(int i = 0; i < leftSide.length(); i++) {
+            if((leftSide.charAt(i) >= 'a' && leftSide.charAt(i) <= 'z') ||
+                    (leftSide.charAt(i) >= 'A' && leftSide.charAt(i) <= 'Z')) {
+               int indexEnd = leftSide.indexOf(" ", i);
+               indexEnd = (indexEnd == -1) ? leftSide.length() : indexEnd;
+                var = leftSide.substring(i, indexEnd);
+                break;
+            }
+        }
+        return var;
     }
 
     private String verifyInput(InputTree inputTree) {
@@ -110,15 +164,7 @@ public class ResponderImpl implements Responder {
         String rpn;
         AbstractRpnVerifier rpnVerifier;
         if(tree.isLeaf()) {
-            if (type == SideType.ARRAY) {
-                rpnVerifier = new ArrayRpnVerifier();
-            } else if (type == SideType.STRING) {
-                rpnVerifier = new StringRpnVerifier();
-            } else if (type == SideType.NUMBER) {
-                rpnVerifier = new NumberRpnVerifier();
-            } else {
-                rpnVerifier = new BooleanRpnVerifier();
-            }
+            rpnVerifier = Rpn.makeRpn(type);
             rpn = rpnVerifier.createRpn(tree.toString());
             response = rpnVerifier.calculateRpn(rpn);
         } else {
@@ -148,7 +194,7 @@ public class ResponderImpl implements Responder {
         if(rpnStatementVerifier.isIntegerOperation() && numberOfOperations == 1) {
             return SideType.NUMBER;
         }
-        if(rpnStatementVerifier.containsUnevaluatedVariable() && numberOfOperations == 1) {
+        if(rpnStatementVerifier.containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
         throw new RuntimeException("Invalid mix of operations!");
@@ -178,23 +224,6 @@ public class ResponderImpl implements Responder {
                 return false;
         }
     }
-
-   /* private String[] getVariables(String input) {
-        for(int i = 0; i < input.length(); i++) {
-            char character = input.charAt(i);
-            if (character == '\'') {
-                do {
-                    i++;
-                    character = input.charAt(i);
-                } while (i < input.length() && character != '\'');
-                if(i == input.length()) {
-                    throw new RuntimeException("Invalid string! No closing quotation mark!");
-                }
-            }
-            //if(character )
-        }
-
-    }*/
 
     @Override
     public Set<EvaluatedVariable> variables() {

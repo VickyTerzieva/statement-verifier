@@ -102,7 +102,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                 isIntegerOperation = true;
             } else if(currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
                 containsUnevaluatedVariable = true;
-            } else if (!currentElement.matches("\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|>=|<=|\\(|\\)")) { //already checked for matching brackets, see InputTree
+            } else if (!currentElement.matches("\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|>=|<=|\\(|\\)|\\^|!")) { //already checked for matching brackets, see InputTree
                 throw new RuntimeException("Invalid input!");
             }
 

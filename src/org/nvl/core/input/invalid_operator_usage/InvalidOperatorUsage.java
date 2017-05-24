@@ -5,7 +5,7 @@ package src.org.nvl.core.input.invalid_operator_usage;
  */
 public class InvalidOperatorUsage {
     public static boolean endsWithOperator(String userInput) {
-        return userInput.matches(".*(\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>)");
+        return userInput.matches(".*(\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|!)");
     }
 
     public static boolean startsWithOperator(String userInput) {

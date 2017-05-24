@@ -29,16 +29,27 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         while (i < charInput.length) {   //iterrate through the input
             switch (charInput[i]) {
                 case '+':
-                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/' ||
-                            operationStack.peek() == '^')) {   //if the previous operations in the stack have higher priorities
+                case '-':
+                    while (!operationStack.empty() && operationStack.peek() != '(' && operationStack.peek() != ')') {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
-                case '*':
-                    while (!operationStack.empty() && operationStack.peek() == '^') {   //if the previous operations in the stack have higher priorities
-                        result.append(' ').append(operationStack.pop());                          // add them to result
-                    }
-                case '^':
+                    operationStack.push(charInput[i]);
                     result.append(' ');
+                    break;
+                case '*':
+                    while (!operationStack.empty() && (operationStack.peek() == '^' || operationStack.peek() == '*')) {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                    operationStack.push(charInput[i]);
+                    result.append(' ');
+                    break;
+                case '^':
+                    while (!operationStack.empty() && operationStack.peek() == '^') {   //if the previous operations in the stack have higher or equal priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                    operationStack.push(charInput[i]);
+                    result.append(' ');
+                    break;
                 case '(':
                     operationStack.push(charInput[i]);
                     break;
@@ -52,6 +63,10 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                         operationStack.pop();
                     }
                     break;
+
+                case '/':
+                case '!':
+                    throw new RuntimeException("Invalid input!");
                 default:
                     result.append(charInput[i]);    // we have a digit
                     break;
@@ -68,13 +83,13 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
     public String calculateRpn(String input) {
         StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
         Stack<String> stack = new Stack<>();  //stack for the numbers
-
         while (tokens.hasMoreTokens()) {   //while we have more tokens
             String current = tokens.nextToken();
 
             switch (current) {        //switch to see if current string is operation or string
                 case "+":
                 case "*":
+                case "-":
                     execute(stack, current);
                     break;
                 case "^":
@@ -90,6 +105,9 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
     private void execute(Stack<String> stack, String operation) {  //execute + and *
         boolean leftIsNumber = false, rightIsNumber = false;        //if any of the operands is a number
         String right = stack.pop();     //right operand
+        if(stack.empty()) {
+            throw new RuntimeException("Invalid input!");
+        }
         String left = stack.pop();      //left operand
 
         if (VariableTypeParserImpl.isNumber(left))   //if the left operand is a number
@@ -100,11 +118,6 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         if (VariableTypeParserImpl.isNumber(right))  //if the right operand is a number
         {
             rightIsNumber = true;
-        }
-
-        if (leftIsNumber && rightIsNumber) {          //if both are numbers
-            stack.push(executeOperation(left, right, operation));   //than just do the operations naturally
-            return;
         }
 
         if (leftIsNumber && !rightIsNumber) {     //if the left operand is a number and the right one is an array
@@ -122,11 +135,16 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
 
     //executes the given operation(+ or *) over 2 integers
     private String executeOperation(String left, String right, String operation) {
-        Integer r = Integer.parseInt(left);
-        Integer l = Integer.parseInt(right);
+        Integer r = Integer.parseInt(right);
+        Integer l = Integer.parseInt(left);
         switch (operation) {
             case "+":
                 return Integer.toString(l + r);
+            case "-":
+                if(l - r < 0) {
+                    throw new RuntimeException("Negative numbers are not supported!");
+                }
+                return Integer.toString(l - r);
             default:
                 return Integer.toString(l * r);
         } //end of switch
@@ -180,7 +198,14 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
     //concatenates both arrays if we have ^ operation
     private void concatenate(Stack<String> stack) {
         String right = stack.pop(); //right array
+        if(stack.empty()) {
+            throw new RuntimeException("Invalid input!");
+        }
         String left = stack.pop();  //left array
+
+        if(!right.matches("\\{\\d+(,\\d+)*\\}") || !left.matches("\\{\\d+(,\\d+)*\\}")) {
+            throw new RuntimeException("Concatenation is only possible between two arrays!");
+        }
 
         StringBuilder result = new StringBuilder(left.substring(0, left.length() - 1));     //get the first element, without the closing } in the result
         result.append(',');                                                                 //separate its last element with a ,

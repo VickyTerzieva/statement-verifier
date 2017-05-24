@@ -76,6 +76,9 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
             if (current.equalsIgnoreCase("true") || current.equalsIgnoreCase("false")) {   //if the token is a number, push it in the stack
                 stack.push(Boolean.parseBoolean(current));
             } else {    //else it is operation
+                if(stack.empty()) {
+                    throw new RuntimeException("Invalid input!");
+                }
                 Boolean right = stack.pop();  //get the right number
                 Boolean left;
                 switch (current) {    //current is an operation, so wi push the resulted number in the stack
@@ -98,6 +101,8 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                         left = stack.pop();
                         stack.push(left || right);
                         break;
+                    default:
+                        throw new RuntimeException("Invalid input!");
                 } //end of switch
             }  // end of if/else
         }     //end of while

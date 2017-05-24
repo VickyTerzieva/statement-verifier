@@ -213,6 +213,8 @@ public class InputTree {
         bracketVarValue = bracketVarValue.replace("+", "\\+");
         bracketVarValue = bracketVarValue.replace("*", "\\*");
         bracketVarValue = bracketVarValue.replace("|", "\\|");
+        bracketVarValue = bracketVarValue.replace("{", "\\{");
+        bracketVarValue = bracketVarValue.replace("}", "\\}");
         return bracketVarValue;
     }
 

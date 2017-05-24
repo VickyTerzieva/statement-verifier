@@ -28,9 +28,19 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
                 isInString = !isInString;
             switch (charInput[i]) {
                 case '+':
-                    while (!operationStack.empty() && (operationStack.peek() == '*')) {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '+')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
+                    result.append(' ');
+                    operationStack.push(charInput[i]);
+                    break;
+                case '*':
+                    while(!operationStack.empty() && operationStack.peek() == '*') {
+                        result.append(' ').append(operationStack.pop());
+                    }
+                    result.append(' ');
+                    operationStack.push(charInput[i]);
+                    break;
                 case '(':
                     operationStack.push(charInput[i]);
                     break;
@@ -46,8 +56,13 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
                         operationStack.pop();
                     }
                     break;
+                case '!':
+                case '/':
+                case '-':
+                case '^':
+                    throw new RuntimeException("Invalid input!");
                 default:
-                    result.append(charInput[i]);    // we have a char or ' or *
+                    result.append(charInput[i]);    // we have a char or '
                     break;
             }  //end of switch
             i++;
@@ -83,6 +98,9 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
     //concatenate the top 2 strings
     private void plus(Stack<String> stack) {
         String right = stack.pop();
+        if(stack.empty()) {
+            throw new RuntimeException("Invalid input!");
+        }
         String left = stack.pop();
 
         String leftWithoutQuoute = left.substring(0, left.length() - 1);
@@ -102,12 +120,17 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         } else {
             right = stack.pop();        //else its string
         }
+
+        if(stack.empty()) {
+            throw new RuntimeException("Invalid input");
+        }
         if (VariableTypeParserImpl.isNumber(stack.peek())) {
             left = Integer.parseInt(stack.pop());          //if left is number
             leftIsNumber = true;
         } else {
             left = stack.pop();         //else its string
         }
+
         if (leftIsNumber && rightIsNumber) {         //both are numbers
             stack.push(Integer.toString((Integer) left * (Integer) right));  // so we parse them to ints, multiply them and push it to stack
         } else {                                      //only one is number
@@ -122,7 +145,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
             for (int i = 0; i < count; i++) {
                 sb.append(strToConcatenate);
             }
-            stack.push(sb.toString());   //push the resulted string
+            stack.push(sb.toString().replaceAll("\\'\\'", ""));   //push the resulted string
         }       //end of if
     }//end of multiply
 }

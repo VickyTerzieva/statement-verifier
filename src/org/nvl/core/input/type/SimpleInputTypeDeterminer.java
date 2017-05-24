@@ -60,7 +60,8 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
         int i = 0;
         while (!splitString.isEmpty()) {
             String element = splitString.getCurrentElement();
-            if(element.matches("[\\w]+") && !element.matches("[\\d]+")) {
+            if(element.matches("[\\w]+") && !element.matches("[\\d]+") &&
+                    !element.equalsIgnoreCase("true") && !element.equalsIgnoreCase("false")) {
                 inputType = determineVariableDefinition(element);
                 if(inputType == InputType.NEW_VARIABLE && !unevaluatedVariables.contains(element)) {
                     inputTypes[i] = inputType;

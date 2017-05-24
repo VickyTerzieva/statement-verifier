@@ -151,10 +151,13 @@ public class ResponderImpl implements Responder {
             if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Incompatible value types!")) {
                 return  leftSide;
             }
-            if(compare(leftSide, rightSide, data)) {
-                return "TRUE";
+            boolean result;
+            if(typeRight == SideType.NUMBER) {
+                result = compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
+            } else {
+                result = compare(leftSide, rightSide, data);
             }
-            return "FALSE";
+            return String.valueOf(result).toUpperCase();
         }
         return "";
     }
@@ -184,7 +187,9 @@ public class ResponderImpl implements Responder {
         if(rpnStatementVerifier.isBooleanOperation() && numberOfOperations == 1) {
             return SideType.BOOLEAN;
         }
-        if(rpnStatementVerifier.isStringOperation() && numberOfOperations == 1) {
+        if((rpnStatementVerifier.isStringOperation() && numberOfOperations == 1) ||
+                (rpnStatementVerifier.isStringOperation() && rpnStatementVerifier.isIntegerOperation() &&
+                numberOfOperations == 2 && expression.contains("*"))) {
             return SideType.STRING;
         }
         if((rpnStatementVerifier.isArrayOperation() && rpnStatementVerifier.isIntegerOperation() && numberOfOperations == 2) ||

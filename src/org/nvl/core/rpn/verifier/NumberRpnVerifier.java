@@ -58,6 +58,9 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                         operationStack.pop();
                     }
                     break;
+                case '^':
+                case '!':
+                    throw new RuntimeException("Invalid input!");
                 default:
                     result.append(charInput[i]);    // we have a digit
                     break;
@@ -80,13 +83,20 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                 stack.push(Double.parseDouble(current));
             } else {    //else it is operation
                 Double right = stack.pop();  //get the right number
+                if(stack.empty()) {
+                    throw new RuntimeException("Invalid input!");
+                }
                 Double left = stack.pop();   //get the left
                 switch (current) {    //current is an operation, so wi push the resulted number in the stack
                     case "+":
                         stack.push(left + right);
                         break;
                     case "-":
-                        stack.push(left - right);
+                        if(left - right > 0) {
+                            stack.push(left - right);
+                        } else {
+                            throw new RuntimeException("Negative numbers are not supported!");
+                        }
                         break;
                     case "*":
                         stack.push(left * right);

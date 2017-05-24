@@ -17,7 +17,7 @@ public class InputSpaceFixer {
     }
 
     private static String isolate(String input) {
-        String[] specialElements = {"\\(", "\\)", "\\+", "\\*", "-", "/", "&&", "\\|\\|", "!", "=", "<", ">"};
+        String[] specialElements = {"\\(", "\\)", "\\+", "\\*", "-", "\\^", "/", "&&", "\\|\\|", "\\!", "=", "<", ">"};
 
         input = singleIsolate(input, specialElements, ISOLATION_FORMAT);
 
@@ -26,7 +26,7 @@ public class InputSpaceFixer {
         input = input.replaceAll("> =", ">=");
         input = input.replaceAll("< =", "<=");
         input = input.replaceAll("=" + "[\\s]+" + "=", "==");
-        return input.replaceAll("!" + "[\\s]+", "!");
+        return input.replaceAll("! =", "!=");
     }
 
     private static String singleIsolate(String input, String[] specialElements, String format) {

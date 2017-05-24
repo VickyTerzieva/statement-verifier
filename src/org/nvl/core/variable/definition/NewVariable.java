@@ -19,10 +19,13 @@ public class NewVariable {
         for(int i = 0; i < splitLeftSide.length; i++) {
             if(splitLeftSide[i].contains(varName)) {
                 String toCalculate = replacePlusMinusVar(splitLeftSide[i], varName);
-                if(toCalculate.length() > 1 && toCalculate.endsWith(varName)){
+                int index = toCalculate.indexOf(varName);
+                if(toCalculate.indexOf(varName, index + 1) != - 1) {
+                    throw new RuntimeException("Only linear definitions supported!");
+                }
+                if(toCalculate.length() > 1 && index == toCalculate.length() - 1){
                     toCalculate = toCalculate.substring(0, toCalculate.length() - 2);
                 } else if (toCalculate.length() > 1) {
-                    int index = toCalculate.indexOf(varName);
                     String first = toCalculate.substring(0, index - 1);
                     String second = toCalculate.substring(index + 1, toCalculate.length());
                     toCalculate = first + second;
@@ -89,11 +92,20 @@ public class NewVariable {
     }
 
     public static String replaceRightSideBoolean(String rightSide, String leftSide, String varName) {
+
         return "";
     }
 
+
     public static String replaceRightSideString(String rightSide, String leftSide, String varName) {
-        return "";
+        String[] expressions = leftSide.split("\\+");
+        for(int i = 0; i < expressions.length; i++) {
+            int indexOfVar = expressions[i].indexOf(varName);
+            if (expressions[i].indexOf(varName, indexOfVar + 1) != -1) {
+                throw new RuntimeException("Invalid input!");
+            }
+        }
+        return rightSide;
     }
 
 

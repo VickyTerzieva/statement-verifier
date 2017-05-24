@@ -74,7 +74,7 @@ public class ResponderImpl implements Responder {
         } else if (inputType == InputType.STATEMENT) {
             inputTree = variableSubstituter.substituteVariables(inputTree);
             String verifiedInput = verifyInput(inputTree);
-            if(verifiedInput.matches("(.*)Cannot be evaluated!") || verifiedInput.matches("(.*)Incompatible value types!")) {
+            if(verifiedInput.equals("Cannot be evaluated!") || verifiedInput.equals("Incompatible value types!")) {
                 response = verifiedInput;
             } else {
                 response = String.format(STATEMENT_FORMAT, inputTree.toString(), verifiedInput);
@@ -136,10 +136,10 @@ public class ResponderImpl implements Responder {
             String rightSide, leftSide;
 
             if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
-                return String.format(INVALID_INPUT_FORMAT, inputTree, "Cannot be evaluated!");
+                return "Cannot be evaluated!";
             }
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
-                return String.format(INVALID_INPUT_FORMAT, inputTree, "Incompatible value types");
+                return  "Incompatible value types!";
             }
 
             rightSide = getSideValue(right, typeRight);

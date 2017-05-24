@@ -97,8 +97,11 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
 
     //concatenate the top 2 strings
     private void plus(Stack<String> stack) {
+        if(stack.empty() || stack.peek().matches("\\d+")) {
+            throw new RuntimeException("Invalid input!");
+        }
         String right = stack.pop();
-        if(stack.empty()) {
+        if(stack.empty() || stack.peek().matches("\\d+")) {
             throw new RuntimeException("Invalid input!");
         }
         String left = stack.pop();
@@ -137,9 +140,11 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
             if (leftIsNumber) {    //left is number
                 count = (int) left;   //concatenate left times
                 strToConcatenate = (String) right;   //the right string
-            } else {   //right is number
+            } else if(rightIsNumber){   //right is number
                 count = (int) right;   //concatenate right times
                 strToConcatenate = (String) left;       //the left string
+            } else {
+                throw new RuntimeException("Invalid input!");
             }
             StringBuilder sb = new StringBuilder();   //create the resulted string
             for (int i = 0; i < count; i++) {

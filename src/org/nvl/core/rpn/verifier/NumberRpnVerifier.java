@@ -11,6 +11,8 @@ import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+
 /**
  * @author niki
  */
@@ -60,7 +62,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                     break;
                 case '^':
                 case '!':
-                    throw new RuntimeException("Invalid input!");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 default:
                     result.append(charInput[i]);    // we have a digit
                     break;
@@ -84,7 +86,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
             } else {    //else it is operation
                 Double right = stack.pop();  //get the right number
                 if(stack.empty()) {
-                    throw new RuntimeException("Invalid input!");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
                 Double left = stack.pop();   //get the left
                 switch (current) {    //current is an operation, so wi push the resulted number in the stack
@@ -102,6 +104,9 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                         stack.push(left * right);
                         break;
                     case "/":
+                        if(right == 0) {
+                            throw new RuntimeException("Cannot divide by zero!");
+                        }
                         stack.push(left / right);
                         break;
                 } //end of switch

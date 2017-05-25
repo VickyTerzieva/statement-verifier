@@ -1,6 +1,10 @@
 package src.org.nvl.core.variable.definition;
 
 import jdk.nashorn.internal.runtime.regexp.RegExp;
+import src.org.nvl.core.Pair;
+import src.org.nvl.core.input.type.SideType;
+import src.org.nvl.core.rpn.AbstractRpnVerifier;
+import src.org.nvl.core.rpn.Rpn;
 import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
 
 /**
@@ -8,8 +12,29 @@ import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
  */
 public class NewVariable {
 
-    public static String replaceRightSideNumber(String rightSide, String leftSide, String varName) {
+    public static String replaceRightSide(String rightSide, String leftSide, String varName, SideType type) {
         String replacedRightSide = rightSide;
+        Pair<String, String> coefficients = getCoefficients(rightSide, leftSide, varName);
+        String toAdd = coefficients.first;
+        String toMultiply = coefficients.second;
+        toMultiply = toMultiply.replaceAll("\\*", " * ");
+        AbstractRpnVerifier rpn = Rpn.makeRpn(type);
+        if(!toAdd.equals("")) {
+            String rpnSubtract = rpn.createRpn(toAdd);
+            String toSubtract = rpn.calculateRpn(rpnSubtract);
+            replacedRightSide = "( " + rightSide + " - " + toSubtract + " )";
+        }
+        if(!toMultiply.equals("")) {
+            String rpnDivideBy = rpn.createRpn(toMultiply);
+            String toDivideBy = rpn.calculateRpn(rpnDivideBy);
+            replacedRightSide = replacedRightSide + " / " + toDivideBy;
+        }
+        replacedRightSide = replacedRightSide.replaceAll("[\\s]*\\+ \\-[\\s]*"," - ");
+        replacedRightSide = replacedRightSide.replaceAll("[\\s]*\\- \\-[\\s]*"," + ");
+        return replacedRightSide;
+    }
+
+    private static Pair<String, String> getCoefficients(String rightSide, String leftSide, String varName) {
         leftSide = leftSide.replaceAll(" \\* ", "*");
         leftSide = leftSide.replaceAll(" \\- ", " + -");
         String[] splitLeftSide = leftSide.split(" \\+ ");
@@ -17,7 +42,8 @@ public class NewVariable {
         String[] dontContainVar = new String[splitLeftSide.length];
         int indexContainVar = 0, indexDontContainVar = 0;
         for(int i = 0; i < splitLeftSide.length; i++) {
-            if(splitLeftSide[i].contains(varName)) {
+            //if varName is not part of a string
+            if(splitLeftSide[i].contains(varName) && !splitLeftSide[i].contains("'")) {
                 String toCalculate = replacePlusMinusVar(splitLeftSide[i], varName);
                 int index = toCalculate.indexOf(varName);
                 if(toCalculate.indexOf(varName, index + 1) != - 1) {
@@ -39,19 +65,7 @@ public class NewVariable {
         }
         String toAdd = concatenate(dontContainVar);
         String toMultiply = concatenate(containVar);
-        toMultiply = toMultiply.replaceAll("\\*", " * ");
-        NumberRpnVerifier rpn = new NumberRpnVerifier();
-        if(!toAdd.equals("")) {
-            String rpnSubtract = rpn.createRpn(toAdd);
-            String toSubtract = rpn.calculateRpn(rpnSubtract);
-            replacedRightSide = "( " + rightSide + " - " + toSubtract + " )";
-        }
-        if(!toMultiply.equals("")) {
-            String rpnDivideBy = rpn.createRpn(toMultiply);
-            String toDivideBy = rpn.calculateRpn(rpnDivideBy);
-            replacedRightSide = replacedRightSide + " / " + toDivideBy;
-        }
-        return replacedRightSide;
+        return new Pair(toAdd, toMultiply);
     }
 
     private static String concatenate(String[] expressions) {
@@ -86,27 +100,9 @@ public class NewVariable {
         return result;
     }
 
-    public static String replaceRightSideArray(String rightSide, String leftSide, String varName) {
-
-        return "";
-    }
-
     public static String replaceRightSideBoolean(String rightSide, String leftSide, String varName) {
 
         return "";
     }
-
-
-    public static String replaceRightSideString(String rightSide, String leftSide, String varName) {
-        String[] expressions = leftSide.split("\\+");
-        for(int i = 0; i < expressions.length; i++) {
-            int indexOfVar = expressions[i].indexOf(varName);
-            if (expressions[i].indexOf(varName, indexOfVar + 1) != -1) {
-                throw new RuntimeException("Invalid input!");
-            }
-        }
-        return rightSide;
-    }
-
 
 }

@@ -28,6 +28,7 @@ public class RequestProcessorImpl implements RequestProcessor {
     }
 
     public void updateVariable(EvaluatedVariable evaluatedVariable) {
+
         variableManager.updateVariable(evaluatedVariable);
     }
 

@@ -5,7 +5,7 @@ import src.org.nvl.core.variable.EvaluatedVariable;
 import java.util.*;
 
 public class MapVariableManager implements VariableManager {
-    private final String INVALID_INPUT_MESSAGE = "You found a bug! Invalid input. ";
+    private final String INVALID_INPUT_MESSAGE = "You found a bug! Invalid input.";
     private Map<String, EvaluatedVariable> allVariables;
 
     public MapVariableManager(HashMap<String, EvaluatedVariable> hashMap) {
@@ -24,10 +24,11 @@ public class MapVariableManager implements VariableManager {
         if (!allVariables.containsKey(variable.getName())) {
             throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
-
         EvaluatedVariable variableToUpdate = allVariables.get(variable.getName());
         variableToUpdate.setValue(variable.getValue());
-        variableToUpdate.setType(variable.getType());
+        if(variableToUpdate.getType() != variable.getType()) {
+            throw new RuntimeException("Variable type conversion not possible!");
+        }
     }
 
     @Override

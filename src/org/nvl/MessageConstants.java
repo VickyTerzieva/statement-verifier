@@ -4,6 +4,6 @@ public class MessageConstants {
     public static final String NEW_VARIABLE_MESSAGE = "Variable added successfully. ";
     public static final String EXISTING_VARIABLE_MESSAGE = "Variable updated successfully. ";
     public static final String STATEMENT_FORMAT = "The statement \"%s\" is %s.";
-    public static final String INVALID_INPUT_FORMAT = "Invalid input: \"%s\". %s. ";
+    public static final String INVALID_INPUT_MESSAGE = "Invalid input!";
     public static final String INVALID_OPERATOR_FORMAT = "Invalid use of operator: \"%s\".";
 }

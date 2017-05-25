@@ -14,24 +14,8 @@ public abstract class AbstractRpnVerifier  {
 
     public abstract String calculateRpn(String input);
 
-    public boolean correct(StringBuilder builder) {
-        String input = builder.toString();
-        String operation = parseOperation(input);   //determine the operation (==, <=, >, !=)
-
-        String[] split = input.split(operation);   //split by the operation
-        String leftExpression = split[0].trim();            //left expression
-        String rightExpression = split[1].trim();           //right expression
-
-        String leftRpn = createRpn(leftExpression);           //RPN for the left expression
-        String rightRpn = createRpn(rightExpression);        //RPN for the right expression
-
-        String left = calculateRpn(leftRpn);       //left string result
-        String right = calculateRpn(rightRpn);     //right string result
-        return compare(left, right, operation);             //compare them with the operation
-    }
-
     //execute operation
-    protected <E extends Comparable<E>> boolean compare(E left, E right, String operation) {
+    public static <E extends Comparable<E>> boolean compare(E left, E right, String operation) {
         switch (operation) {
             case "==":
                 return left.compareTo(right) == 0;

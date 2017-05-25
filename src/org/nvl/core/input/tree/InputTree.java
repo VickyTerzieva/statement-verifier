@@ -9,6 +9,7 @@ import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.*;
 
+import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 import static src.org.nvl.MessageConstants.INVALID_OPERATOR_FORMAT;
 
 /**
@@ -172,7 +173,7 @@ public class InputTree {
             else if(charInput[i] == ')')
             {
                 if(stackInput.isEmpty()) {
-                    throw new RuntimeException("Invalid input! ");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
                 newVariable.append(")");
                 String next = stackInput.pop();
@@ -180,7 +181,7 @@ public class InputTree {
                 {
                     newVariable.append(next);
                     if(stackInput.isEmpty()) { // no '(' in stack
-                        throw new RuntimeException("Invalid input! ");
+                        throw new RuntimeException(INVALID_INPUT_MESSAGE);
                     }
                     next = stackInput.pop();
                 }

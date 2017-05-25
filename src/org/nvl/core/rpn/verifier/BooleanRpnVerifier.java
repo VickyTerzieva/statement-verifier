@@ -10,6 +10,8 @@ import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+
 /**
  * @author niki
  */
@@ -77,7 +79,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 stack.push(Boolean.parseBoolean(current));
             } else {    //else it is operation
                 if(stack.empty()) {
-                    throw new RuntimeException("Invalid input!");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
                 Boolean right = stack.pop();  //get the right number
                 Boolean left;
@@ -102,7 +104,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                         stack.push(left || right);
                         break;
                     default:
-                        throw new RuntimeException("Invalid input!");
+                        throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 } //end of switch
             }  // end of if/else
         }     //end of while

@@ -5,11 +5,14 @@
  */
 package src.org.nvl.core.rpn.verifier;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 
 import java.util.Stack;
+
+import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 
 /**
  * @author niki
@@ -28,14 +31,16 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
                 isInString = !isInString;
             switch (charInput[i]) {
                 case '+':
-                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '+')) {   //if the previous operations in the stack have higher priorities
+                case '-':
+                    while (!operationStack.empty() && operationStack.peek() != '(' && operationStack.peek() != ')') {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                     result.append(' ');
                     operationStack.push(charInput[i]);
                     break;
                 case '*':
-                    while(!operationStack.empty() && operationStack.peek() == '*') {
+                case '/':
+                    while(!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/')) {
                         result.append(' ').append(operationStack.pop());
                     }
                     result.append(' ');
@@ -57,10 +62,8 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
                     }
                     break;
                 case '!':
-                case '/':
-                case '-':
                 case '^':
-                    throw new RuntimeException("Invalid input!");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 default:
                     result.append(charInput[i]);    // we have a char or '
                     break;
@@ -87,22 +90,58 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
                 case "*":
                     multiply(stack);
                     break;
+                case "-":
+                    subtract(stack);
+                    break;
+                case "/":
+                    divide(stack);
+                    break;
                 default:
                     stack.push(current);       //current is string
+                    break;
             }   //end of switch
             tokens.nextPosition();
         }   //end of while
         return stack.pop();     //return result
     } //end of calculateRpnForStrings
 
+    //divide if possible
+    private void divide(Stack<String> stack) {
+        String right = stack.pop();
+        if(stack.empty() || !right.matches("\\d+") || right.equals("0")) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+        }
+        String left = stack.pop();
+        Integer numberOfOccurences = Integer.valueOf(right);
+
+        //the length of the string without the quotation marks must be a multiple of 'numberOfOccurences'
+        //the substring starts at index 1 (without quotation mark) and continues (left.length()-2)/numberOfOccurences) chars
+        if(((left.length()- 2) % numberOfOccurences != 0) ||
+                (countMatches(left, left.substring(1, 1 + (left.length() - 2)/numberOfOccurences)) != numberOfOccurences)) {
+            throw new RuntimeException("Impossible operation!");
+        }
+        stack.push("'" + left.substring(1, 1 + (left.length() - 2)/numberOfOccurences) + "'");
+    }
+
+    //subtract two strings if possible
+    private void subtract(Stack<String> stack) {
+        String right = stack.pop();
+        if(stack.empty()) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+        }
+        String left = stack.pop();
+
+        if(right.length() > 0 && !left.endsWith(right.substring(1, right.length()))) {
+            throw new RuntimeException("Impossible operation!");
+        }
+        stack.push(left.substring(0, left.length() - (right.length() - 1)) + "'");
+    }
+
     //concatenate the top 2 strings
     private void plus(Stack<String> stack) {
-        if(stack.empty() || stack.peek().matches("\\d+")) {
-            throw new RuntimeException("Invalid input!");
-        }
         String right = stack.pop();
-        if(stack.empty() || stack.peek().matches("\\d+")) {
-            throw new RuntimeException("Invalid input!");
+        if(stack.empty()) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
         String left = stack.pop();
 
@@ -140,11 +179,9 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
             if (leftIsNumber) {    //left is number
                 count = (int) left;   //concatenate left times
                 strToConcatenate = (String) right;   //the right string
-            } else if(rightIsNumber){   //right is number
+            } else {   //right is number
                 count = (int) right;   //concatenate right times
                 strToConcatenate = (String) left;       //the left string
-            } else {
-                throw new RuntimeException("Invalid input!");
             }
             StringBuilder sb = new StringBuilder();   //create the resulted string
             for (int i = 0; i < count; i++) {
@@ -153,4 +190,16 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
             stack.push(sb.toString().replaceAll("\\'\\'", ""));   //push the resulted string
         }       //end of if
     }//end of multiply
+
+    private int countMatches(String string, String substring) {
+        int lastIndex = string.indexOf(substring);
+        int count = 0;
+
+        while(lastIndex != -1){
+            lastIndex = string.indexOf(substring, lastIndex + 1);
+            count ++;
+        }
+
+        return count;
+    }
 }

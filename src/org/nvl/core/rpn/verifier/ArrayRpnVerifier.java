@@ -11,6 +11,8 @@ import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+
 /**
  * @author niki
  */
@@ -37,7 +39,9 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                     result.append(' ');
                     break;
                 case '*':
-                    while (!operationStack.empty() && (operationStack.peek() == '^' || operationStack.peek() == '*')) {   //if the previous operations in the stack have higher priorities
+                case '/':
+                    while (!operationStack.empty() && (operationStack.peek() == '^' || operationStack.peek() == '*'
+                            || operationStack.peek() == '/')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                     operationStack.push(charInput[i]);
@@ -63,10 +67,8 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                         operationStack.pop();
                     }
                     break;
-
-                case '/':
                 case '!':
-                    throw new RuntimeException("Invalid input!");
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 default:
                     result.append(charInput[i]);    // we have a digit
                     break;
@@ -90,6 +92,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                 case "+":
                 case "*":
                 case "-":
+                case "/":
                     execute(stack, current);
                     break;
                 case "^":
@@ -106,7 +109,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         boolean leftIsNumber = false, rightIsNumber = false;        //if any of the operands is a number
         String right = stack.pop();     //right operand
         if(stack.empty()) {
-            throw new RuntimeException("Invalid input!");
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
         String left = stack.pop();      //left operand
 
@@ -145,6 +148,11 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                     throw new RuntimeException("Negative numbers are not supported!");
                 }
                 return Integer.toString(l - r);
+            case "/":
+                if(right.equals(0)) {
+                    throw new RuntimeException("Cannot divide by zero!");
+                }
+                return Integer.toString(l / r);
             default:
                 return Integer.toString(l * r);
         } //end of switch
@@ -199,7 +207,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
     private void concatenate(Stack<String> stack) {
         String right = stack.pop(); //right array
         if(stack.empty()) {
-            throw new RuntimeException("Invalid input!");
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
         String left = stack.pop();  //left array
 

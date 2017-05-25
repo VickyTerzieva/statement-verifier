@@ -1,5 +1,6 @@
 package src.org.nvl.core.responder;
 
+import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.substituter.VariableSubstituter;
 import src.org.nvl.core.input.tree.InputTree;
 import src.org.nvl.core.input.type.InputType;
@@ -60,7 +61,7 @@ public class ResponderImpl implements Responder {
             }
             SideType typeRight = getType(rightSide);
             SideType typeLeft = getType(leftSide);
-            if(typeRight != typeLeft && typeLeft != SideType.UNEVALUATED) {
+            if(!typesMatch(leftSide.toString(), typeLeft, typeRight) && typeLeft != SideType.UNEVALUATED) {
                 throw new RuntimeException("Impossible to initialize the variable!");
             }
             String rightSideValue = getSideValue(rightSide, typeRight);
@@ -73,6 +74,36 @@ public class ResponderImpl implements Responder {
         }
 
         return response;
+    }
+
+    private boolean typesMatch(String leftSide, SideType typeLeft, SideType typeRight) {
+        if(typeLeft == typeRight) {
+            return true;
+        }
+        if(typeRight == SideType.ARRAY && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide)) {
+            return true;
+        }
+        if(typeRight == SideType.STRING && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide)
+                && numberIsPartOfMultiplication(leftSide)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean numberIsPartOfMultiplication(String leftSide) {
+        return leftSide.matches(".* \\* [\\d]+.*") || leftSide.matches(".*[\\d]+ \\* .*");
+    }
+
+    private boolean containsUnevaluatedVariable(String leftSide) {
+        SplitString splitString = new SplitString(leftSide);
+        while(!splitString.isEmpty()) {
+            String currentElement = splitString.getCurrentElement();
+            if(!currentElement.matches("[\\d]+") && currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
+                return true;
+            }
+            splitString.nextPosition();
+        }
+        return false;
     }
 
     private String verifyInput(InputTree inputTree) {

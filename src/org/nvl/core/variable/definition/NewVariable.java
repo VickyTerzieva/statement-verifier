@@ -19,14 +19,15 @@ public class NewVariable {
         String toMultiply = coefficients.second;
         toMultiply = toMultiply.replaceAll("\\*", " * ");
         AbstractRpnVerifier rpn = Rpn.makeRpn(type);
+        NumberRpnVerifier numberRpnVerifier = new NumberRpnVerifier();
         if(!toAdd.equals("")) {
             String rpnSubtract = rpn.createRpn(toAdd);
             String toSubtract = rpn.calculateRpn(rpnSubtract);
             replacedRightSide = "( " + rightSide + " - " + toSubtract + " )";
         }
         if(!toMultiply.equals("")) {
-            String rpnDivideBy = rpn.createRpn(toMultiply);
-            String toDivideBy = rpn.calculateRpn(rpnDivideBy);
+            String rpnDivideBy = numberRpnVerifier.createRpn(toMultiply);
+            String toDivideBy = numberRpnVerifier.calculateRpn(rpnDivideBy);
             replacedRightSide = replacedRightSide + " / " + toDivideBy;
         }
         replacedRightSide = replacedRightSide.replaceAll("[\\s]*\\+ \\-[\\s]*"," - ");

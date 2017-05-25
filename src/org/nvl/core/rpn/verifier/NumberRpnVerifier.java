@@ -41,7 +41,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                     break;
                 case '*':
                 case '/':
-                    while (!operationStack.empty() && (operationStack.peek() == '(' && operationStack.peek() != ')')) {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && (operationStack.peek() == '*' || operationStack.peek() == '/')) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
                     result.append(' ');

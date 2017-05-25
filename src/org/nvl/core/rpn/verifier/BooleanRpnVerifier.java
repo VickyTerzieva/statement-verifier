@@ -32,21 +32,24 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 sw = Character.toString(charInput[i]);
             }
             switch (sw) {
-                case "|":
                 case "||":
-                    while (!operationStack.empty() && (operationStack.peek().equals("!") || operationStack.peek().equals("&") ||
-                            operationStack.peek().equals("&&"))) {   //if the previous operations in the stack have higher priorities
+                    while (!operationStack.empty() && !operationStack.peek().equals("(") && !operationStack.peek().equals(")")) {   //if the previous operations in the stack have higher priorities
                         result.append(' ').append(operationStack.pop());                          // add them to result
                     }
-                case "&":
-                case "&&":
-                    while (!operationStack.empty() && operationStack.peek().equals("!")) {   //if the previous operations in the stack have higher priorities
-                        result.append(' ').append(operationStack.pop());                          // add them to result
-                    }
+                    operationStack.push(String.valueOf(sw));
                     result.append(' ');
+                    break;
+                case "&&":
+                    while (!operationStack.empty() && (operationStack.peek().equals("!") || operationStack.peek().equals("&&"))) {   //if the previous operations in the stack have higher priorities
+                        result.append(' ').append(operationStack.pop());                          // add them to result
+                    }
+                    operationStack.push(String.valueOf(sw));
+                    result.append(' ');
+                    break;
                 case "!":
                 case "(":
                     operationStack.push(String.valueOf(sw));
+                    break;
                 case " ":
                     break;
                 case ")":
@@ -110,4 +113,11 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         }     //end of while
         return stack.pop().toString();   //the result is in the stack(last element)
     }   //end of calculate RPN
+
+    public static boolean executeBooleanOperation(String leftSide, String rightSide, String data) {
+        if(data.equals("||")) {
+            return leftSide.equalsIgnoreCase("TRUE") || rightSide.equalsIgnoreCase("TRUE");
+        }
+        return leftSide.equalsIgnoreCase("TRUE") && rightSide.equalsIgnoreCase("TRUE");
+    }
 }

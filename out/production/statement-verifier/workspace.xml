@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e53705e2-a001-4aa8-98ff-9413e1bf6f26" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/nvl/core/Pair.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/statement-verifier/workspace.xml" afterPath="$PROJECT_DIR$/out/production/statement-verifier/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" afterPath="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/input/split/SplitString.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/input/split/SplitString.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessorImpl.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessorImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/AbstractRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/AbstractRpnVerifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/variable/manager/MapVariableManager.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/variable/manager/MapVariableManager.java" />
     </list>
     <ignored path="statement-verifier.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +15,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/statement-verifier$GuiStatementVerifier__1_.coverage" NAME="GuiStatementVerifier (1) Coverage Results" MODIFIED="1495647582459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/statement-verifier$GuiStatementVerifier__1_.coverage" NAME="GuiStatementVerifier (1) Coverage Results" MODIFIED="1495710845820" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>src.org.nvl.*</FILTER>
     </SUITE>
   </component>
@@ -45,18 +31,8 @@
       <file leaf-file-name="InputTree.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
+            <state relative-caret-position="3757">
               <caret line="243" column="0" selection-start-line="243" selection-start-column="0" selection-end-line="243" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RpnStatementVerifier.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -65,8 +41,8 @@
       <file leaf-file-name="NewVariable.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+            <state relative-caret-position="278">
+              <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -74,19 +50,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StringRpnVerifier.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NumberRpnVerifier.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NumberRpnVerifier.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
@@ -96,47 +60,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArrayRpnVerifier.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java">
+      <file leaf-file-name="BooleanRpnVerifier.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="151" column="34" selection-start-line="151" selection-start-column="34" selection-end-line="151" selection-end-column="34" />
+            <state relative-caret-position="312">
+              <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ResponderImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
+      <file leaf-file-name="StringRpnVerifier.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="143" column="91" selection-start-line="143" selection-start-column="91" selection-end-line="143" selection-end-column="91" />
+            <state relative-caret-position="2006">
+              <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#9439#9440#0" expanded="true" />
-                <element signature="e#9490#9491#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SwingGraphicalUserInterface.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/ui/SwingGraphicalUserInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RequestProcessorImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessorImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-              <folding>
-                <element signature="e#1529#1530#0" expanded="true" />
+                <element signature="e#0#8690#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -194,11 +134,11 @@
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/manager/MapVariableManager.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
       </list>
     </option>
   </component>
@@ -233,7 +173,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -284,9 +224,57 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -610,19 +598,18 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41102362" sideWeight="0.30893117" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41102362" sideWeight="0.31625184" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.47657394" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.4736457" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20644216" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.47510982" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41102362" sideWeight="0.6910688" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41102362" sideWeight="0.6837482" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -630,6 +617,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10322108" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.47510982" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -660,7 +648,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
-          <line>177</line>
+          <line>208</line>
           <properties />
           <option name="timeStamp" value="131" />
         </line-breakpoint>
@@ -713,26 +701,14 @@
           <option name="timeStamp" value="194" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>133</line>
-          <properties />
-          <option name="timeStamp" value="195" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>113</line>
-          <properties />
-          <option name="timeStamp" value="198" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java</url>
-          <line>33</line>
+          <line>34</line>
           <properties />
           <option name="timeStamp" value="202" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
-          <line>70</line>
+          <line>71</line>
           <properties />
           <option name="timeStamp" value="207" />
         </line-breakpoint>
@@ -748,8 +724,38 @@
           <properties />
           <option name="timeStamp" value="209" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
+          <line>64</line>
+          <properties />
+          <option name="timeStamp" value="210" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
+          <line>55</line>
+          <properties />
+          <option name="timeStamp" value="211" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
+          <line>97</line>
+          <properties />
+          <option name="timeStamp" value="212" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
+          <line>93</line>
+          <properties />
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
+          <line>122</line>
+          <properties />
+          <option name="timeStamp" value="214" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="210" />
+      <option name="time" value="215" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -874,7 +880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -890,7 +895,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="71" selection-start-line="7" selection-start-column="71" selection-end-line="7" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -898,7 +902,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -922,7 +925,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="19" column="50" selection-start-line="19" selection-start-column="50" selection-end-line="19" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -930,7 +932,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,7 +939,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-589">
           <caret line="21" column="66" selection-start-line="21" selection-start-column="66" selection-end-line="21" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -968,14 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/split/SplitString.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
@@ -988,7 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="55" selection-start-line="6" selection-start-column="55" selection-end-line="6" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -996,7 +987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
           <caret line="17" column="1" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1004,7 +994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="14" column="41" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1012,7 +1001,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="7" column="81" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1020,23 +1008,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="269">
+          <caret line="95" column="107" selection-start-line="95" selection-start-column="107" selection-end-line="95" selection-end-column="107" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
+        <state relative-caret-position="3757">
           <caret line="243" column="0" selection-start-line="243" selection-start-column="0" selection-end-line="243" selection-end-column="0" />
           <folding />
         </state>
@@ -1046,47 +1031,45 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding>
-            <element signature="e#1529#1530#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="143" column="91" selection-start-line="143" selection-start-column="91" selection-end-line="143" selection-end-column="91" />
+        <state relative-caret-position="2006">
+          <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9439#9440#0" expanded="true" />
-            <element signature="e#9490#9491#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#8690#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="151" column="34" selection-start-line="151" selection-start-column="34" selection-end-line="151" selection-end-column="34" />
+        <state relative-caret-position="1683">
+          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11091#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1094,6 +1077,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
           <folding />
         </state>
       </provider>

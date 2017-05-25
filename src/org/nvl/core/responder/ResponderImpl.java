@@ -10,6 +10,7 @@ import src.org.nvl.core.input.white_space.InputSpaceFixer;
 import src.org.nvl.core.responder.processor.RequestProcessor;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.rpn.Rpn;
+import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.statement.RpnStatementVerifier;
 import src.org.nvl.core.variable.EvaluatedVariable;
 import src.org.nvl.core.variable.VariableType;
@@ -49,10 +50,10 @@ public class ResponderImpl implements Responder {
             InputTree rightSide = inputTree.getRightSide();
             InputTree leftSide = inputTree.getLeftSide();
             String left = leftSide.toString();
-            if(left.contains("/")) {
+            if(left.contains("/") || left.contains("^") || left.contains("(")) {
                 throw new RuntimeException(INVALID_INPUT_MESSAGE);
             }
-            if(!leftSide.isLeaf()) { //the variable is part of comparison expression
+            if(!leftSide.isLeaf() && !leftSide.getValue().matches("&&|\\|\\|")) { //the variable is part of comparison expression
                 throw new RuntimeException("Impossible to initialize the variable!");
             }
             rightSide = variableSubstituter.substituteVariables(rightSide);
@@ -69,7 +70,7 @@ public class ResponderImpl implements Responder {
             response = (inputType == InputType.NEW_VARIABLE) ?  NEW_VARIABLE_MESSAGE : EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
             inputTree = variableSubstituter.substituteVariables(inputTree);
-            boolean verifiedInput = requestProcessor.verifyStatement(inputTree.toString());
+            boolean verifiedInput = requestProcessor.verifyStatement(userInput);
             response = String.format(STATEMENT_FORMAT, inputTree.toString(), verifiedInput);
         }
 
@@ -115,25 +116,27 @@ public class ResponderImpl implements Responder {
             SideType typeRight = getType(right);
             String rightSide, leftSide;
 
-            if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
+            /*if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
                 throw new RuntimeException("Cannot be evaluated!");
-            }
+            }*/
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
-                throw new RuntimeException("Incompatible value types!");
+                throw new RuntimeException("Invalid operation!");
             }
 
             rightSide = getSideValue(right, typeRight);
             leftSide = getSideValue(left, typeLeft);
 
-            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Incompatible value types!")) {
+            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Invalid operation!")) {
                 return  rightSide;
             }
-            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Incompatible value types!")) {
+            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Invalid operation!")) {
                 return  leftSide;
             }
             boolean result;
             if(typeRight == SideType.NUMBER) {
                 result = AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
+            } else if(data.equals("||") || data.equals("&&")) {
+                result = BooleanRpnVerifier.executeBooleanOperation(leftSide, rightSide, data);
             } else {
                 result = AbstractRpnVerifier.compare(leftSide, rightSide, data);
             }

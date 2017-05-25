@@ -100,6 +100,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                     break;
                 default:
                     stack.push(current);       //current is string
+                    break;
             }   //end of switch
         }   //end of while
         return stack.pop();     //return result

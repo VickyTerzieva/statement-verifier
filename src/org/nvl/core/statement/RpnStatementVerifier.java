@@ -83,7 +83,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                 }
                 isArrayOperation = true;
             } else if (currentElement.equalsIgnoreCase("FALSE") || currentElement.equalsIgnoreCase("TRUE") ||
-                    isVariableOfType(currentElement, VariableType.BOOLEAN)) {
+                    isVariableOfType(currentElement, VariableType.BOOLEAN) || currentElement.matches("&&|\\|\\|")) {
                 if(!isBooleanOperation) {
                     numberOfOperations++;
                 }
@@ -95,7 +95,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                 isIntegerOperation = true;
             } else if(currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
                 containsUnevaluatedVariable = true;
-            } else if (!currentElement.matches("\\+|\\*|\\-|/|&&|\\|\\||!=|=|<|>|>=|<=|\\(|\\)|\\^|!")) { //already checked for matching brackets, see InputTree
+            } else if (!currentElement.matches("\\+|\\*|\\-|/|!=|=|<|>|>=|<=|\\(|\\)|\\^|!")) { //already checked for matching brackets, see InputTree
                 throw new RuntimeException(INVALID_INPUT_MESSAGE);
             }
 
@@ -112,20 +112,20 @@ public class RpnStatementVerifier implements StatementVerifier {
             SideType typeRight = getType(right);
             String rightSide, leftSide;
 
-            if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
+            /*if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
                 throw new RuntimeException("Cannot be evaluated!");
-            }
+            }*/
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
-                throw new RuntimeException("Incompatible value types!");
+                throw new RuntimeException("Invalid operation!");
             }
 
             rightSide = getSideValue(right, typeRight);
             leftSide = getSideValue(left, typeLeft);
 
-            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Incompatible value types!")) {
+            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Invalid operation!")) {
                 return  rightSide;
             }
-            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Incompatible value types!")) {
+            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Invalid operation!")) {
                 return  leftSide;
             }
             boolean result;
@@ -155,28 +155,32 @@ public class RpnStatementVerifier implements StatementVerifier {
 
     private SideType getType(InputTree inputTree) {
         if(!inputTree.isLeaf()) {  // value of inputTree data is an operator
+            if(inputTree.getValue().equals("&&") || inputTree.getValue().equals("||")) {
+                checkType(inputTree.getValue());
+                if(numberOfOperations != 1 || !isBooleanOperation) {
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                }
+            }
             return SideType.BOOLEAN;
         }
         String expression = inputTree.getValue();
-        RpnStatementVerifier rpnStatementVerifier = new RpnStatementVerifier(variableManager);
-        rpnStatementVerifier.checkType(expression);
-        int numberOfOperations = rpnStatementVerifier.getNumberOfOperations();
-        if(rpnStatementVerifier.isBooleanOperation() && numberOfOperations == 1) {
+        checkType(expression);
+        if(isBooleanOperation() && numberOfOperations == 1) {
             return SideType.BOOLEAN;
         }
-        if((rpnStatementVerifier.isStringOperation() && numberOfOperations == 1) ||
-                (rpnStatementVerifier.isStringOperation() && rpnStatementVerifier.isIntegerOperation() &&
+        if((isStringOperation() && numberOfOperations == 1) ||
+                (isStringOperation() && isIntegerOperation() &&
                         numberOfOperations == 2 && (expression.contains("*") || expression.contains("/")))) {
             return SideType.STRING;
         }
-        if((rpnStatementVerifier.isArrayOperation() && rpnStatementVerifier.isIntegerOperation() && numberOfOperations == 2) ||
-                (rpnStatementVerifier.isArrayOperation() && numberOfOperations == 1)) {
+        if((isArrayOperation() && isIntegerOperation() && numberOfOperations == 2) ||
+                (isArrayOperation() && numberOfOperations == 1)) {
             return SideType.ARRAY;
         }
-        if(rpnStatementVerifier.isIntegerOperation() && numberOfOperations == 1) {
+        if(isIntegerOperation() && numberOfOperations == 1) {
             return SideType.NUMBER;
         }
-        if(rpnStatementVerifier.containsUnevaluatedVariable() && numberOfOperations == 0) {
+        if(containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
         throw new RuntimeException("Invalid mix of operations!");
@@ -188,7 +192,6 @@ public class RpnStatementVerifier implements StatementVerifier {
         }
     }
 
-    //TODO if a and b unevaluated and exp = a + b => exp not bool
     private boolean isVariableOfType(String currentElement, VariableType neededType) {
         boolean isVariable = variableManager.containsVariable(currentElement);
         return isVariable && variableManager.getVariable(currentElement).getType() == neededType;

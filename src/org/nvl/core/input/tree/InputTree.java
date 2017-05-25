@@ -81,13 +81,16 @@ public class InputTree {
 
     private InputTree splitInput(String spaceFixedInput) {
         InputTree inputTree = new InputTree();
-        String[] operatorsByPriority = {"=", "\\|\\|", "&&", "!=", "==", "<=", "<", ">=", ">"};
+        String[] operatorsByPriority = {"=", "||", "&&", "!=", "==", "<=", "<", ">=", ">"};
         int count = 9;
         int opNum = 0;
         boolean containsBracketExpression = false;
         while(opNum < count) {
             String operator = " " + operatorsByPriority[opNum] + " ";
             if(spaceFixedInput.contains(operator)) {
+                if(operator.equals(" || ")) {
+                    operator = " \\|\\| ";
+                }
                 String[] parts = spaceFixedInput.split(operator, 2);
                 String left = parts[0];
                 String right = parts[1];

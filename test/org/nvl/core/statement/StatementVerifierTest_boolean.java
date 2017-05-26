@@ -30,7 +30,7 @@ public class StatementVerifierTest_boolean {
 
     @Test
     public void testVerifyStatement_conjunction() {
-        assertTrue(statementVerifier.verifyStatement("true && ! true == false"));
+        assertTrue(statementVerifier.verifyStatement("(true && ! true) == false"));
     }
 
     @Test
@@ -45,17 +45,17 @@ public class StatementVerifierTest_boolean {
 
     @Test
     public void testVerifyStatement_brackets() {
-        assertTrue(statementVerifier.verifyStatement("true && ( false || true ) == true"));
+        assertTrue(statementVerifier.verifyStatement("(true && ( false || true )) == true"));
     }
 
     @Test
     public void testVerifyStatement_bracketsComplex() {
-        assertFalse(statementVerifier.verifyStatement("false || ( ( false && true || false) && true ) == ! true || (true && true)"));
+        assertFalse(statementVerifier.verifyStatement("(false || ( ( false && true || false) && true )) == (! true || (true && true))"));
     }
 
     @Test
     public void testVerifyStatement_complexWithVariables() {
         variableManager.addVariable(new EvaluatedVariable("a", "true", VariableType.BOOLEAN));
-        assertTrue(statementVerifier.verifyStatement("true && ( ! true || true ) == a && a"));
+        assertTrue(statementVerifier.verifyStatement("(true && ( ! true || true )) == (a && a)"));
     }
 }

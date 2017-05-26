@@ -116,9 +116,9 @@ public class ResponderImpl implements Responder {
             SideType typeRight = getType(right);
             String rightSide, leftSide;
 
-            /*if(typeLeft == SideType.UNEVALUATED || typeRight == SideType.UNEVALUATED) {
+            if(typeRight == SideType.UNEVALUATED) {
                 throw new RuntimeException("Cannot be evaluated!");
-            }*/
+            }
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
                 throw new RuntimeException(INVALID_OPERATION_MESSAGE);
             }

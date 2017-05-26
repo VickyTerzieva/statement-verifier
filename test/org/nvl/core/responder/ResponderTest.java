@@ -35,12 +35,6 @@ public class ResponderTest {
         responder = new ResponderImpl(typeDeterminer, requestProcessor, variableManager);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testProcess_changeType() {
-        responder.process("a = 5");
-        responder.process("a = 'asdf'");
-    }
-
     @Test
     public void testProcess_string() {
         String statement = "'asdf' <= 'asdf'";
@@ -99,30 +93,6 @@ public class ResponderTest {
     public void testProcess_spacingInStrings() {
         String statement = "'a b c' == 'abc'";
         assertEquals(String.format(STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testProcess_invalidInput() {
-        try {
-            responder.process("(5&& 3) ==4");
-        }
-        catch(RuntimeException re) {
-            assertEquals(INVALID_INPUT_MESSAGE, re.getMessage());
-            throw re;
-        }
-        fail("Exception did not throw!");
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testProcess_quadraticDefinition() {
-        try {
-            responder.process("5 * a * a = 125");
-        }
-        catch(RuntimeException re) {
-            assertEquals(LINEAR_DEFINITION_MESSAGE, re.getMessage());
-            throw re;
-        }
-        fail("Exception did not throw!");
     }
 
     @Test
@@ -186,5 +156,35 @@ public class ResponderTest {
 
         assertEquals(NEW_VARIABLE_MESSAGE, responder.process(input));
         assertEquals(value, variableManager.getVariable("a").getValue());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testProcess_invalidInput() {
+        try {
+            responder.process("(5&& 3) ==4");
+        }
+        catch(RuntimeException re) {
+            assertEquals(INVALID_INPUT_MESSAGE, re.getMessage());
+            throw re;
+        }
+        fail("Exception did not throw!");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testProcess_quadraticDefinition() {
+        try {
+            responder.process("5 * a * a = 125");
+        }
+        catch(RuntimeException re) {
+            assertEquals(LINEAR_DEFINITION_MESSAGE, re.getMessage());
+            throw re;
+        }
+        fail("Exception did not throw!");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testProcess_changeType() {
+        responder.process("a = 5");
+        responder.process("a = 'asdf'");
     }
 }

@@ -59,8 +59,8 @@ public class RpnStatementVerifier implements StatementVerifier {
         statement = InputSpaceFixer.fix(statement);
         checkInput(statement);
         InputTree inputTree = new InputTree();
-        inputTree = variableSubstituter.substituteVariables(inputTree);
         inputTree = inputTree.createTree(statement);
+        inputTree = variableSubstituter.substituteVariables(inputTree);
         String result = verifyInput(inputTree);
         return result.equalsIgnoreCase("TRUE");
     }
@@ -134,7 +134,7 @@ public class RpnStatementVerifier implements StatementVerifier {
             } else if(data.equals("||") || data.equals("&&")) {
                 result = BooleanRpnVerifier.executeBooleanOperation(leftSide, rightSide, data);
             } else {
-                result = AbstractRpnVerifier.compare(leftSide, rightSide, data);
+                result = AbstractRpnVerifier.compare(leftSide.toLowerCase(), rightSide.toLowerCase(), data);
             }
             return String.valueOf(result).toUpperCase();
         }

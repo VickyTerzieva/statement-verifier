@@ -84,7 +84,6 @@ public class InputTree {
         String[] operatorsByPriority = {"=", "||", "&&", "!=", "==", "<=", "<", ">=", ">"};
         int count = 9;
         int opNum = 0;
-        boolean containsBracketExpression = false;
         while(opNum < count) {
             String operator = " " + operatorsByPriority[opNum] + " ";
             if(spaceFixedInput.contains(operator)) {
@@ -107,14 +106,12 @@ public class InputTree {
             }
         }
         if (inputTree.isLeaf()) {
-            while(containsBracketExpression(spaceFixedInput)) {
+            if(containBracketExpression(spaceFixedInput)) {
                 spaceFixedInput = replaceBracketVariables(spaceFixedInput);
-                containsBracketExpression = true;
-            }
-            if(containsBracketExpression) {
                 spaceFixedInput = removeOuterBrackets(spaceFixedInput);
                 inputTree = splitInput(spaceFixedInput);
-            } else {
+            }
+            else {
                 inputTree.setValue(spaceFixedInput);
             }
         }
@@ -129,26 +126,22 @@ public class InputTree {
     }
 
     private String replaceBracketVariables(String spaceFixedInput) {
+        StringBuilder result = new StringBuilder();
         SplitString splitString = new SplitString(spaceFixedInput);
         while(!splitString.isEmpty()) {
-            if(bracketVariables.containsVariable(splitString.getCurrentElement())) {
-                String[] operators = {"&&", "||", "!", "=", "<", ">", ">=", "<="};
-                String bracketExpression = bracketVariables.getVariable(splitString.getCurrentElement()).getValue();
-                if(Arrays.stream(operators).parallel().anyMatch(bracketExpression::contains)) {
-                    String[] splitStr = splitString.getSplitInput();
-                    if(splitStr.length != 1) { // contains another operator which is not boolean or contains expressions without boolean operator between them
-                        throw new RuntimeException(OPERATION_MIX_MESSAGE);
-                    }
-                }
-                String var = splitString.getCurrentElement();
-                spaceFixedInput = spaceFixedInput.replaceAll(var, bracketExpression);
+            String var = splitString.getCurrentElement();
+            if(bracketVariables.containsVariable(var)) {
+                String bracketExpression = bracketVariables.getVariable(var).getValue();
+                result.append(bracketExpression).append(' ');
+            } else {
+                result.append(var).append(' ');
             }
             splitString.nextPosition();
         }
-        return spaceFixedInput;
+        return result.toString().substring(0, result.length() - 1);
     }
 
-    private boolean containsBracketExpression(String spaceFixedInput) {
+    private boolean containBracketExpression(String spaceFixedInput) {
         SplitString splitString = new SplitString(spaceFixedInput);
         while(!splitString.isEmpty()) {
             String a = splitString.getCurrentElement();
@@ -245,6 +238,9 @@ public class InputTree {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        if(this.data.equals("")) {
+            return "";
+        }
         if(this.isLeaf()) {
             return this.getValue();
         }

@@ -6,6 +6,7 @@
 package src.org.nvl.core.rpn.verifier;
 
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
+import src.org.nvl.core.variable.Type;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -79,19 +80,19 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
 
     @Override
     public String calculateRpn(String input) {
-        StringTokenizer tokens = new StringTokenizer(input);  //tokenize the input by ' '
-        Stack<Boolean> stack = new Stack<>();  //stack for the booleans
-        while (tokens.hasMoreTokens()) {   //while we have more tokens
-            String current = tokens.nextToken();   //get current token
-            if (current.equalsIgnoreCase("true") || current.equalsIgnoreCase("false")) {   //if the token is a number, push it in the stack
+        StringTokenizer tokens = new StringTokenizer(input);
+        Stack<Boolean> stack = new Stack<>();
+        while (tokens.hasMoreTokens()) {
+            String current = tokens.nextToken();
+            if (Type.isBoolean(current)) {
                 stack.push(Boolean.parseBoolean(current));
-            } else {    //else it is operation
+            } else {
                 if(stack.empty()) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
-                Boolean right = stack.pop();  //get the right number
+                Boolean right = stack.pop();
                 Boolean left;
-                switch (current) {    //current is an operation, so wi push the resulted number in the stack
+                switch (current) {
                     case "!":
                         stack.push(!right);
                         break;

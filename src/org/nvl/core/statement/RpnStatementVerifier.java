@@ -1,6 +1,8 @@
 package src.org.nvl.core.statement;
 
+import src.org.nvl.MessageConstants;
 import src.org.nvl.core.input.split.SplitString;
+import src.org.nvl.core.input.substituter.VariableSubstituter;
 import src.org.nvl.core.input.tree.InputTree;
 import src.org.nvl.core.input.type.SideType;
 import src.org.nvl.core.input.white_space.InputSpaceFixer;
@@ -10,6 +12,7 @@ import src.org.nvl.core.rpn.verifier.ArrayRpnVerifier;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
 import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
+import src.org.nvl.core.variable.Type;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.manager.VariableManager;
 
@@ -25,7 +28,7 @@ public class RpnStatementVerifier implements StatementVerifier {
     private boolean isStringOperation;
     private boolean isIntegerOperation;
     private boolean isArrayOperation;
-    private boolean containsUnevaluatedVariable = false;
+    private boolean containsUnevaluatedVariable;
     private int numberOfOperations = 0;
 
     public boolean isBooleanOperation() {
@@ -52,11 +55,12 @@ public class RpnStatementVerifier implements StatementVerifier {
 
     @Override
     public boolean verifyStatement(String statement) {
+        VariableSubstituter variableSubstituter = new VariableSubstituter(variableManager);
         statement = InputSpaceFixer.fix(statement);
         checkInput(statement);
         InputTree inputTree = new InputTree();
+        inputTree = variableSubstituter.substituteVariables(inputTree);
         inputTree = inputTree.createTree(statement);
-
         String result = verifyInput(inputTree);
         return result.equalsIgnoreCase("TRUE");
     }
@@ -67,33 +71,35 @@ public class RpnStatementVerifier implements StatementVerifier {
         isStringOperation = false;
         isArrayOperation = false;
         isIntegerOperation = false;
+        containsUnevaluatedVariable = false;
+        numberOfOperations = 0;
 
         SplitString splitString = new SplitString(statement);
         while(!splitString.isEmpty()) {
             String currentElement = splitString.getCurrentElement();
 
-            if(currentElement.matches("'[\\w\\s]+'") || isVariableOfType(currentElement, VariableType.STRING)) {
+            if(Type.isString(currentElement) || isVariableOfType(currentElement, VariableType.STRING)) {
                 if(!isStringOperation) {
                     numberOfOperations++;
                 }
                 isStringOperation = true;
-            } else if(currentElement.matches("\\{\\d+(,\\d+)*\\}") || isVariableOfType(currentElement, VariableType.ARRAY)) {
+            } else if(Type.isArray(currentElement) || isVariableOfType(currentElement, VariableType.ARRAY)) {
                 if(!isArrayOperation) {
                     numberOfOperations++;
                 }
                 isArrayOperation = true;
-            } else if (currentElement.equalsIgnoreCase("FALSE") || currentElement.equalsIgnoreCase("TRUE") ||
-                    isVariableOfType(currentElement, VariableType.BOOLEAN) || currentElement.matches("&&|\\|\\|")) {
+            } else if (Type.isBoolean(currentElement) || isVariableOfType(currentElement, VariableType.BOOLEAN)
+                    || currentElement.matches("&&|\\|\\|")) {
                 if(!isBooleanOperation) {
                     numberOfOperations++;
                 }
                 isBooleanOperation = true;
-            } else if (currentElement.matches("\\d+") || isVariableOfType(currentElement, VariableType.NUMBER)) {
+            } else if (Type.isNumber(currentElement) || isVariableOfType(currentElement, VariableType.NUMBER)) {
                 if(!isIntegerOperation) {
                     numberOfOperations++;
                 }
                 isIntegerOperation = true;
-            } else if(currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
+            } else if(Type.isWord(currentElement) && !variableManager.containsVariable(currentElement)) {
                 containsUnevaluatedVariable = true;
             } else if (!currentElement.matches("\\+|\\*|\\-|/|!=|=|<|>|>=|<=|\\(|\\)|\\^|!")) { //already checked for matching brackets, see InputTree
                 throw new RuntimeException(INVALID_INPUT_MESSAGE);
@@ -116,21 +122,17 @@ public class RpnStatementVerifier implements StatementVerifier {
                 throw new RuntimeException("Cannot be evaluated!");
             }*/
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
-                throw new RuntimeException("Invalid operation!");
+                throw new RuntimeException(MessageConstants.INVALID_INPUT_MESSAGE);
             }
 
             rightSide = getSideValue(right, typeRight);
             leftSide = getSideValue(left, typeLeft);
 
-            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Invalid operation!")) {
-                return  rightSide;
-            }
-            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Invalid operation!")) {
-                return  leftSide;
-            }
             boolean result;
             if(typeRight == SideType.NUMBER) {
                 result = AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
+            } else if(data.equals("||") || data.equals("&&")) {
+                result = BooleanRpnVerifier.executeBooleanOperation(leftSide, rightSide, data);
             } else {
                 result = AbstractRpnVerifier.compare(leftSide, rightSide, data);
             }
@@ -183,7 +185,7 @@ public class RpnStatementVerifier implements StatementVerifier {
         if(containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
-        throw new RuntimeException("Invalid mix of operations!");
+        throw new RuntimeException(MessageConstants.OPERATION_MIX_MESSAGE);
     }
 
     private void checkInput(String userInput) {

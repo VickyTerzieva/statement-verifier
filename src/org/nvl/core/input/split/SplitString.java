@@ -1,5 +1,7 @@
 package src.org.nvl.core.input.split;
 
+import src.org.nvl.MessageConstants;
+
 import java.util.ArrayList;
 
 public class SplitString {
@@ -52,13 +54,9 @@ public class SplitString {
         return result.toArray(new String[result.size()]);
     }
 
-    public int getPosition() {
-        return position;
-    }
-
     public String getNthElement(int n) {
         if (n >= splitInput.length) {
-            throw new RuntimeException("It's empty! ");
+            throw new RuntimeException(MessageConstants.EMPTY_STACK_MESSAGE);
         }
 
         return splitInput[n];
@@ -68,24 +66,8 @@ public class SplitString {
         return splitInput;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public String getCurrentElement() {
         return getNthElement(position);
-    }
-
-    public void setNthElement(int n, String value) {
-        if (n >= splitInput.length) {
-            throw new RuntimeException("It's empty! ");
-        }
-
-        splitInput[n] = value;
-    }
-
-    public void setCurrentElement(String value) {
-        setNthElement(position, value);
     }
 
     public boolean isEmpty() {

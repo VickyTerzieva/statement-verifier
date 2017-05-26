@@ -8,12 +8,8 @@ import src.org.nvl.core.responder.processor.RequestProcessor;
 import src.org.nvl.core.responder.processor.RequestProcessorImpl;
 import src.org.nvl.core.statement.RpnStatementVerifier;
 import src.org.nvl.core.statement.StatementVerifier;
-import src.org.nvl.core.variable.definition.VariableDefinitionParser;
-import src.org.nvl.core.variable.definition.VariableDefinitionParserImpl;
 import src.org.nvl.core.variable.manager.MapVariableManager;
 import src.org.nvl.core.variable.manager.VariableManager;
-import src.org.nvl.core.variable.type.VariableTypeParser;
-import src.org.nvl.core.variable.type.VariableTypeParserImpl;
 import src.org.nvl.ui.GraphicalUserInterface;
 import src.org.nvl.ui.SwingGraphicalUserInterface;
 
@@ -27,10 +23,8 @@ public class GuiStatementVerifier {
 
     public GuiStatementVerifier() {
         VariableManager variableManager = new MapVariableManager(new HashMap<>());
-        VariableTypeParser typeParser = new VariableTypeParserImpl();
         StatementVerifier statementVerifier = new RpnStatementVerifier(variableManager);
-        VariableDefinitionParser variableDefinitionParser = new VariableDefinitionParserImpl();
-        RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, typeParser, variableDefinitionParser, variableManager);
+        RequestProcessor requestProcessor = new RequestProcessorImpl(statementVerifier, variableManager);
 
         InputTypeDeterminer typeDeterminer = new SimpleInputTypeDeterminer(variableManager);
         Responder responder = new ResponderImpl(typeDeterminer, requestProcessor, variableManager);

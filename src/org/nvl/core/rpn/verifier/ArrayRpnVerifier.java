@@ -6,12 +6,12 @@
 package src.org.nvl.core.rpn.verifier;
 
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
-import src.org.nvl.core.variable.type.VariableTypeParserImpl;
+import src.org.nvl.core.variable.Type;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+import static src.org.nvl.MessageConstants.*;
 
 /**
  * @author niki
@@ -114,12 +114,12 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         }
         String left = stack.pop();      //left operand
 
-        if (VariableTypeParserImpl.isNumber(left))   //if the left operand is a number
+        if (Type.isNumber(left))   //if the left operand is a number
         {
             leftIsNumber = true;
         }
 
-        if (VariableTypeParserImpl.isNumber(right))  //if the right operand is a number
+        if (Type.isNumber(right))  //if the right operand is a number
         {
             rightIsNumber = true;
         }
@@ -146,12 +146,12 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                 return Integer.toString(l + r);
             case "-":
                 if(l - r < 0) {
-                    throw new RuntimeException("Negative numbers are not supported!");
+                    throw new RuntimeException(NEGATIVE_NUMBERS_MESSAGE);
                 }
                 return Integer.toString(l - r);
             case "/":
                 if(right.equals(0)) {
-                    throw new RuntimeException("Cannot divide by zero!");
+                    throw new RuntimeException(ZERO_DIVISION_MESSAGE);
                 }
                 return Integer.toString(l / r);
             default:
@@ -212,8 +212,8 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         }
         String left = stack.pop();  //left array
 
-        if(!right.matches("\\{\\d+(,\\d+)*\\}") || !left.matches("\\{\\d+(,\\d+)*\\}")) {
-            throw new RuntimeException("Concatenation is only possible between two arrays!");
+        if(!Type.isArray(right) || !Type.isArray(left)) {
+            throw new RuntimeException(CONCATENATION_ERROR_MESSAGE);
         }
 
         StringBuilder result = new StringBuilder(left.substring(0, left.length() - 1));     //get the first element, without the closing } in the result

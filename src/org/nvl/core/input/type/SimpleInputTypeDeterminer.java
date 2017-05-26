@@ -1,7 +1,9 @@
 package src.org.nvl.core.input.type;
 
+import src.org.nvl.MessageConstants;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.tree.InputTree;
+import src.org.nvl.core.variable.Type;
 import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.HashSet;
@@ -29,17 +31,17 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
                 }
             }
             if (numberOfUnevaluatedVariablesLeft > 1) {
-                throw new RuntimeException("Cannot define more than one variables at once!");
+                throw new RuntimeException(MessageConstants.IMPOSSIBLE_MULTIPLE_DEFINITION_MESSAGE);
             }
             if(numberOfUnevaluatedVariablesLeft == 0 && numberOfEvaluatedVariablesLeft > 1) {
-                throw new RuntimeException("Cannot redefine more than one variables at once!");
+                throw new RuntimeException(MessageConstants.IMPOSSIBLE_MULTIPLE_REDEFINITION_MESSAGE);
             }
             if(numberOfUnevaluatedVariablesLeft == 0 && numberOfEvaluatedVariablesLeft == 0) {
-                throw new RuntimeException("Invalid operation!");
+                throw new RuntimeException(MessageConstants.INVALID_INPUT_MESSAGE);
             }
             for (int i = 0; i < variablesRight.length && variablesRight[i] != null; i++) {
                 if (variablesRight[i] == InputType.NEW_VARIABLE) {
-                    throw new RuntimeException("Right side of definition should not contain unevaluated variables!");
+                    throw new RuntimeException(MessageConstants.UNEVALUATED_RIGHT_SIDE_MESSAGE);
                 }
             }
             if(numberOfUnevaluatedVariablesLeft == 1) {
@@ -60,8 +62,7 @@ public class SimpleInputTypeDeterminer implements InputTypeDeterminer {
         int i = 0;
         while (!splitString.isEmpty()) {
             String element = splitString.getCurrentElement();
-            if(element.matches("[\\w]+") && !element.matches("[\\d]+") &&
-                    !element.equalsIgnoreCase("true") && !element.equalsIgnoreCase("false")) {
+            if(Type.isWord(element) && !Type.isNumber(element) && !Type.isBoolean(element)) {
                 inputType = determineVariableDefinition(element);
                 if(inputType == InputType.NEW_VARIABLE && !unevaluatedVariables.contains(element)) {
                     inputTypes[i] = inputType;

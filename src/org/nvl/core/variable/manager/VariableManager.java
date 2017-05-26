@@ -10,8 +10,6 @@ import java.util.Set;
 public interface VariableManager {
     void addVariable(EvaluatedVariable variable);
 
-    void removeVariable(String name);
-
     void updateVariable(EvaluatedVariable variable);
 
     boolean containsVariable(String name);

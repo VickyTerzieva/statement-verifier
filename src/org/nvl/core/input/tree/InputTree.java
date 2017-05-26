@@ -3,14 +3,14 @@ package src.org.nvl.core.input.tree;
 import src.org.nvl.core.input.invalid_operator_usage.InvalidOperatorUsage;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.Type;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.manager.MapVariableManager;
 import src.org.nvl.core.variable.manager.VariableManager;
 
 import java.util.*;
 
-import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
-import static src.org.nvl.MessageConstants.INVALID_OPERATOR_FORMAT;
+import static src.org.nvl.MessageConstants.*;
 
 /**
  * Created by Vicky on 13.5.2017 г..
@@ -73,8 +73,8 @@ public class InputTree {
         InputTree inputTree;
         input = replaceBracketExpressions(input);
         inputTree = splitInput(input);
-        if(inputTree.isLeaf()) {
-            throw new RuntimeException("Expression cannot be evaluated to true or false!");
+        if(inputTree.isLeaf() && !Type.isBoolean(inputTree.toString())) {
+            throw new RuntimeException(UNEVALUATABLE_EXPRESSION_MESSAGE);
         }
         return inputTree;
     }
@@ -137,7 +137,7 @@ public class InputTree {
                 if(Arrays.stream(operators).parallel().anyMatch(bracketExpression::contains)) {
                     String[] splitStr = splitString.getSplitInput();
                     if(splitStr.length != 1) { // contains another operator which is not boolean or contains expressions without boolean operator between them
-                        throw new RuntimeException("Invalid combination of operators! ");
+                        throw new RuntimeException(OPERATION_MIX_MESSAGE);
                     }
                 }
                 String var = splitString.getCurrentElement();
@@ -237,7 +237,7 @@ public class InputTree {
     }
 
     private boolean isVariable(String input) {
-        boolean isBooleanReservedWord = input.equalsIgnoreCase("FALSE") || input.equalsIgnoreCase("TRUE");
+        boolean isBooleanReservedWord = Type.isBoolean(input);
         boolean isWord = Character.isLetter(input.charAt(0));
         return isWord && !isBooleanReservedWord;
     }

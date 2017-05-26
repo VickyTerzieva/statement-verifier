@@ -1,6 +1,6 @@
 package src.org.nvl.core.variable.definition;
 
-import jdk.nashorn.internal.runtime.regexp.RegExp;
+import src.org.nvl.MessageConstants;
 import src.org.nvl.core.Pair;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.type.SideType;
@@ -50,7 +50,7 @@ public class NewVariable {
                 String toCalculate = replacePlusMinusVar(splitLeftSide[i], varName);
                 int index = toCalculate.indexOf(varName);
                 if(toCalculate.indexOf(varName, index + 1) != -1) {
-                    throw new RuntimeException("Only linear definitions supported!");
+                    throw new RuntimeException(MessageConstants.LINEAR_DEFINITION_MESSAGE);
                 }
                 if(toCalculate.length() > 1 && index == toCalculate.length() - 1){
                     toCalculate = toCalculate.substring(0, toCalculate.length() - 2);
@@ -113,7 +113,7 @@ public class NewVariable {
         String resultTrue = rpnVerifier.calculateRpn(rpnTrue);
         String resultFalse = rpnVerifier.calculateRpn(rpnFalse);
         if(resultTrue.equalsIgnoreCase(rightSide) && resultFalse.equalsIgnoreCase(rightSide)) {
-            throw new RuntimeException("Multiple possible answers!");
+            throw new RuntimeException(MessageConstants.MULTIPLE_POSSIBLE_ANSWERS_MESSAGE);
         }
         if(resultTrue.equalsIgnoreCase(rightSide)) {
             return "true";
@@ -121,7 +121,7 @@ public class NewVariable {
         if(resultFalse.equalsIgnoreCase(rightSide)) {
             return "false";
         }
-        throw new RuntimeException("Impossible operation!");
+        throw new RuntimeException(MessageConstants.IMPOSSIBLE_OPERATION_MESSAGE);
     }
 
     //if varName = f and expression contains 'false', the 'f' in 'false' should not be replaced

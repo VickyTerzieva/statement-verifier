@@ -5,13 +5,13 @@
  */
 package src.org.nvl.core.rpn.verifier;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
-import src.org.nvl.core.variable.type.VariableTypeParserImpl;
+import src.org.nvl.core.variable.Type;
 
 import java.util.Stack;
 
+import static src.org.nvl.MessageConstants.IMPOSSIBLE_OPERATION_MESSAGE;
 import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 
 /**
@@ -108,7 +108,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
     //divide if possible
     private void divide(Stack<String> stack) {
         String right = stack.pop();
-        if(stack.empty() || !right.matches("\\d+") || right.equals("0")) {
+        if(stack.empty() || !Type.isNumber(right) || right.equals("0")) {
             throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
         String left = stack.pop();
@@ -118,7 +118,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         //the substring starts at index 1 (without quotation mark) and continues (left.length()-2)/numberOfOccurences) chars
         if(((left.length()- 2) % numberOfOccurences != 0) ||
                 (countMatches(left, left.substring(1, 1 + (left.length() - 2)/numberOfOccurences)) != numberOfOccurences)) {
-            throw new RuntimeException("Impossible operation!");
+            throw new RuntimeException(IMPOSSIBLE_OPERATION_MESSAGE);
         }
         stack.push("'" + left.substring(1, 1 + (left.length() - 2)/numberOfOccurences) + "'");
     }
@@ -132,7 +132,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         String left = stack.pop();
 
         if(right.length() > 0 && !left.endsWith(right.substring(1, right.length()))) {
-            throw new RuntimeException("Impossible operation!");
+            throw new RuntimeException(IMPOSSIBLE_OPERATION_MESSAGE);
         }
         stack.push(left.substring(0, left.length() - (right.length() - 1)) + "'");
     }
@@ -156,7 +156,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         Object left, right;            //values for the operation
         int count;      //how many times to concatenate
         String strToConcatenate;
-        if (VariableTypeParserImpl.isNumber(stack.peek())) {   //if right is number
+        if (Type.isNumber(stack.peek())) {   //if right is number
             right = Integer.parseInt(stack.pop());
             rightIsNumber = true;
         } else {
@@ -164,9 +164,9 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         }
 
         if(stack.empty()) {
-            throw new RuntimeException("Invalid input");
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
         }
-        if (VariableTypeParserImpl.isNumber(stack.peek())) {
+        if (Type.isNumber(stack.peek())) {
             left = Integer.parseInt(stack.pop());          //if left is number
             leftIsNumber = true;
         } else {

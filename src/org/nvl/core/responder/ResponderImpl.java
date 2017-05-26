@@ -13,6 +13,7 @@ import src.org.nvl.core.rpn.Rpn;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
 import src.org.nvl.core.statement.RpnStatementVerifier;
 import src.org.nvl.core.variable.EvaluatedVariable;
+import src.org.nvl.core.variable.Type;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.definition.NewVariable;
 import src.org.nvl.core.variable.manager.VariableManager;
@@ -40,10 +41,10 @@ public class ResponderImpl implements Responder {
     public String process(String userInput) {
         String response = "";
 
-        userInput = InputSpaceFixer.fix(userInput);
-        checkInput(userInput);
+        String spaceFixedInput = InputSpaceFixer.fix(userInput);
+        checkInput(spaceFixedInput);
         InputTree inputTree = new InputTree();
-        inputTree = inputTree.createTree(userInput);
+        inputTree = inputTree.createTree(spaceFixedInput);
         InputType inputType = typeDeterminer.determineType(inputTree);
 
         if (inputType == InputType.NEW_VARIABLE || inputType == InputType.EXISTING_VARIABLE) {
@@ -54,7 +55,7 @@ public class ResponderImpl implements Responder {
                 throw new RuntimeException(INVALID_INPUT_MESSAGE);
             }
             if(!leftSide.isLeaf() && !leftSide.getValue().matches("&&|\\|\\|")) { //the variable is part of comparison expression
-                throw new RuntimeException("Impossible to initialize the variable!");
+                throw new RuntimeException(IMPOSSIBLE_INITIALIZATION_MESSAGE);
             }
             rightSide = variableSubstituter.substituteVariables(rightSide);
             if(inputType == InputType.NEW_VARIABLE) {
@@ -63,15 +64,14 @@ public class ResponderImpl implements Responder {
             SideType typeRight = getType(rightSide);
             SideType typeLeft = getType(leftSide);
             if(!typesMatch(leftSide.toString(), typeLeft, typeRight) && typeLeft != SideType.UNEVALUATED) {
-                throw new RuntimeException("Impossible to initialize/update the variable!");
+                throw new RuntimeException(IMPOSSIBLE_INITIALIZATION_MESSAGE);
             }
             String rightSideValue = getSideValue(rightSide, typeRight);
             addUpdateVar(typeRight, rightSideValue, leftSide.toString(), inputType);
             response = (inputType == InputType.NEW_VARIABLE) ?  NEW_VARIABLE_MESSAGE : EXISTING_VARIABLE_MESSAGE;
         } else if (inputType == InputType.STATEMENT) {
-            inputTree = variableSubstituter.substituteVariables(inputTree);
-            boolean verifiedInput = requestProcessor.verifyStatement(userInput);
-            response = String.format(STATEMENT_FORMAT, inputTree.toString(), verifiedInput);
+            boolean verifiedInput = requestProcessor.verifyStatement(spaceFixedInput);
+            response = String.format(STATEMENT_FORMAT, userInput, String.valueOf(verifiedInput).toUpperCase());
         }
 
         return response;
@@ -99,7 +99,7 @@ public class ResponderImpl implements Responder {
         SplitString splitString = new SplitString(leftSide);
         while(!splitString.isEmpty()) {
             String currentElement = splitString.getCurrentElement();
-            if(!currentElement.matches("[\\d]+") && currentElement.matches("[\\w]+") && !variableManager.containsVariable(currentElement)) {
+            if(!Type.isNumber(currentElement) && Type.isWord(currentElement) && !variableManager.containsVariable(currentElement)) {
                 return true;
             }
             splitString.nextPosition();
@@ -120,18 +120,12 @@ public class ResponderImpl implements Responder {
                 throw new RuntimeException("Cannot be evaluated!");
             }*/
             if((typeLeft != typeRight) || (data.matches("<=|>=|<|>") && typeLeft == SideType.BOOLEAN)) {
-                throw new RuntimeException("Invalid operation!");
+                throw new RuntimeException(INVALID_OPERATION_MESSAGE);
             }
 
             rightSide = getSideValue(right, typeRight);
             leftSide = getSideValue(left, typeLeft);
 
-            if(rightSide.matches("(.*)Cannot be evaluated!") || rightSide.matches("(.*)Invalid operation!")) {
-                return  rightSide;
-            }
-            if(leftSide.matches("(.*)Cannot be evaluated!") || leftSide.matches("(.*)Invalid operation!")) {
-                return  leftSide;
-            }
             boolean result;
             if(typeRight == SideType.NUMBER) {
                 result = AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
@@ -160,13 +154,20 @@ public class ResponderImpl implements Responder {
     }
 
     private SideType getType(InputTree inputTree) {
-        if(!inputTree.isLeaf()) {  // value of inputTree data is an operator
-            return SideType.BOOLEAN;
-        }
         String expression = inputTree.getValue();
         RpnStatementVerifier rpnStatementVerifier = new RpnStatementVerifier(variableManager);
         rpnStatementVerifier.checkType(expression);
         int numberOfOperations = rpnStatementVerifier.getNumberOfOperations();
+        if(!inputTree.isLeaf()) {  // value of inputTree data is an operator
+            if(inputTree.getValue().equals("&&") || inputTree.getValue().equals("||")) {
+                rpnStatementVerifier.checkType(inputTree.getValue());
+                if(numberOfOperations != 1 || !rpnStatementVerifier.isBooleanOperation()) {
+                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                }
+            }
+            return SideType.BOOLEAN;
+        }
+
         if(rpnStatementVerifier.isBooleanOperation() && numberOfOperations == 1) {
             return SideType.BOOLEAN;
         }
@@ -185,7 +186,7 @@ public class ResponderImpl implements Responder {
         if(rpnStatementVerifier.containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
-        throw new RuntimeException("Invalid mix of operations!");
+        throw new RuntimeException(OPERATION_MIX_MESSAGE);
     }
 
     private void addUpdateVar(SideType typeRight, String rightSideValue, String leftSide, InputType inputType) {

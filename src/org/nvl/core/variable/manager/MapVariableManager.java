@@ -26,9 +26,6 @@ public class MapVariableManager implements VariableManager {
         }
         EvaluatedVariable variableToUpdate = allVariables.get(variable.getName());
         variableToUpdate.setValue(variable.getValue());
-        if(variableToUpdate.getType() != variable.getType()) {
-            throw new RuntimeException("Variable type conversion not possible!");
-        }
     }
 
     @Override
@@ -46,7 +43,6 @@ public class MapVariableManager implements VariableManager {
         return new HashSet<>(allVariables.values());
     }
 
-    //TODO - try to think of better names
     @Override
     public String freeNameOfVariable(Set<String> variablesInInput) {
         String lettersArray = "abcdefghijklmnopqrstuvwxyz";

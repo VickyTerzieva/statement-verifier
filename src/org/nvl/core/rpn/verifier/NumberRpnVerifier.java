@@ -6,12 +6,14 @@
 package src.org.nvl.core.rpn.verifier;
 
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
-import src.org.nvl.core.variable.type.VariableTypeParserImpl;
+import src.org.nvl.core.variable.Type;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
 
 import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+import static src.org.nvl.MessageConstants.NEGATIVE_NUMBERS_MESSAGE;
+import static src.org.nvl.MessageConstants.ZERO_DIVISION_MESSAGE;
 
 /**
  * @author niki
@@ -81,7 +83,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
         Stack<Double> stack = new Stack<>();  //stack for the numbers
         while (tokens.hasMoreTokens()) {   //while we have more tokens
             String current = tokens.nextToken();   //get current token
-            if (VariableTypeParserImpl.isNumber(current)) {   //if the token is a number, push it in the stack
+            if (Type.isNumber(current)) {   //if the token is a number, push it in the stack
                 stack.push(Double.parseDouble(current));
             } else {    //else it is operation
                 Double right = stack.pop();  //get the right number
@@ -97,7 +99,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                         if(left - right > 0) {
                             stack.push(left - right);
                         } else {
-                            throw new RuntimeException("Negative numbers are not supported!");
+                            throw new RuntimeException(NEGATIVE_NUMBERS_MESSAGE);
                         }
                         break;
                     case "*":
@@ -105,7 +107,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                         break;
                     case "/":
                         if(right == 0) {
-                            throw new RuntimeException("Cannot divide by zero!");
+                            throw new RuntimeException(ZERO_DIVISION_MESSAGE);
                         }
                         stack.push(left / right);
                         break;

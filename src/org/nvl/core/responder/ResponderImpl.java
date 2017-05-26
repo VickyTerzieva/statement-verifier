@@ -217,18 +217,16 @@ public class ResponderImpl implements Responder {
         }
     }
 
-    private String getVariable(String leftSide) {
-        String var = "";
-        for(int i = 0; i < leftSide.length(); i++) {
-            if((leftSide.charAt(i) >= 'a' && leftSide.charAt(i) <= 'z') ||
-                    (leftSide.charAt(i) >= 'A' && leftSide.charAt(i) <= 'Z')) {
-               int indexEnd = leftSide.indexOf(" ", i);
-               indexEnd = (indexEnd == -1) ? leftSide.length() : indexEnd;
-                var = leftSide.substring(i, indexEnd);
-                break;
+    public static String getVariable(String leftSide) {
+        SplitString splitString = new SplitString(leftSide);
+        while(!splitString.isEmpty()) {
+            String currentElement = splitString.getCurrentElement();
+            if(Type.isWord(currentElement) && !Type.isNumber(currentElement) && !Type.isBoolean(currentElement)) {
+                return currentElement;
             }
+            splitString.nextPosition();
         }
-        return var;
+        return "";
     }
 
     private void checkInput(String userInput) {

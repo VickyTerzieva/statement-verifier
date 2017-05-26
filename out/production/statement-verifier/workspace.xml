@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e53705e2-a001-4aa8-98ff-9413e1bf6f26" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/org/nvl/core/statement/UndefinedVariablesStatementTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/statement-verifier/workspace.xml" afterPath="$PROJECT_DIR$/out/production/statement-verifier/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" afterPath="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" afterPath="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
     </list>
     <ignored path="statement-verifier.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,12 +37,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="InputTree.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java">
+      <file leaf-file-name="RpnStatementVerifier.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="884">
-              <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
+            <state relative-caret-position="1207">
+              <caret line="79" column="52" selection-start-line="79" selection-start-column="48" selection-end-line="79" selection-end-column="52" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NewVariable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResponderImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="918">
+              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UndefinedVariablesStatementTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/UndefinedVariablesStatementTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="748">
+              <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1426#1427#0" expanded="true" />
+                <element signature="e#1502#1503#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -42,28 +86,18 @@
       <file leaf-file-name="ResponderTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/org/nvl/core/responder/ResponderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="170" column="64" selection-start-line="170" selection-start-column="64" selection-end-line="170" selection-end-column="64" />
+            <state relative-caret-position="132">
+              <caret line="156" column="69" selection-start-line="156" selection-start-column="69" selection-end-line="156" selection-end-column="69" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StatementVerifierTest_number.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_number.java">
+      <file leaf-file-name="StatementVerifierTest_array.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StatementVerifierTest_string.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_string.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
+            <state relative-caret-position="136">
+              <caret line="19" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -92,7 +126,6 @@
       <list>
         <option value="$PROJECT_DIR$/src/GuiStatementVerifier.java" />
         <option value="$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java" />
-        <option value="$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_boolean.java" />
         <option value="$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_number.java" />
         <option value="$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_string.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/EvaluatedVariable.java" />
@@ -104,7 +137,6 @@
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/manager/ListVariableManager.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/Rpn.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessor.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/input/substituter/VariableSubstituter.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/Pair.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/statement/StatementVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/input/invalid_operator_usage/InvalidOperatorUsage.java" />
@@ -117,17 +149,21 @@
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/manager/VariableManager.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/type/VariableTypeParserImpl.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/UnevaluatedVariable.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/variable/Type.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/input/type/SimpleInputTypeDeterminer.java" />
+        <option value="$PROJECT_DIR$/test/org/nvl/core/responder/ResponderTest.java" />
+        <option value="$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_boolean.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/input/substituter/VariableSubstituter.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/statement/UnevaluatedVariablesStatement.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/MessageConstants.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java" />
-        <option value="$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java" />
-        <option value="$PROJECT_DIR$/test/org/nvl/core/responder/ResponderTest.java" />
+        <option value="$PROJECT_DIR$/test/org/nvl/core/statement/UndefinedVariablesStatementTest.java" />
+        <option value="$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java" />
         <option value="$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java" />
       </list>
     </option>
@@ -163,7 +199,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -254,7 +290,73 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="variable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="variable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="definition" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -298,6 +400,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="rpn" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statement-verifier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nvl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="responder" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -305,7 +433,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -317,34 +445,8 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_directory_selection" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="JUnit.ResponderTest (1)">
-    <configuration default="false" name="ResponderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="src.org.nvl.core.responder.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="statement-verifier" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="org.nvl.core.responder" />
-      <option name="MAIN_CLASS_NAME" value="src.org.nvl.core.responder.ResponderTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="StatementVerifierTest_array" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ResponderTest">
+    <configuration default="false" name="StatementVerifierTest_boolean" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="src.org.nvl.core.statement.*" />
@@ -355,7 +457,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="org.nvl.core.statement" />
-      <option name="MAIN_CLASS_NAME" value="src.org.nvl.core.statement.StatementVerifierTest_array" />
+      <option name="MAIN_CLASS_NAME" value="src.org.nvl.core.statement.StatementVerifierTest_boolean" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -422,7 +524,7 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="false" name="ResponderTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="ResponderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="src.org.nvl.core.responder.*" />
@@ -434,6 +536,32 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="org.nvl.core.responder" />
       <option name="MAIN_CLASS_NAME" value="src.org.nvl.core.responder.ResponderTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="UndefinedVariablesStatementTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="org.nvl.core.statement.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="statement-verifier" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.nvl.core.statement" />
+      <option name="MAIN_CLASS_NAME" value="org.nvl.core.statement.UndefinedVariablesStatementTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -683,19 +811,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ResponderTest" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_array" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_number" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_string" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ResponderTest (1)" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_boolean" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_number" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_string" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ResponderTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.UndefinedVariablesStatementTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.ResponderTest (1)" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_string" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_number" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_array" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.ResponderTest" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ResponderTest" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.UndefinedVariablesStatementTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_string" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_number" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.StatementVerifierTest_boolean" />
       </list>
     </recent_temporary>
   </component>
@@ -716,35 +844,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ResponderTest - 2017.05.26 at 17h 47m 36s.xml">
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 26m 46s.xml">
       <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ResponderTest - 2017.05.26 at 17h 48m 03s.xml">
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 28m 06s.xml">
       <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ResponderTest - 2017.05.26 at 17h 48m 58s.xml">
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 28m 14s.xml">
       <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ResponderTest - 2017.05.26 at 17h 49m 33s.xml">
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 28m 40s.xml">
       <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ResponderTest_(1) - 2017.05.26 at 17h 52m 19s.xml">
-      <configuration name="ResponderTest (1)" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 28m 47s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StatementVerifierTest_array - 2017.05.26 at 17h 49m 45s.xml">
-      <configuration name="StatementVerifierTest_array" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 38m 27s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StatementVerifierTest_array - 2017.05.26 at 17h 49m 59s.xml">
-      <configuration name="StatementVerifierTest_array" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 38m 41s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StatementVerifierTest_number - 2017.05.26 at 17h 51m 01s.xml">
-      <configuration name="StatementVerifierTest_number" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 40m 26s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StatementVerifierTest_string - 2017.05.26 at 17h 51m 09s.xml">
-      <configuration name="StatementVerifierTest_string" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 41m 42s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="StatementVerifierTest_string - 2017.05.26 at 17h 52m 13s.xml">
-      <configuration name="StatementVerifierTest_string" configurationId="JUnit" />
+    <history-entry file="ResponderTest - 2017.05.27 at 00h 41m 50s.xml">
+      <configuration name="ResponderTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -755,7 +883,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5351391" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40787402" sideWeight="0.4487555" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.46486092" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -766,7 +894,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40787402" sideWeight="0.6654466" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40787402" sideWeight="0.5512445" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -794,7 +922,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java</url>
-          <line>42</line>
+          <line>41</line>
           <properties />
           <option name="timeStamp" value="80" />
         </line-breakpoint>
@@ -806,57 +934,39 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java</url>
-          <line>114</line>
+          <line>115</line>
           <properties />
           <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>189</line>
+          <line>199</line>
           <properties />
           <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>166</line>
+          <line>176</line>
           <properties />
           <option name="timeStamp" value="181" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>158</line>
+          <line>168</line>
           <properties />
           <option name="timeStamp" value="188" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java</url>
-          <line>151</line>
+          <line>157</line>
           <properties />
           <option name="timeStamp" value="209" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java</url>
-          <line>162</line>
+          <line>165</line>
           <properties />
           <option name="timeStamp" value="249" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
-          <line>144</line>
-          <properties />
-          <option name="timeStamp" value="259" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>127</line>
-          <properties />
-          <option name="timeStamp" value="291" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java</url>
-          <line>109</line>
-          <properties />
-          <option name="timeStamp" value="292" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java</url>
@@ -864,8 +974,56 @@
           <properties />
           <option name="timeStamp" value="293" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java</url>
+          <line>73</line>
+          <properties />
+          <option name="timeStamp" value="296" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java</url>
+          <line>78</line>
+          <properties />
+          <option name="timeStamp" value="297" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_number.java</url>
+          <line>73</line>
+          <properties />
+          <option name="timeStamp" value="314" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_boolean.java</url>
+          <line>58</line>
+          <properties />
+          <option name="timeStamp" value="319" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_string.java</url>
+          <line>43</line>
+          <properties />
+          <option name="timeStamp" value="322" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java</url>
+          <line>266</line>
+          <properties />
+          <option name="timeStamp" value="336" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java</url>
+          <line>258</line>
+          <properties />
+          <option name="timeStamp" value="339" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/org/nvl/core/responder/ResponderTest.java</url>
+          <line>138</line>
+          <properties />
+          <option name="timeStamp" value="345" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="294" />
+      <option name="time" value="349" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -874,9 +1032,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/value/VariableValueParser.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/value/VariableValueParserImpl.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/manager/ListVariableManager.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_91/src.zip!/java/util/StringTokenizer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-341">
@@ -891,31 +1046,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/ui/SwingGraphicalUserInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_boolean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/invalid_operator_usage/InvalidOperatorUsage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/split/SplitString.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -944,17 +1078,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="33" column="93" selection-start-line="33" selection-start-column="93" selection-end-line="33" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessorImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="15" column="69" selection-start-line="15" selection-start-column="69" selection-end-line="15" selection-end-column="69" />
-          <folding>
-            <element signature="method#RequestProcessorImpl#0;class#RequestProcessorImpl#0" expanded="false" />
-            <element signature="method#updateVariable#0;class#RequestProcessorImpl#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1019,27 +1142,6 @@
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/VariableDefinitionParserImpl.java" />
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/VariableDefinitionParser.java" />
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/UnevaluatedVariable.java" />
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/EvaluatedVariable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/GuiStatementVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="25" column="88" selection-start-line="25" selection-start-column="88" selection-end-line="25" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/MessageConstants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="96" selection-start-line="21" selection-start-column="96" selection-end-line="21" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/org/junit/internal/runners/statements/ExpectException.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="235">
@@ -1047,25 +1149,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="86" column="38" selection-start-line="86" selection-start-column="38" selection-end-line="86" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/Type.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="211">
           <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="85" column="55" selection-start-line="85" selection-start-column="55" selection-end-line="85" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -1083,56 +1170,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/org/junit/Assert.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
           <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/substituter/VariableSubstituter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" column="28" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="214" column="57" selection-start-line="214" selection-start-column="57" selection-end-line="214" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/AbstractRpnVerifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="30" column="50" selection-start-line="30" selection-start-column="50" selection-end-line="30" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -1144,57 +1185,199 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/split/SplitString.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="116">
-          <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-          <folding />
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/EvaluatedVariable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="120" column="13" selection-start-line="120" selection-start-column="13" selection-end-line="120" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="178">
+          <caret line="59" column="15" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
+          <folding>
+            <element signature="e#1463#1464#0" expanded="false" />
+            <element signature="e#1524#1525#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java">
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/AbstractRpnVerifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+        <state relative-caret-position="55">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java">
+    <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_boolean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="884">
-          <caret line="74" column="14" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
+        <state relative-caret-position="44">
+          <caret line="47" column="11" selection-start-line="47" selection-start-column="11" selection-end-line="47" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_number.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state relative-caret-position="314">
+          <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/UnevaluatedVariablesStatement.java" />
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/GuiStatementVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/substituter/VariableSubstituter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/MessageConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="22" column="80" selection-start-line="22" selection-start-column="80" selection-end-line="22" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/input/tree/InputTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1303">
+          <caret line="239" column="0" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/processor/RequestProcessorImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding>
+            <element signature="method#RequestProcessorImpl#0;class#RequestProcessorImpl#0" expanded="false" />
+            <element signature="method#updateVariable#0;class#RequestProcessorImpl#0" expanded="false" />
+            <element signature="e#991#992#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/ui/SwingGraphicalUserInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/NumberRpnVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1129">
+          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/StringRpnVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2108">
+          <caret line="136" column="9" selection-start-line="136" selection-start-column="9" selection-end-line="136" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/BooleanRpnVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="122" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/rpn/verifier/ArrayRpnVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="230" column="0" selection-start-line="230" selection-start-column="0" selection-end-line="230" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_array.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="19" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/StatementVerifierTest_string.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
+        <state relative-caret-position="475">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/statement/RpnStatementVerifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="79" column="52" selection-start-line="79" selection-start-column="48" selection-end-line="79" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/org/nvl/core/statement/UndefinedVariablesStatementTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1426#1427#0" expanded="true" />
+            <element signature="e#1502#1503#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/variable/definition/NewVariable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/nvl/core/responder/ResponderImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/org/junit/runners/model/FrameworkMethod.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/org/nvl/core/responder/ResponderTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="170" column="64" selection-start-line="170" selection-start-column="64" selection-end-line="170" selection-end-column="64" />
+        <state relative-caret-position="132">
+          <caret line="156" column="69" selection-start-line="156" selection-start-column="69" selection-end-line="156" selection-end-column="69" />
           <folding />
         </state>
       </provider>

@@ -11,6 +11,7 @@ import src.org.nvl.core.variable.Type;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import static src.org.nvl.MessageConstants.EMPTY_STACK_MESSAGE;
 import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 
 /**
@@ -117,12 +118,18 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 } //end of switch
             }  // end of if/else
         }     //end of while
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         return stack.pop().toString();   //the result is in the stack(last element)
     }   //end of calculate RPN
 
     public static boolean executeBooleanOperation(String leftSide, String rightSide, String data) {
         if(data.equals("||")) {
             return leftSide.equalsIgnoreCase("TRUE") || rightSide.equalsIgnoreCase("TRUE");
+        }
+        if(data.equals("==")) {
+            return leftSide.equalsIgnoreCase(rightSide);
         }
         return leftSide.equalsIgnoreCase("TRUE") && rightSide.equalsIgnoreCase("TRUE");
     }

@@ -4,6 +4,7 @@ import src.org.nvl.MessageConstants;
 import src.org.nvl.core.Pair;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.type.SideType;
+import src.org.nvl.core.responder.ResponderImpl;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.rpn.Rpn;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
@@ -19,25 +20,23 @@ public class NewVariable {
         Pair<String, String> coefficients = getCoefficients(leftSide, varName);
         String toAdd = coefficients.first;
         String toMultiply = coefficients.second;
-        toMultiply = toMultiply.replaceAll("\\*", " * ");
-        AbstractRpnVerifier rpn = Rpn.makeRpn(type);
-        NumberRpnVerifier numberRpnVerifier = new NumberRpnVerifier();
-        if(!toAdd.equals("")) {
-            String rpnSubtract = rpn.createRpn(toAdd);
-            String toSubtract = rpn.calculateRpn(rpnSubtract);
+        Pair<String, String> calculatedCoefficients = getCalculatedCoefficients(toAdd, toMultiply, type);
+        String toSubtract = calculatedCoefficients.first;
+        String toDivideBy = calculatedCoefficients.second;
+
+        if(!toSubtract.equals("")) {
             replacedRightSide = "( " + rightSide + " - " + toSubtract + " )";
         }
-        if(!toMultiply.equals("")) {
-            String rpnDivideBy = numberRpnVerifier.createRpn(toMultiply);
-            String toDivideBy = numberRpnVerifier.calculateRpn(rpnDivideBy);
+        if(!toDivideBy.equals("")) {
             replacedRightSide = replacedRightSide + " / " + toDivideBy;
         }
+
         replacedRightSide = replacedRightSide.replaceAll("[\\s]*\\+ \\-[\\s]*"," - ");
         replacedRightSide = replacedRightSide.replaceAll("[\\s]*\\- \\-[\\s]*"," + ");
         return replacedRightSide;
     }
 
-    private static Pair<String, String> getCoefficients(String leftSide, String varName) {
+    public static Pair<String, String> getCoefficients(String leftSide, String varName) {
         leftSide = leftSide.replaceAll(" \\* ", "*");
         leftSide = leftSide.replaceAll(" \\- ", " + -");
         String[] splitLeftSide = leftSide.split(" \\+ ");
@@ -69,6 +68,37 @@ public class NewVariable {
         String toAdd = concatenate(dontContainVar);
         String toMultiply = concatenate(containVar);
         return new Pair(toAdd, toMultiply);
+    }
+
+    private static Pair<String,String> getCalculatedCoefficients(String toAdd, String toMultiply, SideType type) {
+        if(!ResponderImpl.getVariable(toAdd).equals("") || !ResponderImpl.getVariable(toMultiply).equals("")) {
+            throw new RuntimeException(MessageConstants.UNDETERMINED_VALUE_MESSAGE);
+        }
+        toMultiply = toMultiply.replaceAll("\\*", " * ");
+        String toDivideBy = getToDivideBy(toMultiply);
+        String toSubtract = getToSubtract(toAdd, type);
+
+        return new Pair(toSubtract, toDivideBy);
+    }
+
+    public static String getToDivideBy(String toMultiply) {
+        NumberRpnVerifier numberRpnVerifier = new NumberRpnVerifier();
+        String toDivideBy = "";
+        if(!toMultiply.equals("")) {
+            String rpnDivideBy = numberRpnVerifier.createRpn(toMultiply);
+            toDivideBy = numberRpnVerifier.calculateRpn(rpnDivideBy);
+        }
+        return toDivideBy;
+    }
+
+    public static String getToSubtract(String toAdd, SideType type) {
+        AbstractRpnVerifier rpn = Rpn.makeRpn(type);
+        String toSubtract = "";
+        if(!toAdd.equals("")) {
+            String rpnSubtract = rpn.createRpn(toAdd);
+            toSubtract = rpn.calculateRpn(rpnSubtract);
+        }
+        return toSubtract;
     }
 
     private static String concatenate(String[] expressions) {
@@ -105,13 +135,9 @@ public class NewVariable {
 
     //only two possibilities, we try with both
     public static String replaceRightSideBoolean(String rightSide, String leftSide, String varName) {
-        String leftSideTrue = replace(leftSide, varName, "true");
-        String leftSideFalse = replace(leftSide, varName, "false");
-        BooleanRpnVerifier rpnVerifier = new BooleanRpnVerifier();
-        String rpnTrue = rpnVerifier.createRpn(leftSideTrue);
-        String rpnFalse = rpnVerifier.createRpn(leftSideFalse);
-        String resultTrue = rpnVerifier.calculateRpn(rpnTrue);
-        String resultFalse = rpnVerifier.calculateRpn(rpnFalse);
+        Pair<String, String> bool = isAlwaysTrue(leftSide, varName);
+        String resultTrue = bool.first;
+        String resultFalse = bool.second;
         if(resultTrue.equalsIgnoreCase(rightSide) && resultFalse.equalsIgnoreCase(rightSide)) {
             throw new RuntimeException(MessageConstants.MULTIPLE_POSSIBLE_ANSWERS_MESSAGE);
         }
@@ -138,5 +164,16 @@ public class NewVariable {
             splitString.nextPosition();
         }
         return result.toString();
+    }
+
+    public static Pair<String, String> isAlwaysTrue(String side, String varName) {
+        String leftSideTrue = replace(side, varName, "true");
+        String leftSideFalse = replace(side, varName, "false");
+        BooleanRpnVerifier rpnVerifier = new BooleanRpnVerifier();
+        String rpnTrue = rpnVerifier.createRpn(leftSideTrue);
+        String rpnFalse = rpnVerifier.createRpn(leftSideFalse);
+        String resultTrue = rpnVerifier.calculateRpn(rpnTrue);
+        String resultFalse = rpnVerifier.calculateRpn(rpnFalse);
+        return new Pair(resultTrue, resultFalse);
     }
 }

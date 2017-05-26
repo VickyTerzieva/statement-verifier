@@ -11,6 +11,7 @@ import src.org.nvl.core.variable.Type;
 
 import java.util.Stack;
 
+import static src.org.nvl.MessageConstants.EMPTY_STACK_MESSAGE;
 import static src.org.nvl.MessageConstants.IMPOSSIBLE_OPERATION_MESSAGE;
 import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
 
@@ -102,11 +103,17 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
             }   //end of switch
             tokens.nextPosition();
         }   //end of while
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         return stack.pop();     //return result
     } //end of calculateRpnForStrings
 
     //divide if possible
     private void divide(Stack<String> stack) {
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         String right = stack.pop();
         if(stack.empty() || !Type.isNumber(right) || right.equals("0")) {
             throw new RuntimeException(INVALID_INPUT_MESSAGE);
@@ -125,6 +132,9 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
 
     //subtract two strings if possible
     private void subtract(Stack<String> stack) {
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         String right = stack.pop();
         if(stack.empty()) {
             throw new RuntimeException(INVALID_INPUT_MESSAGE);

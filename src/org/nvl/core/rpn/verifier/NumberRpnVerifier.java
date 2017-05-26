@@ -11,9 +11,7 @@ import src.org.nvl.core.variable.Type;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
-import static src.org.nvl.MessageConstants.NEGATIVE_NUMBERS_MESSAGE;
-import static src.org.nvl.MessageConstants.ZERO_DIVISION_MESSAGE;
+import static src.org.nvl.MessageConstants.*;
 
 /**
  * @author niki
@@ -86,6 +84,9 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
             if (Type.isNumber(current)) {   //if the token is a number, push it in the stack
                 stack.push(Double.parseDouble(current));
             } else {    //else it is operation
+                if(stack.empty()) {
+                    throw new RuntimeException(EMPTY_STACK_MESSAGE);
+                }
                 Double right = stack.pop();  //get the right number
                 if(stack.empty()) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
@@ -96,7 +97,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                         stack.push(left + right);
                         break;
                     case "-":
-                        if(left - right > 0) {
+                        if(left - right >= 0) {
                             stack.push(left - right);
                         } else {
                             throw new RuntimeException(NEGATIVE_NUMBERS_MESSAGE);

@@ -103,11 +103,17 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                     break;
             }   //end of switch
         }   //end of while
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         return stack.pop();     //return result
     } //end of calculateRpn
 
     private void execute(Stack<String> stack, String operation) {  //execute + and *
         boolean leftIsNumber = false, rightIsNumber = false;        //if any of the operands is a number
+        if(stack.empty()) {
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
+        }
         String right = stack.pop();     //right operand
         if(stack.empty()) {
             throw new RuntimeException(INVALID_INPUT_MESSAGE);

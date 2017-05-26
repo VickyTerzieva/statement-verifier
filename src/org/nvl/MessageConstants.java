@@ -20,4 +20,5 @@ public class MessageConstants {
     public static final String IMPOSSIBLE_OPERATION_MESSAGE = "Impossible operation!";
     public static final String MULTIPLE_POSSIBLE_ANSWERS_MESSAGE = "Multiple possible answers!";
     public static final String LINEAR_DEFINITION_MESSAGE = "Only linear definitions supported!";
+    public static final String UNDETERMINED_VALUE_MESSAGE = "Undetermined value!";
 }

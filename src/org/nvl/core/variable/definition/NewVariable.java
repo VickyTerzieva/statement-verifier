@@ -2,6 +2,7 @@ package src.org.nvl.core.variable.definition;
 
 import jdk.nashorn.internal.runtime.regexp.RegExp;
 import src.org.nvl.core.Pair;
+import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.type.SideType;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.rpn.Rpn;
@@ -102,71 +103,40 @@ public class NewVariable {
         return result;
     }
 
+    //only two possibilities, we try with both
     public static String replaceRightSideBoolean(String rightSide, String leftSide, String varName) {
-        Pair<String, String> coefficients = getCoefficientsBool(leftSide, varName);
-        String containVar = coefficients.first;
-        String dontContainVar = coefficients.second;
-
-        if(rightSide.equalsIgnoreCase("FALSE") && dontContainVar.equalsIgnoreCase("TRUE")) {
-            // sth || true cannot be false
-            throw new RuntimeException("Impossible operation!");
-        }
-        if(rightSide.equalsIgnoreCase("FALSE")) { //dontContainVar is also false or is empty
-            if(!containVar.toLowerCase().contains("true")) {
-                // containVar like: false && varName || varName && false; always false; then varName can be both true or false
-                throw new RuntimeException("Multiple possible answers!");
-            }
-            //containVar like: false && varName ... || true && varName; true && varName = false only if varName = false
-            return "false";
-        }
-        if(dontContainVar.equalsIgnoreCase("TRUE")) { //rightSide is also true
-            // sth || true = true -> doesn't matter if 'sth' is true or false => varName can be either true or false
+        String leftSideTrue = replace(leftSide, varName, "true");
+        String leftSideFalse = replace(leftSide, varName, "false");
+        BooleanRpnVerifier rpnVerifier = new BooleanRpnVerifier();
+        String rpnTrue = rpnVerifier.createRpn(leftSideTrue);
+        String rpnFalse = rpnVerifier.createRpn(leftSideFalse);
+        String resultTrue = rpnVerifier.calculateRpn(rpnTrue);
+        String resultFalse = rpnVerifier.calculateRpn(rpnFalse);
+        if(resultTrue.equalsIgnoreCase(rightSide) && resultFalse.equalsIgnoreCase(rightSide)) {
             throw new RuntimeException("Multiple possible answers!");
         }
-        //rightSide is true, dontContainVar is false or is empty, then containVar must be true
-        if(!containVar.toLowerCase().contains("true")) {
-            //all disjunctions are gonna be false no matter the value of varName
-            throw new RuntimeException("Impossible operation!");
+        if(resultTrue.equalsIgnoreCase(rightSide)) {
+            return "true";
         }
-        //rightSide is true, dontContainVar is false or empty and containVar has disjunction containing 'true' so varName must be true
-        return "true";
+        if(resultFalse.equalsIgnoreCase(rightSide)) {
+            return "false";
+        }
+        throw new RuntimeException("Impossible operation!");
     }
 
-    private static Pair<String, String> getCoefficientsBool(String leftSide, String varName) {
-        String[] expressions = leftSide.split(" \\|\\| ");
-        StringBuilder containVar = new StringBuilder(leftSide.length());
-        StringBuilder dontContainVar = new StringBuilder(leftSide.length());
-        BooleanRpnVerifier booleanRpnVerifier = new BooleanRpnVerifier();
-        for(int i = 0; i < expressions.length; i++) {
-            int index = expressions[i].indexOf(varName);
-            String toCalculate = "";
-            if(index != -1) {
-                if(!containVar.toString().equals("")) {
-                    containVar.append(" || ");
-                }
-                if(expressions[i].length() > 1 && index == expressions[i].length() - 1){
-                    toCalculate = expressions[i].substring(0, expressions[i].length() - 2);
-                } else if (expressions[i].length() > 1) {
-                    String first = expressions[i].substring(0, index);
-                    String second = expressions[i].substring(index + varName.length() + 3, expressions[i].length());
-                    toCalculate = first + second;
-                }
-                if(!toCalculate.equals("")) {
-                    String rpn = booleanRpnVerifier.createRpn(toCalculate);
-                    containVar.append(varName).append(" && ").append(booleanRpnVerifier.calculateRpn(rpn));
-                } else {
-                    containVar.append(varName);
-                }
+    //if varName = f and expression contains 'false', the 'f' in 'false' should not be replaced
+    private static String replace(String leftSide, String varName, String bool) {
+        SplitString splitString = new SplitString(leftSide);
+        StringBuilder result = new StringBuilder();
+        while(!splitString.isEmpty()) {
+            String currentElement = splitString.getCurrentElement();
+            if(currentElement.equals(varName)) {
+                result.append(bool);
+            } else {
+                result.append(currentElement);
             }
-            else if(expressions[i].equalsIgnoreCase("FALSE") || expressions[i].equalsIgnoreCase("TRUE")) {
-                if(!dontContainVar.toString().equals("")) {
-                    dontContainVar.append(" && ");
-                }
-                dontContainVar.append(expressions[i]);
-            }
+            splitString.nextPosition();
         }
-        String rpn = booleanRpnVerifier.createRpn(dontContainVar.toString());
-        String freeOfVariablesPart = !rpn.equals("") ? booleanRpnVerifier.calculateRpn(rpn) : "";
-        return new Pair(containVar.toString(), freeOfVariablesPart);
+        return result.toString();
     }
 }

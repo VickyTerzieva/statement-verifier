@@ -63,7 +63,7 @@ public class ResponderImpl implements Responder {
             SideType typeRight = getType(rightSide);
             SideType typeLeft = getType(leftSide);
             if(!typesMatch(leftSide.toString(), typeLeft, typeRight) && typeLeft != SideType.UNEVALUATED) {
-                throw new RuntimeException("Impossible to initialize the variable!");
+                throw new RuntimeException("Impossible to initialize/update the variable!");
             }
             String rightSideValue = getSideValue(rightSide, typeRight);
             addUpdateVar(typeRight, rightSideValue, leftSide.toString(), inputType);

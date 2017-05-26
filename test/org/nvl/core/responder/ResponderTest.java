@@ -71,7 +71,7 @@ public class ResponderTest {
 
     @Test
     public void testProcess_spacingBooleans() {
-        String statement = "true&&!  true==    !false";
+        String statement = "(true&&!  true)==    !false";
         assertEquals(String.format(MessageConstants.STATEMENT_FORMAT, statement, "FALSE"), responder.process(statement));
     }
 

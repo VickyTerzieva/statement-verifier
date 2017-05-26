@@ -47,6 +47,11 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                     result.append(' ');
                     break;
                 case "!":
+                    while (!operationStack.empty() && operationStack.peek().equals("!")) {
+                        result.append(' ').append(operationStack.pop());
+                    }
+                    operationStack.push(String.valueOf(sw));
+                    break;
                 case "(":
                     operationStack.push(String.valueOf(sw));
                     break;

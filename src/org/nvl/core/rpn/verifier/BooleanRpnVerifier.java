@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 import static src.org.nvl.MessageConstants.EMPTY_STACK_MESSAGE;
 import static src.org.nvl.MessageConstants.INVALID_INPUT_MESSAGE;
+import static src.org.nvl.MessageConstants.UNDETERMINED_VALUE_MESSAGE;
 
 /**
  * @author niki
@@ -89,7 +90,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                 stack.push(Boolean.parseBoolean(current));
             } else {
                 if(stack.empty()) {
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                    throw new RuntimeException(EMPTY_STACK_MESSAGE);
                 }
                 Boolean right = stack.pop();
                 Boolean left;
@@ -114,7 +115,7 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
                         stack.push(left || right);
                         break;
                     default:
-                        throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                        throw new RuntimeException(EMPTY_STACK_MESSAGE);
                 } //end of switch
             }  // end of if/else
         }     //end of while
@@ -124,13 +125,29 @@ public class BooleanRpnVerifier extends AbstractRpnVerifier {
         return stack.pop().toString();   //the result is in the stack(last element)
     }   //end of calculate RPN
 
-    public static boolean executeBooleanOperation(String leftSide, String rightSide, String data) {
-        if(data.equals("||")) {
-            return leftSide.equalsIgnoreCase("TRUE") || rightSide.equalsIgnoreCase("TRUE");
+    //possible incoming strings - true, false, undetermined
+    public static String executeBooleanOperation(String leftSide, String rightSide, String data) {
+        if(data.equals("&&")) {
+            if(leftSide.equalsIgnoreCase("FALSE") || rightSide.equalsIgnoreCase("FALSE")) {
+                return "FALSE";
+            }
+            if (leftSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE) || rightSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE)){
+                return UNDETERMINED_VALUE_MESSAGE;
+            }
+            return "TRUE";
         }
         if(data.equals("==")) {
-            return leftSide.equalsIgnoreCase(rightSide);
+            if (leftSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE) || rightSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE)){
+                return UNDETERMINED_VALUE_MESSAGE;
+            }
+            return String.valueOf(leftSide.equalsIgnoreCase(rightSide));
         }
-        return leftSide.equalsIgnoreCase("TRUE") && rightSide.equalsIgnoreCase("TRUE");
+        if(leftSide.equalsIgnoreCase("TRUE") || rightSide.equalsIgnoreCase("TRUE")) {
+            return "TRUE";
+        }
+        if (leftSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE) || rightSide.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE)){
+            return UNDETERMINED_VALUE_MESSAGE;
+        }
+        return "FALSE";
     }
 }

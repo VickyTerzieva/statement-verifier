@@ -61,6 +61,9 @@ public class RpnStatementVerifier implements StatementVerifier {
         inputTree = inputTree.createTree(statement);
         inputTree = variableSubstituter.substituteVariables(inputTree);
         String result = verifyInput(inputTree);
+        if(result.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE)) {
+            throw new RuntimeException(UNDETERMINED_VALUE_MESSAGE);
+        }
         return result.equalsIgnoreCase("TRUE");
     }
 
@@ -118,30 +121,35 @@ public class RpnStatementVerifier implements StatementVerifier {
             SideType typeRight = getType(right);
             String rightSide, leftSide;
 
-            if((typeLeft != typeRight && typeLeft != SideType.UNEVALUATED && typeRight != SideType.UNEVALUATED)
-                    || (data.matches("<=|>=|<|>") && (typeLeft == SideType.BOOLEAN || typeRight == SideType.BOOLEAN))) {
-                throw new RuntimeException(INVALID_INPUT_MESSAGE);
-            }
+            checkIfInvalidInput(left, right, typeLeft, typeRight, data);
 
             if(containsUnevaluatedVariable) {
-                return tryToCalculate(left, right, data);
+                return tryToCalculate(left, right, data).toUpperCase();
             }
             else {
                 rightSide = getSideValue(right, typeRight);
                 leftSide = getSideValue(left, typeLeft);
 
-                boolean result;
-                if (typeRight == SideType.NUMBER) {
-                    result = AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
-                } else if (data.equals("||") || data.equals("&&")) {
+                String result;
+                if(typeRight == SideType.NUMBER) {
+                    result = String.valueOf(AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data));
+                } else if(typeLeft == SideType.BOOLEAN || typeRight == SideType.BOOLEAN) {
                     result = BooleanRpnVerifier.executeBooleanOperation(leftSide, rightSide, data);
                 } else {
-                    result = AbstractRpnVerifier.compare(leftSide.toLowerCase(), rightSide.toLowerCase(), data);
+                    result = String.valueOf(AbstractRpnVerifier.compare(leftSide, rightSide, data));
                 }
-                return String.valueOf(result).toUpperCase();
+                return result.toUpperCase();
             }
         }
         return "";
+    }
+
+    private void checkIfInvalidInput(InputTree left, InputTree right, SideType typeLeft, SideType typeRight, String data) {
+        if((!typesMatch(left.toString(), right.toString(), typeLeft, typeRight)
+                && typeLeft != SideType.UNEVALUATED && typeRight != SideType.UNEVALUATED)
+                || (data.matches("<=|>=|<|>") && (typeLeft == SideType.BOOLEAN || typeRight == SideType.BOOLEAN))) {
+            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+        }
     }
 
     private String getSideValue(InputTree tree, SideType type) {
@@ -161,8 +169,10 @@ public class RpnStatementVerifier implements StatementVerifier {
     private SideType getType(InputTree inputTree) {
         if(!inputTree.isLeaf()) {  // value of inputTree data is an operator
             if(inputTree.getValue().equals("&&") || inputTree.getValue().equals("||")) {
-                checkType(inputTree.getValue());
-                if(numberOfOperations != 1 || !isBooleanOperation) {
+                SideType left = getType(inputTree.getLeftSide());
+                SideType right = getType(inputTree.getRightSide());
+                if((left != SideType.BOOLEAN  && left != SideType.UNEVALUATED) ||
+                        (right != SideType.BOOLEAN && right != SideType.UNEVALUATED)) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
             }
@@ -205,10 +215,7 @@ public class RpnStatementVerifier implements StatementVerifier {
     private String tryToCalculate(InputTree left, InputTree right, String operation) {
         SideType typeLeft = getType(left);
         SideType typeRight = getType(right);
-        if((typeLeft != typeRight && typeLeft != SideType.UNEVALUATED && typeRight != SideType.UNEVALUATED)
-                || (operation.matches("<=|>=|<|>") && (typeLeft == SideType.BOOLEAN || typeRight == SideType.BOOLEAN))) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
-        }
+        checkIfInvalidInput(left, right, typeLeft, typeRight, operation);
 
         String rightVal, leftVal;
         String var = ResponderImpl.getVariable(right.toString());
@@ -219,52 +226,73 @@ public class RpnStatementVerifier implements StatementVerifier {
         if(left.isLeaf() && right.isLeaf()) {
             String res;
 
-            if(typeRight != SideType.BOOLEAN) {
+            if(typeRight != SideType.BOOLEAN && typeLeft != SideType.BOOLEAN && !operation.equals("&&")
+                    && !operation.equals("||")) {
                 res = computeNonBoolean(left, right, operation, var, typeRight);
             } else {
                 res = computeBoolean(left, operation, right, var);
             }
             return res.toUpperCase();
         } else if (left.isLeaf()) {
-            rightVal = tryToCalculate(right.getLeftSide(), right.getRightSide(), operation);
-            leftVal = computeBoolean(left, operation, right, var);
+            rightVal = tryToCalculate(right.getLeftSide(), right.getRightSide(), right.getValue());
+            leftVal = left.getValue();
+            if(!Type.isBoolean(leftVal)) {
+                leftVal = UNDETERMINED_VALUE_MESSAGE;
+            }
         } else if (right.isLeaf()) {
-            leftVal = tryToCalculate(left.getLeftSide(), left.getRightSide(), operation);
-            rightVal = computeBoolean(left, operation, right, var);
+            leftVal = tryToCalculate(left.getLeftSide(), left.getRightSide(), left.getValue());
+            rightVal = right.getValue();
+            if(!Type.isBoolean(rightVal)) {
+                rightVal = UNDETERMINED_VALUE_MESSAGE;
+            }
         } else {
-            rightVal = tryToCalculate(right.getLeftSide(), right.getRightSide(), operation);
-            leftVal = tryToCalculate(left.getLeftSide(), left.getRightSide(), operation);
+            rightVal = tryToCalculate(right.getLeftSide(), right.getRightSide(), right.getValue());
+            leftVal = tryToCalculate(left.getLeftSide(), left.getRightSide(), left.getValue());
         }
-        boolean result = BooleanRpnVerifier.executeBooleanOperation(leftVal, rightVal, operation);
-        return String.valueOf(result).toUpperCase();
+        return BooleanRpnVerifier.executeBooleanOperation(leftVal, rightVal, operation);
     }
 
-    private String getValue(String side, String var, SideType type) {
+    private String getValue(String side, String var, SideType type, String operation) {
         Pair<String, String> coefficients = NewVariable.getCoefficients(side, var);
         String toAdd = coefficients.first;
         String toMultiply = coefficients.second;
-        String res = "";
+        String calculated, signSubtraction = "", signMultiplication = "";
         try {
-            NewVariable.getToSubtract(toAdd, type);
-            res = "TRUE";
+            calculated = NewVariable.getToSubtract(toAdd, type);
+            if(calculated.equals("0") || calculated.equals("{0}") || calculated.equals("")) {
+                signSubtraction = "=";
+            } else {
+                signSubtraction = ">";
+            }
         } catch (Exception e) {
-            if(e.getMessage().equals(NEGATIVE_NUMBERS_MESSAGE)) {
-                res = "FALSE";
+            if(e.getMessage().equals(NEGATIVE_NUMBERS_MESSAGE) || e.getMessage().equals(EMPTY_STACK_MESSAGE)) {
+                signSubtraction = "<";
             }
         }
         try {
-            NewVariable.getToDivideBy(toMultiply);
-            return res;
+            calculated = NewVariable.getToDivideBy(toMultiply);
+            if(calculated.equals("0") || calculated.equals("")) {
+                signMultiplication = "=";
+            } else {
+                signMultiplication = ">";
+            }
         } catch (Exception e) {
-            if(e.getMessage().equals(EMPTY_STACK_MESSAGE)) {
-                if(res.equals("TRUE")) {
-                    throw new RuntimeException(UNDETERMINED_VALUE_MESSAGE);
-                } else {
-                    return res;
-                }
+            if(e.getMessage().equals(NEGATIVE_NUMBERS_MESSAGE) || e.getMessage().equals(EMPTY_STACK_MESSAGE)) {
+                signMultiplication = "<";
             }
         }
-        return res;
+        if(operation.equals("==")) {
+            return String.valueOf(signMultiplication.equals("=") && signSubtraction.equals("="));
+        } if((signMultiplication.equals(">") && signSubtraction.equals("<"))
+                || (signMultiplication.equals("<") && signSubtraction.equals(">"))) {
+            return UNDETERMINED_VALUE_MESSAGE;
+        } if(signMultiplication.equals(">") || signSubtraction.equals(">")) {
+            return "TRUE";
+        } if(signMultiplication.equals("=") && signSubtraction.equals("=") &&
+                (operation.equals(">=") || operation.equals("<="))) {
+            return "TRUE";
+        }
+        return "FALSE";
     }
 
     private String changeSigns(String s) {
@@ -285,10 +313,10 @@ public class RpnStatementVerifier implements StatementVerifier {
                 var);
         String resultTrue = bool.first;
         String resultFalse = bool.second;
-        if(resultTrue.equalsIgnoreCase("true") && resultFalse.equalsIgnoreCase("true")) {
-            res = "TRUE";
+        if(resultTrue.equalsIgnoreCase(resultFalse)) {
+            res = resultTrue;
         } else {
-            res = "FALSE";
+            res = UNDETERMINED_VALUE_MESSAGE;
         }
         return res;
     }
@@ -304,6 +332,38 @@ public class RpnStatementVerifier implements StatementVerifier {
         }
 
         minusSide = changeSigns(subtrahend);
-        return getValue(minuend + " - " + minusSide, var, type);
+        return getValue(minuend + " - " + minusSide, var, type, operation);
+    }
+
+    private boolean typesMatch(String leftSide, String rightSide, SideType typeLeft, SideType typeRight) {
+        if(typeLeft == typeRight) {
+            return true;
+        }
+        if((typeRight == SideType.ARRAY && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide))
+                || (typeLeft == SideType.ARRAY && typeRight == SideType.NUMBER && containsUnevaluatedVariable(rightSide))) {
+            return true;
+        }
+        if((typeRight == SideType.STRING && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide)
+                && numberIsPartOfMultiplication(leftSide)) || (typeLeft == SideType.STRING && typeRight == SideType.NUMBER
+                && containsUnevaluatedVariable(rightSide) && numberIsPartOfMultiplication(rightSide))) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean numberIsPartOfMultiplication(String leftSide) {
+        return leftSide.matches(".* \\* [\\d]+.*") || leftSide.matches(".*[\\d]+ \\* .*");
+    }
+
+    private boolean containsUnevaluatedVariable(String leftSide) {
+        SplitString splitString = new SplitString(leftSide);
+        while(!splitString.isEmpty()) {
+            String currentElement = splitString.getCurrentElement();
+            if(!Type.isNumber(currentElement) && Type.isWord(currentElement) && !variableManager.containsVariable(currentElement)) {
+                return true;
+            }
+            splitString.nextPosition();
+        }
+        return false;
     }
 }

@@ -126,15 +126,15 @@ public class ResponderImpl implements Responder {
             rightSide = getSideValue(right, typeRight);
             leftSide = getSideValue(left, typeLeft);
 
-            boolean result;
+            String result;
             if(typeRight == SideType.NUMBER) {
-                result = AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data);
-            } else if(data.equals("||") || data.equals("&&")) {
+                result = String.valueOf(AbstractRpnVerifier.compare(Integer.parseInt(leftSide), Integer.parseInt(rightSide), data));
+            } else if(typeRight == SideType.BOOLEAN) {
                 result = BooleanRpnVerifier.executeBooleanOperation(leftSide, rightSide, data);
             } else {
-                result = AbstractRpnVerifier.compare(leftSide, rightSide, data);
+                result = String.valueOf(AbstractRpnVerifier.compare(leftSide, rightSide, data));
             }
-            return String.valueOf(result).toUpperCase();
+            return result.toUpperCase();
         }
         return "";
     }

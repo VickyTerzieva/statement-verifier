@@ -5,6 +5,7 @@
  */
 package src.org.nvl.ui;
 
+import src.org.nvl.MessageConstants;
 import src.org.nvl.core.responder.Responder;
 import src.org.nvl.core.variable.EvaluatedVariable;
 
@@ -100,7 +101,11 @@ public class SwingGraphicalUserInterface extends javax.swing.JFrame implements G
                 String result = responder.process(input);
                 lblResult.setText(result);
             } catch (Exception e) {
-                lblResult.setText(e.getMessage());
+                if(e.getMessage().equals(MessageConstants.EMPTY_STACK_MESSAGE)) {
+                    lblResult.setText(MessageConstants.INVALID_INPUT_MESSAGE);
+                } else {
+                    lblResult.setText(e.getMessage());
+                }
             }
 
             printVariables();

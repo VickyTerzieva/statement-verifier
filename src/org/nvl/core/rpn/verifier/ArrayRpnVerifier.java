@@ -116,7 +116,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         }
         String right = stack.pop();     //right operand
         if(stack.empty()) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         String left = stack.pop();      //left operand
 
@@ -214,7 +214,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
     private void concatenate(Stack<String> stack) {
         String right = stack.pop(); //right array
         if(stack.empty()) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         String left = stack.pop();  //left array
 

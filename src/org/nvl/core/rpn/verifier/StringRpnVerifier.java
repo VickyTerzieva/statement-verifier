@@ -116,7 +116,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         }
         String right = stack.pop();
         if(stack.empty() || !Type.isNumber(right) || right.equals("0")) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         String left = stack.pop();
         Integer numberOfOccurences = Integer.valueOf(right);
@@ -137,7 +137,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         }
         String right = stack.pop();
         if(stack.empty()) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         String left = stack.pop();
 
@@ -151,7 +151,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
     private void plus(Stack<String> stack) {
         String right = stack.pop();
         if(stack.empty()) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         String left = stack.pop();
 
@@ -174,7 +174,7 @@ public class StringRpnVerifier extends AbstractRpnVerifier {
         }
 
         if(stack.empty()) {
-            throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            throw new RuntimeException(EMPTY_STACK_MESSAGE);
         }
         if (Type.isNumber(stack.peek())) {
             left = Integer.parseInt(stack.pop());          //if left is number

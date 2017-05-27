@@ -62,7 +62,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                     break;
                 case '^':
                 case '!':
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                    throw new RuntimeException(EMPTY_STACK_MESSAGE);
                 default:
                     result.append(charInput[i]);    // we have a digit
                     break;
@@ -89,7 +89,7 @@ public class NumberRpnVerifier extends AbstractRpnVerifier {
                 }
                 Double right = stack.pop();  //get the right number
                 if(stack.empty()) {
-                    throw new RuntimeException(INVALID_INPUT_MESSAGE);
+                    throw new RuntimeException(EMPTY_STACK_MESSAGE);
                 }
                 Double left = stack.pop();   //get the left
                 switch (current) {    //current is an operation, so wi push the resulted number in the stack

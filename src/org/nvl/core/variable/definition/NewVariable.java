@@ -15,6 +15,9 @@ import src.org.nvl.core.statement.RpnStatementVerifier;
 import src.org.nvl.core.variable.Type;
 import org.apache.commons.lang3.*;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -125,6 +128,7 @@ public class NewVariable {
         }
         return concatenatedExpression.toString();
     }
+
     public static String replaceRightSideString(String rightSide, String leftSide, String varName, SideType type) {
         StringRpnVerifier stringRpnVerifier = new StringRpnVerifier();
         NumberRpnVerifier numberRpnVerifier = new NumberRpnVerifier();
@@ -135,11 +139,12 @@ public class NewVariable {
         String rpn = stringRpnVerifier.createRpn(rightSide + " - " + back.first);
         String calculatedRpn = stringRpnVerifier.calculateRpn(rpn);
         String simplifiedRightSide = removeBegin(front.first, calculatedRpn);
+
         SplitString splitString = new SplitString(containVar);
         Substring substrings[] = new Substring[rightSide.length()];
         int currentPosition = 0;
         int[] multiplyCoefficients = new int[splitString.getSplitInput().length];
-        int nthCoeff = 0;
+        int nthCoeff = 0, positionInString = 0;
         int sum = 0;
         while (!splitString.isEmpty()) {
             String currentElement = splitString.getCurrentElement();
@@ -150,14 +155,19 @@ public class NewVariable {
                 substrings[currentPosition] = new Substring(sum, sum + calculatedRpn.length() - 2, var);
                 sum += calculatedRpn.length() - 2;
                 currentPosition++;
-            } else if (!currentElement.equals("+")){
+            } else if (!currentElement.equals("+") && !currentElement.equals("-")){
                 Pair<String, String> coefficients = getCoefficients(currentElement, varName);
                 rpn = stringRpnVerifier.createRpn(coefficients.second);
                 calculatedRpn = numberRpnVerifier.calculateRpn(rpn);
-                multiplyCoefficients[nthCoeff] = Integer.valueOf(calculatedRpn);
-                nthCoeff++;
+                if(positionInString != 0 && splitString.getNthElement(positionInString - 1).equals("-")) {
+                    multiplyCoefficients[nthCoeff - 1] -= Integer.valueOf(calculatedRpn);
+                } else {
+                    multiplyCoefficients[nthCoeff] = Integer.valueOf(calculatedRpn);
+                    nthCoeff++;
+                }
                 sum += Integer.valueOf(calculatedRpn);
             }
+            positionInString++;
             splitString.nextPosition();
         }
 
@@ -166,24 +176,10 @@ public class NewVariable {
 
     private static String getValue(String simplifiedRightSide, int[] multiplyCoefficients,
                                    Substring[] positions, int positionsLength) {
-        int currentPosition = 0, begin, end = 0;
+        int begin, end = 0;
         simplifiedRightSide = StringUtils.substringBetween(simplifiedRightSide, "'");
-        int remainingLength = simplifiedRightSide.length();
-        while(currentPosition < positionsLength) {
-            String string = positions[currentPosition].val;
-            for(int i = positions[currentPosition].begin; i < positions[currentPosition].end; i+=string.length()) {
-                String correspondantStringRightSide = simplifiedRightSide.substring(i, i + string.length());
-                if(!correspondantStringRightSide.equals(string)) {
-                    throw new RuntimeException(MessageConstants.IMPOSSIBLE_INITIALIZATION_MESSAGE);
-                }
-                remainingLength -= string.length();
-            }
-            currentPosition++;
-        }
-        int sumCoefficients = IntStream.of(multiplyCoefficients).sum();
-        if(remainingLength % sumCoefficients != 0) {
-            throw new RuntimeException(MessageConstants.IMPOSSIBLE_INITIALIZATION_MESSAGE);
-        }
+        checkRightSide(simplifiedRightSide, positions, positionsLength);
+
         String value = "";
         StringRpnVerifier stringRpnVerifier = new StringRpnVerifier();
         for(int i = 0; i <= positionsLength; i++) {
@@ -211,12 +207,26 @@ public class NewVariable {
         return value;
     }
 
+    private static void checkRightSide (String simplifiedRightSide, Substring[] positions, int positionsLength) {
+        int currentPosition = 0;
+        while(currentPosition < positionsLength) {
+            String string = positions[currentPosition].val;
+            for(int i = positions[currentPosition].begin; i < positions[currentPosition].end; i+=string.length()) {
+                String correspondantStringRightSide = simplifiedRightSide.substring(i, i + string.length());
+                if(!correspondantStringRightSide.equals(string)) {
+                    throw new RuntimeException(MessageConstants.IMPOSSIBLE_INITIALIZATION_MESSAGE);
+                }
+            }
+            currentPosition++;
+        }
+    }
+
     private static Pair<String, Integer> getFront(String leftSide, StringRpnVerifier stringRpnVerifier) {
         StringBuilder front = new StringBuilder(leftSide.length());
         SplitString splitString = new SplitString(leftSide);
         Integer position = 0;
         while(!splitString.isEmpty() && (splitString.getCurrentElement().contains("'")
-                || splitString.getCurrentElement().equals("+"))) {
+                || splitString.getCurrentElement().equals("+") || splitString.getCurrentElement().equals("-"))) {
             front.append(splitString.getCurrentElement()).append(' ');
             splitString.nextPosition();
             position++;
@@ -230,12 +240,13 @@ public class NewVariable {
         StringBuilder back = new StringBuilder(leftSide.length());
         SplitString splitString = new SplitString(leftSide);
         int size = splitString.getSplitInput().length - 1;
-        while(size >= 0 && (splitString.getNthElement(size).contains("'") || splitString.getNthElement(size).equals("+"))) {
+        while(size >= 0 && (splitString.getNthElement(size).contains("'")
+                || splitString.getNthElement(size).equals("+") || splitString.getNthElement(size).equals("-"))) {
             back.append(splitString.getNthElement(size)).append(' ');
             size--;
         }
         back.append("''");
-        String rpn = stringRpnVerifier.createRpn(back.toString());
+        String rpn = stringRpnVerifier.createRpn(reverseWords(back.toString()));
         return  new Pair(stringRpnVerifier.calculateRpn(rpn), size);
     }
 
@@ -320,5 +331,13 @@ public class NewVariable {
         String resultTrue = rpnVerifier.calculateRpn(rpnTrue);
         String resultFalse = rpnVerifier.calculateRpn(rpnFalse);
         return new Pair(resultTrue, resultFalse);
+    }
+
+    private static String reverseWords (String s)
+    {
+        String delimiter = " ";
+        List<String> words = Arrays.asList(s.split(delimiter));
+        Collections.reverse(words);
+        return String.join(delimiter, words);
     }
 }

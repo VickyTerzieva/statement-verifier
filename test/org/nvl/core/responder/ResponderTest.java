@@ -158,6 +158,14 @@ public class ResponderTest {
     }
 
     @Test
+    public void testProcess_addVariableStringDefinitionSubtraction() {
+        String value = "'lll'";
+
+        assertEquals(NEW_VARIABLE_MESSAGE, responder.process("'abc' + 2 * a - a + 'cd' - 'd' = 'abclllc'"));
+        assertEquals(value, variableManager.getVariable("a").getValue());
+    }
+
+    @Test
     public void testProcess_addVariableArrayComplexDefinition() {
         String value = "{1,1,1}";
 

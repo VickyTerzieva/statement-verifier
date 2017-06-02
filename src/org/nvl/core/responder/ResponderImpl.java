@@ -204,7 +204,7 @@ public class ResponderImpl implements Responder {
             rightSide = NewVariable.replaceRightSide(rightSideValue, leftSide, name, typeRight);
             type = VariableType.NUMBER;
         } else {
-            rightSide = NewVariable.replaceRightSide(rightSideValue, leftSide, name, typeRight);
+            rightSide = NewVariable.replaceRightSideString(rightSideValue, leftSide, name, typeRight);
             type = VariableType.STRING;
         }
         String rpnRightSide = rpn.createRpn(rightSide);

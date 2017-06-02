@@ -142,6 +142,22 @@ public class ResponderTest {
     }
 
     @Test
+    public void testProcess_addVariableStringVeryComplexDefinition() {
+        String value = "'b'";
+
+        assertEquals(NEW_VARIABLE_MESSAGE, responder.process("3*a*2 + 3*'ck' +a+'a' + a +3 *'a' = 'bbbbbbckckckbabaaa'"));
+        assertEquals(value, variableManager.getVariable("a").getValue());
+    }
+
+    @Test
+    public void testProcess_addVariableStringDefinition() {
+        String value = "'top'";
+
+        assertEquals(NEW_VARIABLE_MESSAGE, responder.process("'abc' + 2*bb + 'kk' = 'abctoptopkk'"));
+        assertEquals(value, variableManager.getVariable("bb").getValue());
+    }
+
+    @Test
     public void testProcess_addVariableArrayComplexDefinition() {
         String value = "{1,1,1}";
 

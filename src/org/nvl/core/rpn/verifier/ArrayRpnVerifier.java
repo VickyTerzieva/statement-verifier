@@ -156,7 +156,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
                 }
                 return Integer.toString(l - r);
             case "/":
-                if(right.equals(0)) {
+                if(r == 0) {
                     throw new RuntimeException(ZERO_DIVISION_MESSAGE);
                 }
                 return Integer.toString(l / r);
@@ -184,6 +184,9 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
 
     //execute operation(+ or *) if we have two array operands
     private String executeOperationArrays(String leftArray, String rightArray, String operation) {
+        if(leftArray.charAt(0) == '-' || rightArray.charAt(0) == '-') {
+            throw new RuntimeException(NEGATIVE_NUMBERS_MESSAGE);
+        }
         StringBuilder result = new StringBuilder();
         StringTokenizer leftTokens = new StringTokenizer(leftArray.substring(1, leftArray.length() - 1), ", ");  //tokenize the first array by ',' (we get its elements)
         StringTokenizer rightTokens = new StringTokenizer(rightArray.substring(1, rightArray.length() - 1), ", ");    //tokenize the second array by ',' (we get its elements)
@@ -222,9 +225,7 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
             throw new RuntimeException(CONCATENATION_ERROR_MESSAGE);
         }
 
-        StringBuilder result = new StringBuilder(left.substring(0, left.length() - 1));     //get the first element, without the closing } in the result
-        result.append(',');                                                                 //separate its last element with a ,
-        result.append(right.substring(1, right.length()));                                  //append the second array without the opening {
-        stack.push(result.toString());                                                      //push result to stack
+        String result = left.substring(0, left.length() - 1) + ',' + right.substring(1, right.length());
+        stack.push(result);                                                      //push result to stack
     }//end of concatenate
 }

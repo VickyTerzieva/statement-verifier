@@ -55,7 +55,7 @@ public class ResponderTest {
 
     @Test
     public void testProcess_complexStatement2() {
-        String statement = "1+3<5==2+4<=6==3+5>=2";
+        String statement = "1+3<5==2+4<=6==3+5>=2";// (1+3<5)==(2+4<=6)==(3+5>=2)
         assertEquals(String.format(STATEMENT_FORMAT, statement, "TRUE"), responder.process(statement));
     }
 
@@ -79,7 +79,7 @@ public class ResponderTest {
 
     @Test
     public void testProcess_noComparisonOperation() {
-        String statement = "true || false && false";
+        String statement = "true || false && false"; // && has higher priority and is executed first
         assertEquals(String.format(STATEMENT_FORMAT, statement, "TRUE"), responder.process(statement));
     }
 
@@ -115,7 +115,8 @@ public class ResponderTest {
     public void testProcess_addVariableBooleanComplexDefinition() {
         String value = "true";
 
-        assertEquals(NEW_VARIABLE_MESSAGE, responder.process("var&&!false&&false || true&&var&&true = true || false"));
+        assertEquals(NEW_VARIABLE_MESSAGE, responder.process("(var&&!false&&false || true&&var&&true) = (true || false)"));
+        // ((var&&!false&&false) || (true&&var&&true)) = (true || false) <=> (false || true&&var) = true <=> true&&var = true
         assertEquals(value, variableManager.getVariable("var").getValue());
     }
 

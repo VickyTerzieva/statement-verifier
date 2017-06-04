@@ -1,5 +1,7 @@
 package src.org.nvl.core.statement;
 
+import org.apache.commons.lang3.StringUtils;
+import src.org.nvl.MessageConstants;
 import src.org.nvl.core.Pair;
 import src.org.nvl.core.input.split.SplitString;
 import src.org.nvl.core.input.substituter.VariableSubstituter;
@@ -10,6 +12,8 @@ import src.org.nvl.core.responder.ResponderImpl;
 import src.org.nvl.core.rpn.AbstractRpnVerifier;
 import src.org.nvl.core.rpn.Rpn;
 import src.org.nvl.core.rpn.verifier.BooleanRpnVerifier;
+import src.org.nvl.core.rpn.verifier.NumberRpnVerifier;
+import src.org.nvl.core.rpn.verifier.StringRpnVerifier;
 import src.org.nvl.core.variable.Type;
 import src.org.nvl.core.variable.VariableType;
 import src.org.nvl.core.variable.definition.NewVariable;
@@ -228,7 +232,12 @@ public class RpnStatementVerifier implements StatementVerifier {
 
             if(typeRight != SideType.BOOLEAN && typeLeft != SideType.BOOLEAN && !operation.equals("&&")
                     && !operation.equals("||")) {
-                res = computeNonBoolean(left, right, operation, var, typeRight);
+                if(typeRight == SideType.NUMBER && typeLeft != SideType.UNEVALUATED) { //the other type migth be string or array, so we take it
+                    res = computeNonBoolean(left, right, operation, var, typeLeft);
+                }
+                else {
+                    res = computeNonBoolean(left, right, operation, var, typeRight);
+                }
             } else {
                 res = computeBoolean(left, operation, right, var);
             }
@@ -322,6 +331,9 @@ public class RpnStatementVerifier implements StatementVerifier {
     }
 
     private String computeNonBoolean(InputTree left, InputTree right, String operation, String var, SideType type) {
+        if(type == SideType.STRING) {
+            return computeString(left, right, operation, var);
+        }
         String minusSide, minuend, subtrahend;
         if(operation.equals(">=") || operation.equals(">")) {
             minuend = left.toString();
@@ -335,6 +347,111 @@ public class RpnStatementVerifier implements StatementVerifier {
         return getValue(minuend + " - " + minusSide, var, type, operation);
     }
 
+    private String computeString(InputTree left, InputTree right, String operation, String var) {
+        StringRpnVerifier stringRpnVerifier = new StringRpnVerifier();
+        String leftToString = left.toString();
+        String rightToString = right.toString();
+        String coefficientLeft, coefficientRight;
+        while(!leftToString.isEmpty() && !rightToString.isEmpty()) {
+            Pair<String, Integer> frontLeft = NewVariable.getFront(leftToString, stringRpnVerifier);
+            Pair<String, Integer> frontRight = NewVariable.getFront(rightToString, stringRpnVerifier);
+            if (frontLeft.first.equals(frontRight.first)) {
+                if(!frontLeft.first.isEmpty() && !frontLeft.first.equals("''")) {
+                    leftToString = leftToString.substring(StringUtils.ordinalIndexOf(leftToString, " ", frontLeft.second) - 1);
+                    rightToString = rightToString.substring(StringUtils.ordinalIndexOf(rightToString, " ", frontRight.second) - 1);
+                    final int POSITION_OF_OPERATOR = 1;
+                    final int POSITION_AFTER_OPERATOR = 2;
+                    if ((leftToString.length() > 0 && leftToString.charAt(POSITION_OF_OPERATOR) == '-') ||
+                            (rightToString.length() > 0 && rightToString.charAt(POSITION_OF_OPERATOR) == '-')) {
+                        return INVALID_OPERATION_MESSAGE; // e.g. not allowed '...' - 2*a
+                    }
+                    leftToString = leftToString.substring(POSITION_AFTER_OPERATOR);
+                    rightToString = rightToString.substring(POSITION_AFTER_OPERATOR);
+                }
+                Pair<String, String> removeVariablesFrontLeft = removeVariablesFront(leftToString, var);
+                Pair<String, String> removeVariablesFrontRight = removeVariablesFront(rightToString, var);
+                coefficientLeft = removeVariablesFrontLeft.second;
+                coefficientRight = removeVariablesFrontRight.second;
+                leftToString = removeVariablesFrontLeft.first;
+                rightToString = removeVariablesFrontRight.first;
+                if(!coefficientLeft.equals(coefficientRight)) {
+                    if(!leftToString.isEmpty() && !rightToString.isEmpty()) {
+                        return UNDETERMINED_VALUE_MESSAGE;
+                    }
+                    return makeComparisson(leftToString, rightToString, coefficientLeft, coefficientRight, operation);
+                }
+            } else if(!containsUnevaluatedVariable(leftToString) && !containsUnevaluatedVariable(rightToString)){
+                return String.valueOf(AbstractRpnVerifier.compare(frontLeft.first, frontRight.first, operation));
+            }
+        }
+        if(operation.matches(">=|>")) {
+            return String.valueOf(rightToString.isEmpty()).toUpperCase();
+        } else if(operation.matches("<=|<")) {
+            return String.valueOf(leftToString.isEmpty()).toUpperCase();
+        }
+        return "FALSE";
+    }
+
+    private String makeComparisson(String leftToString, String rightToString, String coefficientLeft,
+                                   String coefficientRight, String operation) {
+        if(leftToString.isEmpty() && rightToString.isEmpty()) {
+            return String.valueOf(AbstractRpnVerifier.compare(coefficientLeft, coefficientRight, operation));
+        } else if (!rightToString.isEmpty()) {
+            if(AbstractRpnVerifier.compare(coefficientLeft, coefficientRight, ">")) {
+                return UNDETERMINED_VALUE_MESSAGE;
+            } else {
+                return String.valueOf(AbstractRpnVerifier.compare(coefficientLeft, coefficientRight, operation));
+            }
+        } else {
+            if(AbstractRpnVerifier.compare(coefficientLeft, coefficientRight, "<")) {
+                return UNDETERMINED_VALUE_MESSAGE;
+            } else {
+                return String.valueOf(AbstractRpnVerifier.compare(coefficientLeft, coefficientRight, operation));
+            }
+        }
+    }
+
+    //result.first = string without variables at beginning, result.second = coefficient of variables at the beginning
+    private Pair<String,String> removeVariablesFront(String leftToString, String var) {
+        leftToString = leftToString.replaceAll(" \\* ", "*");
+        NumberRpnVerifier numberRpnVerifier = new NumberRpnVerifier();
+        SplitString left = new SplitString(leftToString);
+        StringBuilder containVarLeft = new StringBuilder();
+        String leftRest;
+        int numberOfOperations = 0;
+        while(!left.isEmpty() && ((!Type.isString(left.getCurrentElement()) && left.getCurrentElement().contains(var))
+                || (left.getCurrentElement().matches("\\+|\\-")))) {
+            containVarLeft.append(left.getCurrentElement()).append(' ');
+            left.nextPosition();
+            numberOfOperations++;
+        }
+        if(containVarLeft.charAt(containVarLeft.length() - 2) == '-') {
+            throw new RuntimeException(INVALID_OPERATION_MESSAGE); // 'a' - a (not supported)
+        }
+        leftRest = concatenate(left);
+        String containVar;
+        if(numberOfOperations > 1) { // remove last operation (+ / -)
+            containVar = containVarLeft.substring(0, containVarLeft.length() - 2);
+        } else if(numberOfOperations > 0) { // remove last ' '
+            containVar = containVarLeft.substring(0, containVarLeft.length() - 1);
+        } else {
+            containVar = "";
+        };
+        Pair<String, String> coefficientsLeft = NewVariable.getCoefficients(containVar, var);
+        String rpn = numberRpnVerifier.createRpn(coefficientsLeft.second);
+        String calculatedRpn = numberRpnVerifier.calculateRpn(rpn);
+        return new Pair(leftRest, calculatedRpn);
+    }
+
+    private String concatenate(SplitString left) {
+        StringBuilder result = new StringBuilder();
+        while(!left.isEmpty()) {
+            result.append(left.getCurrentElement()).append(' ');
+            left.nextPosition();
+        }
+        return result.length() > 0 ? result.toString().substring(0, result.length() - 1) : "";
+    }
+
     private boolean typesMatch(String leftSide, String rightSide, SideType typeLeft, SideType typeRight) {
         if(typeLeft == typeRight) {
             return true;
@@ -343,12 +460,9 @@ public class RpnStatementVerifier implements StatementVerifier {
                 || (typeLeft == SideType.ARRAY && typeRight == SideType.NUMBER && containsUnevaluatedVariable(rightSide))) {
             return true;
         }
-        if((typeRight == SideType.STRING && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide)
+        return (typeRight == SideType.STRING && typeLeft == SideType.NUMBER && containsUnevaluatedVariable(leftSide)
                 && numberIsPartOfMultiplication(leftSide)) || (typeLeft == SideType.STRING && typeRight == SideType.NUMBER
-                && containsUnevaluatedVariable(rightSide) && numberIsPartOfMultiplication(rightSide))) {
-            return true;
-        }
-        return false;
+                && containsUnevaluatedVariable(rightSide) && numberIsPartOfMultiplication(rightSide));
     }
 
     private boolean numberIsPartOfMultiplication(String leftSide) {

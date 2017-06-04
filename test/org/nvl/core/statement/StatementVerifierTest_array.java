@@ -29,7 +29,7 @@ public class StatementVerifierTest_array {
     }
 
     @Test
-    public void testVerifyStatement_lessManyDigits() {
+    public void testVerifyStatement_lessDigits() {
         assertTrue(statementVerifier.verifyStatement("{1} < {244312}"));
     }
 

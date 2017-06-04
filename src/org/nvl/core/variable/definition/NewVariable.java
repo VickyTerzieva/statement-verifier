@@ -24,7 +24,6 @@ import java.util.stream.IntStream;
  * Created by Vicky on 23.5.2017 г..
  */
 public class NewVariable {
-
     public static String replaceRightSide(String rightSide, String leftSide, String varName, SideType type) {
         String replacedRightSide = rightSide;
         Pair<String, String> coefficients = getCoefficients(leftSide, varName);
@@ -53,15 +52,15 @@ public class NewVariable {
         String[] containVar = new String[splitLeftSide.length];
         String[] dontContainVar = new String[splitLeftSide.length];
         int indexContainVar = 0, indexDontContainVar = 0;
-        for(int i = 0; i < splitLeftSide.length; i++) {
+        for (String aSplitLeftSide : splitLeftSide) {
             //if varName is not part of a string
-            if(splitLeftSide[i].contains(varName) && !splitLeftSide[i].contains("'")) {
-                String toCalculate = replacePlusMinusVar(splitLeftSide[i], varName);
+            if (aSplitLeftSide.contains(varName) && !aSplitLeftSide.contains("'")) {
+                String toCalculate = replacePlusMinusVar(aSplitLeftSide, varName);
                 int index = toCalculate.indexOf(varName);
-                if(toCalculate.indexOf(varName, index + 1) != -1) {
+                if (toCalculate.indexOf(varName, index + 1) != -1) {
                     throw new RuntimeException(MessageConstants.LINEAR_DEFINITION_MESSAGE);
                 }
-                if(toCalculate.length() > 1 && index == toCalculate.length() - 1){
+                if (toCalculate.length() > 1 && index == toCalculate.length() - 1) {
                     toCalculate = toCalculate.substring(0, toCalculate.length() - 2);
                 } else if (toCalculate.length() > 1) {
                     String first = toCalculate.substring(0, index - 1);
@@ -71,7 +70,7 @@ public class NewVariable {
                 containVar[indexContainVar] = toCalculate;
                 indexContainVar++;
             } else {
-                dontContainVar[indexDontContainVar] = splitLeftSide[i];
+                dontContainVar[indexDontContainVar] = aSplitLeftSide;
                 indexDontContainVar++;
             }
         }
@@ -111,7 +110,7 @@ public class NewVariable {
         return toSubtract;
     }
 
-    private static String concatenate(String[] expressions) {
+    public static String concatenate(String[] expressions) {
         StringBuilder concatenatedExpression = new StringBuilder();
         concatenatedExpression.append("");
         if(expressions.length > 0 && expressions[0] != null) {
@@ -221,7 +220,7 @@ public class NewVariable {
         }
     }
 
-    private static Pair<String, Integer> getFront(String leftSide, StringRpnVerifier stringRpnVerifier) {
+    public static Pair<String, Integer> getFront(String leftSide, StringRpnVerifier stringRpnVerifier) {
         StringBuilder front = new StringBuilder(leftSide.length());
         SplitString splitString = new SplitString(leftSide);
         Integer position = 0;
@@ -263,7 +262,7 @@ public class NewVariable {
         return "";
     }
 
-    private static String removeBegin(String begin, String calculatedRpn) {
+    public static String removeBegin(String begin, String calculatedRpn) {
         int matchingSymbols = 0;
         //begin.length - 1  because the final ' must be excluded
         while(matchingSymbols < begin.length() - 1 && calculatedRpn.charAt(matchingSymbols) == begin.charAt(matchingSymbols)) {

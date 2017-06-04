@@ -159,24 +159,19 @@ public class InputTree {
         StringBuilder newVariable = new StringBuilder();
         Stack<String> stackInput = new Stack<>();
         boolean isPartOfBracketsExpression = false;
-        for(int i = 0; i < charInput.length; i++)
-        {
-            if(charInput[i] == '(')
-            {
+        for (char aCharInput : charInput) {
+            if (aCharInput == '(') {
                 isPartOfBracketsExpression = true;
-                stackInput.push(charInput[i]+"");
-            }
-            else if(charInput[i] == ')')
-            {
-                if(stackInput.isEmpty()) {
+                stackInput.push(aCharInput + "");
+            } else if (aCharInput == ')') {
+                if (stackInput.isEmpty()) {
                     throw new RuntimeException(INVALID_INPUT_MESSAGE);
                 }
                 newVariable.append(")");
                 String next = stackInput.pop();
-                while(!next.equals("("))
-                {
+                while (!next.equals("(")) {
                     newVariable.append(next);
-                    if(stackInput.isEmpty()) { // no '(' in stack
+                    if (stackInput.isEmpty()) { // no '(' in stack
                         throw new RuntimeException(INVALID_INPUT_MESSAGE);
                     }
                     next = stackInput.pop();
@@ -188,17 +183,15 @@ public class InputTree {
                 name = bracketVariables.freeNameOfVariable(variablesInInput);
                 EvaluatedVariable bracketVariable = new EvaluatedVariable(name, bracketVarValue, VariableType.BRACKET_EXPRESSION);
                 bracketVariables.addVariable(bracketVariable);
-                if(stackInput.isEmpty()) { //no more bracket expressions
+                if (stackInput.isEmpty()) { //no more bracket expressions
                     isPartOfBracketsExpression = false;
                 }
                 bracketVarValue = replaceForRegex(bracketVarValue);
                 input = input.replaceAll(bracketVarValue, name);
                 stackInput.push(name);
                 newVariable.setLength(0);
-            }
-            else if(isPartOfBracketsExpression)
-            {
-                 stackInput.push(charInput[i]+"");
+            } else if (isPartOfBracketsExpression) {
+                stackInput.push(aCharInput + "");
             }
         }
         return input;
@@ -219,11 +212,9 @@ public class InputTree {
         Set<String> result = new HashSet<>();
         SplitString splitString = new SplitString(input);
         String[] splitInput = splitString.getSplitInput();
-        for(int i = 0; i < splitInput.length; i++)
-        {
-            if(isVariable(splitInput[i]))
-            {
-                result.add(splitInput[i]);
+        for (String aSplitInput : splitInput) {
+            if (isVariable(aSplitInput)) {
+                result.add(aSplitInput);
             }
         }
         return result;

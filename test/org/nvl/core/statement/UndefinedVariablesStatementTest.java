@@ -104,6 +104,62 @@ public class UndefinedVariablesStatementTest {
         assertFalse(statementVerifier.verifyStatement("{1,1,1} + a + {2,3,4} < a"));
     }
 
+    @Test
+    public void testUndefinedVariableStatement_stringTrue() {
+        assertTrue(statementVerifier.verifyStatement("'k'+'lm' + 2*a >= 'klm' + a"));
+    }
+
+    @Test
+    public void testUndefinedVariableStatement_stringTrue2() {
+        assertTrue(statementVerifier.verifyStatement("'b' + 'cd' + 2*a <= 'bcd' + 3*a + 'm'"));
+    }
+
+    @Test
+    public void testUndefinedVariableStatement_stringTrueComlex() {
+        assertTrue(statementVerifier.verifyStatement("'a' + a + a + 'b'  + a + 'cd' <= 'a' + 3*a - a + 'b' + a + 'kq'"));
+    }
+
+    @Test
+    public void testUndefinedVariableStatement_stringFalse() {
+        assertFalse(statementVerifier.verifyStatement("3*a + 'b' <= 2*a"));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testUndefinedVariableStatement_undeterminedValueString() {
+        try {
+            statementVerifier.verifyStatement("'a' + 2*a + 'bc' <= 'a' + 3*a + 'ab'");
+        }
+        catch(RuntimeException re) {
+            assertEquals(UNDETERMINED_VALUE_MESSAGE, re.getMessage());
+            throw re;
+        }
+        fail("Exception did not throw!");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testUndefinedVariableStatement_undeterminedValueStringEquality() {
+        try {
+            statementVerifier.verifyStatement("2*b + 'l' == 3*b");
+        }
+        catch(RuntimeException re) {
+            assertEquals(UNDETERMINED_VALUE_MESSAGE, re.getMessage());
+            throw re;
+        }
+        fail("Exception did not throw!");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testUndefinedVariableStatement_undeterminedValueStringComplex() {
+        try {
+            statementVerifier.verifyStatement("'bcde' - 'e' + 2*a + 'k' <= 'bcd' + 3*a");
+        }
+        catch(RuntimeException re) {
+            assertEquals(UNDETERMINED_VALUE_MESSAGE, re.getMessage());
+            throw re;
+        }
+        fail("Exception did not throw!");
+    }
+
     @Test(expected = RuntimeException.class)
     public void testUndefinedVariableStatement_undeterminedValue() {
         try {

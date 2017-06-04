@@ -45,6 +45,10 @@ public class ResponderImpl implements Responder {
         checkInput(spaceFixedInput);
         InputTree inputTree = new InputTree();
         inputTree = inputTree.createTree(spaceFixedInput);
+        if(inputTree.isLeaf() && !Type.isBoolean(inputTree.toString()) &&
+                !variableManager.containsVariable(inputTree.toString())) {
+            throw new RuntimeException(UNEVALUATABLE_EXPRESSION_MESSAGE);
+        }
         InputType inputType = typeDeterminer.determineType(inputTree);
 
         if (inputType == InputType.NEW_VARIABLE || inputType == InputType.EXISTING_VARIABLE) {
@@ -186,7 +190,7 @@ public class ResponderImpl implements Responder {
         if(rpnStatementVerifier.containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
-        throw new RuntimeException(OPERATION_MIX_MESSAGE);
+        throw new RuntimeException(INVALID_INPUT_MESSAGE);
     }
 
     private void addUpdateVar(SideType typeRight, String rightSideValue, String leftSide, InputType inputType) {

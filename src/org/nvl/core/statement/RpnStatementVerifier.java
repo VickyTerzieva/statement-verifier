@@ -63,6 +63,10 @@ public class RpnStatementVerifier implements StatementVerifier {
         checkInput(statement);
         InputTree inputTree = new InputTree();
         inputTree = inputTree.createTree(statement);
+        if(inputTree.isLeaf() && !Type.isBoolean(inputTree.toString()) &&
+                !variableManager.containsVariable(inputTree.toString())) {
+            throw new RuntimeException(UNEVALUATABLE_EXPRESSION_MESSAGE);
+        }
         inputTree = variableSubstituter.substituteVariables(inputTree);
         String result = verifyInput(inputTree);
         if(result.equalsIgnoreCase(UNDETERMINED_VALUE_MESSAGE)) {
@@ -145,7 +149,7 @@ public class RpnStatementVerifier implements StatementVerifier {
                 return result.toUpperCase();
             }
         }
-        return "";
+        return inputTree.toString();
     }
 
     private void checkIfInvalidInput(InputTree left, InputTree right, SideType typeLeft, SideType typeRight, String data) {
@@ -202,7 +206,7 @@ public class RpnStatementVerifier implements StatementVerifier {
         if(containsUnevaluatedVariable() && numberOfOperations == 0) {
             return SideType.UNEVALUATED;
         }
-        throw new RuntimeException(OPERATION_MIX_MESSAGE);
+        throw new RuntimeException(INVALID_INPUT_MESSAGE);
     }
 
     private void checkInput(String userInput) {

@@ -131,6 +131,9 @@ public class ArrayRpnVerifier extends AbstractRpnVerifier {
         }
 
         if (leftIsNumber && !rightIsNumber) {     //if the left operand is a number and the right one is an array
+            if(operation.matches("/|\\-")) {
+                throw new RuntimeException(INVALID_INPUT_MESSAGE);
+            }
             stack.push(executeOperationNumberArray(right, left, operation));    //do the operation with array and number
             return;
         }

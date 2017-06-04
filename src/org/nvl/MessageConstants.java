@@ -9,7 +9,6 @@ public class MessageConstants {
     public static final String IMPOSSIBLE_MULTIPLE_DEFINITION_MESSAGE = "Cannot define more than one variables at once!";
     public static final String IMPOSSIBLE_MULTIPLE_REDEFINITION_MESSAGE ="Cannot redefine more than one variables at once!";
     public static final String UNEVALUATED_RIGHT_SIDE_MESSAGE = "Right side of definition should not contain unevaluated variables!";
-    public static final String OPERATION_MIX_MESSAGE = "Invalid mix of operations!";
     public static final String IMPOSSIBLE_INITIALIZATION_MESSAGE = "Impossible to initialize/update the variable!";
     public static final String INVALID_OPERATION_MESSAGE = "Invalid operation!";
     public static final String EMPTY_STACK_MESSAGE = "It's empty!";
